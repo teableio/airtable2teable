@@ -1,6 +1,6 @@
 # airtable2teable
 
-The data pipeline from airtable `Base` to teable `Table`.
+The data pipeline from airtable to teable.
 
 ## Prepare
 

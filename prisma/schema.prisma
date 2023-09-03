@@ -1,0 +1,197 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model attachments {
+  id               String    @id
+  token            String    @unique
+  hash             String
+  size             Int
+  mimetype         String
+  path             String
+  url              String
+  width            Int?
+  height           Int?
+  deleted_time     DateTime?
+  created_time     DateTime  @default(now())
+  created_by       String
+  last_modified_by String
+}
+
+model attachments_table {
+  id               String    @id
+  attachment_id    String
+  name             String
+  token            String
+  table_id         String
+  record_id        String
+  field_id         String
+  deleted_time     DateTime?
+  created_time     DateTime  @default(now())
+  created_by       String
+  last_modified_by String
+}
+
+model automation_workflow {
+  id                 String    @id
+  workflow_id        String    @unique
+  name               String
+  description        String?
+  deployment_status  String    @default("undeployed")
+  created_time       DateTime  @default(now())
+  last_modified_time DateTime
+  deleted_time       DateTime?
+  created_by         String
+  last_modified_by   String
+}
+
+model automation_workflow_action {
+  id                 String    @id
+  action_id          String    @unique
+  workflow_id        String
+  description        String?
+  action_type        String?
+  input_expressions  String?
+  next_node_id       String?
+  parent_node_id     String?
+  created_time       DateTime  @default(now())
+  last_modified_time DateTime
+  deleted_time       DateTime?
+  created_by         String
+  last_modified_by   String
+
+  @@index([workflow_id])
+}
+
+model automation_workflow_execution_history {
+  id                    String   @id
+  automaion_workflow_id String
+  execution_type        String
+  execution_result      String
+  created_time          DateTime @default(now())
+}
+
+model automation_workflow_trigger {
+  id                 String    @id
+  trigger_id         String    @unique
+  workflow_id        String
+  description        String?
+  trigger_type       String?
+  input_expressions  String?
+  created_time       DateTime  @default(now())
+  last_modified_time DateTime
+  deleted_time       DateTime?
+  created_by         String
+  last_modified_by   String
+
+  @@index([workflow_id])
+}
+
+model field {
+  id                     String     @id
+  name                   String
+  description            String?
+  options                String?
+  type                   String
+  cell_value_type        String
+  is_multiple_cell_value Boolean?
+  db_field_type          String
+  db_field_name          String
+  not_null               Boolean?
+  unique                 Boolean?
+  is_primary             Boolean?
+  is_computed            Boolean?
+  is_lookup              Boolean?
+  has_error              Boolean?
+  lookup_linked_field_id String?
+  lookup_options         String?
+  table_id               String
+  column_meta            String
+  version                Int
+  created_time           DateTime   @default(now())
+  last_modified_time     DateTime
+  deleted_time           DateTime?
+  created_by             String
+  last_modified_by       String
+  table_meta             table_meta @relation(fields: [table_id], references: [id])
+
+  @@index([lookup_linked_field_id])
+}
+
+model ops {
+  collection   String
+  doc_id       String
+  version      Int
+  operation    String
+  created_time DateTime @default(now())
+  created_by   String
+
+  @@unique([collection, doc_id, version])
+  @@index([collection, created_time])
+}
+
+model reference {
+  id            String @id
+  from_field_id String
+  to_field_id   String
+
+  @@index([to_field_id, from_field_id])
+  @@index([to_field_id])
+  @@index([from_field_id])
+}
+
+model snapshots {
+  collection String
+  doc_id     String
+  doc_type   String
+  version    Int
+  data       String
+
+  @@unique([collection, doc_id])
+}
+
+model table_meta {
+  id                 String    @id
+  name               String
+  description        String?
+  icon               String?
+  db_table_name      String
+  version            Int
+  order              Float
+  created_time       DateTime  @default(now())
+  last_modified_time DateTime
+  deleted_time       DateTime?
+  created_by         String
+  last_modified_by   String
+  field              field[]
+  view               view[]
+
+  @@index([order])
+}
+
+model view {
+  id                 String     @id
+  name               String
+  description        String?
+  table_id           String
+  type               String
+  sort               String?
+  filter             String?
+  group              String?
+  options            String?
+  order              Float
+  version            Int
+  created_time       DateTime   @default(now())
+  last_modified_time DateTime
+  deleted_time       DateTime?
+  created_by         String
+  last_modified_by   String
+  table_meta         table_meta @relation(fields: [table_id], references: [id])
+
+  @@index([order])
+}

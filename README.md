@@ -14,7 +14,7 @@ grants access, with the following limitations:
 - Resources/access: What bases and workspace the token can access. Tokens can be granted access to individual—or
 all—bases/workspaces. These can be listed using the list bases endpoint.
 
-To import airtable Base data into a teable Table, the token requires the following Scope:
+To import airtable Base data into a teable Workspace, the token requires the following Scope:
 
 - The common user:`data.records:read`, `schema.bases:read`;
 - The enterprise user includes: `workspacesAndBases:read`.

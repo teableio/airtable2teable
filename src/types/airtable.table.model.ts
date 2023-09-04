@@ -1,5 +1,5 @@
-import { AirtableFieldModel } from './airtable.field.model';
 import { AirtableViewModel } from './airtable.view.model';
+import { IAirtableField } from './fields';
 
 export class AirtableTableModel {
   id: string;
@@ -9,6 +9,6 @@ export class AirtableTableModel {
   primaryFieldId: string;
   name: string;
   description?: string;
-  fields: AirtableFieldModel[];
+  fields: IAirtableField[];
   views: AirtableViewModel[];
 }

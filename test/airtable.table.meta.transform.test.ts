@@ -1,10 +1,9 @@
 import { PrismaClient } from '@prisma/client';
-
 import {
   AirtableFieldTypeEnum,
   AirtableViewTypeEnum,
   IAirtableTableModel,
-} from '../src/types';
+} from 'types';
 
 describe('airtable table meta transform', () => {
   test('store table base information into teable table meta db.', async () => {

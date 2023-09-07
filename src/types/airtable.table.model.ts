@@ -1,7 +1,7 @@
 import { AirtableViewModel } from './airtable.view.model';
 import { IAirtableField } from './fields';
 
-export class AirtableTableModel {
+export interface IAirtableTableModel {
   id: string;
   /**
    * The first column in the table and every view.

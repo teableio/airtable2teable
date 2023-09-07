@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { AirtableTableModel } from 'types';
+import { IAirtableTableModel } from 'types';
 
 describe('Read records', () => {
   test('first read test', async () => {
-    const baseId = '';
-    const response = await axios.get<{ tables: AirtableTableModel[] }>(
+    const baseId = 'appfj6B27vlQf3TWm';
+    const response = await axios.get<{ tables: IAirtableTableModel[] }>(
       `https://api.airtable.com/v0/meta/bases/${baseId}/tables`,
       {
         headers: {
-          Authorization: 'Bearer ',
+          Authorization:
+            'Bearer patYDGPJsV1aGD74T.ba2237ab2f4affd3c6b0f194b317354bf44764ca1b770d992a7365f2d9003daa',
         },
       },
     );

@@ -12,9 +12,21 @@ grants access, with the following limitations:
 
 - Scopes: What actions the token can perform.
 - Resources/access: What bases and workspace the token can access. Tokens can be granted access to individual—or
-all—bases/workspaces. These can be listed using the list bases endpoint.
+  all—bases/workspaces. These can be listed using the list bases endpoint.
 
-To import airtable Base data into a teable Workspace, the token requires the following Scope:
+To import airtable Base data into a teable Workspace, the token requires the following
+Scope: `data.records:read`, `schema.bases:read`.
 
-- The common user:`data.records:read`, `schema.bases:read`;
-- The enterprise user includes: `workspacesAndBases:read`.
+## Quick Start
+
+```typescript
+const dbMigrate = new DBMigrate({
+  from: {
+    airtableToken: ''
+  },
+  to: {
+    path: `${__dirname}\\airtable.teable`
+  }
+});
+const result = await dbMigrate.execute();
+```

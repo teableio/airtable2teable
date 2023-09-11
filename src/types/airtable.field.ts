@@ -1,5 +1,5 @@
 import { AirtableFieldTypeEnum } from './airtable.field.type.enum';
-import { IAirtableField } from './fields/airtable.field';
+import { IAirtableField } from './fields';
 
 export class AirtableField {
   constructor(private readonly field: IAirtableField) {}

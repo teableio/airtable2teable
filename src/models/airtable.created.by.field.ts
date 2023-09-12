@@ -10,6 +10,10 @@ export class AirtableCreatedByField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.OBJECT;
+    return AirtableCellTypeEnum.STRING;
+  }
+
+  getCellValue(value: any): string {
+    return value?.name;
   }
 }

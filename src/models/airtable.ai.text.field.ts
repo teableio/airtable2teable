@@ -12,4 +12,8 @@ export class AirtableAiTextField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }
+
+  getCellValue(value: any): string {
+    return value?.value;
+  }
 }

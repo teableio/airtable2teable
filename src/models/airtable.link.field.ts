@@ -8,4 +8,8 @@ export class AirtableLinkField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }
+
+  getCellValue(value: any): string[] {
+    return value;
+  }
 }

@@ -12,4 +12,8 @@ export class AirtableCheckboxField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.TRUE;
   }
+
+  getCellValue(value: any): true {
+    return value;
+  }
 }

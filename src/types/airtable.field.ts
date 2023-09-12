@@ -1,7 +1,7 @@
 import { AirtableFieldTypeEnum } from './airtable.field.type.enum';
 import { IAirtableField } from './fields';
 
-export class AirtableField {
+export abstract class AirtableField {
   constructor(private readonly field: IAirtableField) {}
 
   get id(): string {
@@ -15,4 +15,6 @@ export class AirtableField {
   get type(): AirtableFieldTypeEnum {
     return this.field.type;
   }
+
+  abstract getCellValue(any): any;
 }

@@ -12,4 +12,8 @@ export class AirtableCountField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
+
+  getCellValue(value: any): string {
+    return value;
+  }
 }

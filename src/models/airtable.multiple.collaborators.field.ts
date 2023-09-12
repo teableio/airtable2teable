@@ -12,4 +12,8 @@ export class AirtableMultipleCollaboratorsField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }
+
+  getCellValue(value: any): string[] {
+    return value.map((v) => v.name);
+  }
 }

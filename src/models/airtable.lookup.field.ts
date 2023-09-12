@@ -12,4 +12,8 @@ export class AirtableLookupField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }
+
+  getCellValue(value: any): any[] {
+    return value;
+  }
 }

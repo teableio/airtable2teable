@@ -8,4 +8,8 @@ export class AirtableUrlField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }
+
+  getCellValue(value: any): string {
+    return value;
+  }
 }

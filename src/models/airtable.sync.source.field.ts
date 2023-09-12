@@ -10,6 +10,10 @@ export class AirtableSyncSourceField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.ANY;
+    return AirtableCellTypeEnum.STRING;
+  }
+
+  getCellValue(value: any): string {
+    return value;
   }
 }

@@ -12,4 +12,8 @@ export class AirtablePercentField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
+
+  getCellValue(value: any): number {
+    return value;
+  }
 }

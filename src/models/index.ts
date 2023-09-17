@@ -67,6 +67,8 @@ export * from './airtable.single.line.text.field';
 export * from './airtable.single.select.field';
 export * from './airtable.sync.source.field';
 export * from './airtable.url.field';
+export * from './teable.single.line.text.field';
+
 export const getAirtableField = (field: IAirtableField): AirtableField => {
   if (field?.type === AirtableFieldTypeEnum.AiText) {
     return new AirtableAiTextField(field as any);

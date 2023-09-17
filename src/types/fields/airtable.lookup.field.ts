@@ -3,7 +3,7 @@ import { IAirtableField } from './airtable.field';
 import { AirtableFieldOptions } from './airtable.field.options';
 
 export interface IAirtableLookupField extends IAirtableField {
-  type: AirtableFieldTypeEnum.Lookup;
+  type: AirtableFieldTypeEnum.MultipleLookupValues;
   options: IAirtableLookupFieldOptions;
 }
 export interface IAirtableLookupFieldOptions {

@@ -67,74 +67,74 @@ export * from './airtable.single.line.text.field';
 export * from './airtable.single.select.field';
 export * from './airtable.sync.source.field';
 export * from './airtable.url.field';
-export const getAirtableField = (option: IAirtableField): AirtableField => {
-  if (option?.type === AirtableFieldTypeEnum.AiText) {
-    return new AirtableAiTextField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.MultipleAttachments) {
-    return new AirtableAttachmentField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.AutoNumber) {
-    return new AirtableAutoNumberField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Barcode) {
-    return new AirtableBarcodeField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Button) {
-    return new AirtableButtonField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Checkbox) {
-    return new AirtableCheckboxField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.SingleCollaborator) {
-    return new AirtableCollaboratorField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Count) {
-    return new AirtableCountField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.CreatedBy) {
-    return new AirtableCreatedByField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.CreatedTime) {
-    return new AirtableCreatedTimeField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Currency) {
-    return new AirtableCurrencyField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Date) {
-    return new AirtableDateField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.DateTime) {
-    return new AirtableDateTimeField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Duration) {
-    return new AirtableDurationField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Email) {
-    return new AirtableEmailField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Formula) {
-    return new AirtableFormulaField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.LastModifiedBy) {
-    return new AirtableLastModifiedByField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.LastModifiedTime) {
-    return new AirtableLastModifiedTimeField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.MultipleRecordLinks) {
-    return new AirtableLinkField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.MultilineText) {
-    return new AirtableLongTextField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Lookup) {
-    return new AirtableLookupField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.MultipleCollaborators) {
-    return new AirtableMultipleCollaboratorsField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.MultipleSelects) {
-    return new AirtableMultipleSelectsField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Number) {
-    return new AirtableNumberField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Percent) {
-    return new AirtablePercentField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.PhoneNumber) {
-    return new AirtablePhoneField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Rating) {
-    return new AirtableRatingField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.RichText) {
-    return new AirtableRichTextField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Rollup) {
-    return new AirtableRollupField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.SingleLineText) {
-    return new AirtableSingleLineTextField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.SingleSelect) {
-    return new AirtableSingleSelectField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.ExternalSyncSource) {
-    return new AirtableSyncSourceField(option as any);
-  } else if (option?.type === AirtableFieldTypeEnum.Url) {
-    return new AirtableUrlField(option as any);
+export const getAirtableField = (field: IAirtableField): AirtableField => {
+  if (field?.type === AirtableFieldTypeEnum.AiText) {
+    return new AirtableAiTextField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.MultipleAttachments) {
+    return new AirtableAttachmentField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.AutoNumber) {
+    return new AirtableAutoNumberField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Barcode) {
+    return new AirtableBarcodeField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Button) {
+    return new AirtableButtonField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Checkbox) {
+    return new AirtableCheckboxField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.SingleCollaborator) {
+    return new AirtableCollaboratorField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Count) {
+    return new AirtableCountField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.CreatedBy) {
+    return new AirtableCreatedByField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.CreatedTime) {
+    return new AirtableCreatedTimeField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Currency) {
+    return new AirtableCurrencyField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Date) {
+    return new AirtableDateField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.DateTime) {
+    return new AirtableDateTimeField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Duration) {
+    return new AirtableDurationField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Email) {
+    return new AirtableEmailField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Formula) {
+    return new AirtableFormulaField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.LastModifiedBy) {
+    return new AirtableLastModifiedByField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.LastModifiedTime) {
+    return new AirtableLastModifiedTimeField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.MultipleRecordLinks) {
+    return new AirtableLinkField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.MultilineText) {
+    return new AirtableLongTextField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.MultipleLookupValues) {
+    return new AirtableLookupField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.MultipleCollaborators) {
+    return new AirtableMultipleCollaboratorsField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.MultipleSelects) {
+    return new AirtableMultipleSelectsField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Number) {
+    return new AirtableNumberField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Percent) {
+    return new AirtablePercentField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.PhoneNumber) {
+    return new AirtablePhoneField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Rating) {
+    return new AirtableRatingField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.RichText) {
+    return new AirtableRichTextField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Rollup) {
+    return new AirtableRollupField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.SingleLineText) {
+    return new AirtableSingleLineTextField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.SingleSelect) {
+    return new AirtableSingleSelectField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.ExternalSyncSource) {
+    return new AirtableSyncSourceField(field as any);
+  } else if (field?.type === AirtableFieldTypeEnum.Url) {
+    return new AirtableUrlField(field as any);
   } else {
-    throw new Error('known type.');
+    throw new Error(`known type. ${field?.type}`);
   }
 };

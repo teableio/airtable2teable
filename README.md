@@ -30,3 +30,40 @@ const dbMigrate = new DBMigrate({
 });
 const result = await dbMigrate.execute();
 ```
+
+## Process:
+
+- [x] singleLineText
+- [x] email
+- [x] url
+- [x] multilineText
+- [x] number
+- [x] percent
+- [x] currency
+- [x] singleSelect
+- [x] multipleSelects
+- [x] singleCollaborator
+- [x] multipleCollaborators
+- [x] multipleRecordLinks
+- [x] date
+- [x] dateTime
+- [x] phoneNumber
+- [x] multipleAttachments
+- [x] checkbox
+- [x] formula
+- [x] createdTime
+- [x] rollup
+- [x] count
+- [x] lookup
+- [x] multipleLookupValues
+- [x] autoNumber
+- [x] barcode
+- [x] rating
+- [x] richText
+- [x] duration
+- [x] lastModifiedTime
+- [x] button
+- [x] createdBy
+- [x] lastModifiedBy
+- [ ] externalSyncSource
+- [ ] aiText

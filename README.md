@@ -25,7 +25,7 @@ const dbMigrate = new DBMigrate({
     airtableToken: ''
   },
   to: {
-    path: `${__dirname}\\airtable.teable`
+    dirPath: `${__dirname}`
   }
 });
 const result = await dbMigrate.execute();

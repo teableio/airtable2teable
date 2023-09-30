@@ -1,4 +1,4 @@
-import { createReadStream, createWriteStream } from 'node:fs';
+import { createReadStream, createWriteStream, rmSync } from 'node:fs';
 import { createGzip } from 'node:zlib';
 
 import * as path from 'path';
@@ -23,10 +23,25 @@ export class DBMigrate {
 
   execute(): void {}
 
+  async generateTempFile(): Promise<void> {
+    const fileName = 'temp.db';
+    const observable = new Observable((subscriber) => {
+      const readStream = createReadStream(this.dbFilePath);
+      const writeStream = createWriteStream(
+        `${this.option.to.dirPath}/${fileName}`,
+      );
+      readStream.pipe(writeStream);
+      readStream.on('end', () => {
+        subscriber.next();
+      });
+    });
+    await firstValueFrom(observable);
+  }
+
   async generateTeableFile(): Promise<string> {
     const fileName = 'db.teable';
     const observable = new Observable((subscriber) => {
-      const readStream = createReadStream(this.dbFilePath);
+      const readStream = createReadStream(`${this.option.to.dirPath}/temp.db`);
       const gzipStream = createGzip();
       const writeStream = createWriteStream(
         `${this.option.to.dirPath}/${fileName}`,
@@ -37,6 +52,7 @@ export class DBMigrate {
       });
     });
     await firstValueFrom(observable);
+    rmSync(`${this.option.to.dirPath}/temp.db`);
     return fileName;
   }
 }

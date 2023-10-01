@@ -1,6 +1,6 @@
 import { AirtableViewTypeEnum } from './airtable.view.type.enum';
 
-export class AirtableViewModel {
+export interface IAirtableView {
   id: string;
   type: AirtableViewTypeEnum;
   name: string;

@@ -1,5 +1,5 @@
 import { getAirtableField } from '../src/models';
-import { AirtableField, IAirtableTableModel } from '../src/types';
+import { AirtableField, IAirtableTable } from '../src/types';
 
 describe('Airtable field models', () => {
   test('json to airtable field models', () => {
@@ -273,7 +273,7 @@ describe('Airtable field models', () => {
           type: 'grid',
         },
       ],
-    } as IAirtableTableModel;
+    } as IAirtableTable;
     const modelMap: Record<string, AirtableField> = {};
     for (const field of tableSchema.fields) {
       const model = getAirtableField(field);
@@ -374,7 +374,7 @@ describe('Airtable field models', () => {
           type: 'grid',
         },
       ],
-    } as IAirtableTableModel;
+    } as IAirtableTable;
     const modelMap: Record<string, AirtableField> = {};
     for (const field of tableSchema.fields) {
       const model = getAirtableField(field);

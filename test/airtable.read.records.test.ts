@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { IAirtableTableModel } from 'types';
+import { IAirtableTable } from 'types';
 
 describe('Read records', () => {
   test('first read test', async () => {
     const baseId = 'appfj6B27vlQf3TWm';
-    const response = await axios.get<{ tables: IAirtableTableModel[] }>(
+    const response = await axios.get<{ tables: IAirtableTable[] }>(
       `https://api.airtable.com/v0/meta/bases/${baseId}/tables`,
       {
         headers: {

@@ -24,7 +24,7 @@ export abstract class AirtableField {
   }
 
   get description(): string {
-    return this.description;
+    return this.field.description;
   }
 
   abstract getCellValue(any): any;

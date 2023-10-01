@@ -22,6 +22,7 @@ Scope: `data.records:read`, `schema.bases:read`.
 ```typescript
 const dbMigrate = new DBMigrate({
   from: {
+    baseId: '',
     airtableToken: ''
   },
   to: {

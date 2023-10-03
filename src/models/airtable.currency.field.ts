@@ -33,7 +33,7 @@ export class AirtableCurrencyField extends AirtableField {
       dbFieldType: TeableDbFieldType.Real,
       options: {
         formatting: {
-          type: NumberFormattingType.Decimal,
+          type: NumberFormattingType.Currency,
           precision: this.field.options?.precision,
           symbol: this.field.options?.symbol,
         },

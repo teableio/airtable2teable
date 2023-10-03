@@ -142,12 +142,13 @@ export class DBMigrate {
       for (const field of table.fields) {
         const airtableDataModel = getAirtableField(field);
         const teableDataModel = airtableDataModel.transformDataModel();
+        teableDataModel.validateOptions();
         await this.client.field.create({
           data: {
             id: teableDataModel.id,
             name: teableDataModel.name,
             description: teableDataModel.description,
-            options: '{}',
+            options: JSON.stringify(teableDataModel.options),
             type: teableDataModel.type,
             cell_value_type: 'string',
             is_multiple_cell_value: false,
@@ -171,7 +172,6 @@ export class DBMigrate {
             last_modified_by: 'admin',
           },
         });
-        teableDataModel.validateOptions();
         const columnSql = `
         ALTER TABLE visual_${tableMeta.id} ADD COLUMN unnamed_${field.id} ${teableDataModel.dbFieldType}
         `;

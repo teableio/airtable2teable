@@ -67,6 +67,8 @@ export * from './airtable.single.line.text.field';
 export * from './airtable.single.select.field';
 export * from './airtable.sync.source.field';
 export * from './airtable.url.field';
+export * from './teable.date.field';
+export * from './teable.number.field';
 export * from './teable.single.line.text.field';
 
 export const getAirtableField = (field: IAirtableField): AirtableField => {

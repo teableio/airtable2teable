@@ -45,6 +45,6 @@ describe('DBMigrate', () => {
     });
     await dbMigrate.init();
     await dbMigrate.generateTableMeta();
-    rmSync(`${__dirname}\\temp.db`);
+    // rmSync(`${__dirname}\\temp.db`);
   }, 300000);
 });

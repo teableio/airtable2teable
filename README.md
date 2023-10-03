@@ -48,13 +48,13 @@ airtable data model -> teable data model
 - [ ] singleCollaborator
 - [ ] multipleCollaborators
 - [ ] multipleRecordLinks
-- [ ] date
-- [ ] dateTime
+- [x] date -> datetime
+- [x] dateTime -> datetime
 - [x] phoneNumber -> singleLineText
 - [ ] multipleAttachments
 - [ ] checkbox
 - [ ] formula
-- [ ] createdTime
+- [x] createdTime -> datetime
 - [ ] rollup
 - [ ] count
 - [ ] lookup
@@ -64,9 +64,13 @@ airtable data model -> teable data model
 - [ ] rating
 - [x] richText -> singleLineText
 - [ ] duration
-- [ ] lastModifiedTime
+- [x] lastModifiedTime -> datetime
 - [ ] button
 - [ ] createdBy
 - [ ] lastModifiedBy
 - [ ] externalSyncSource
 - [ ] aiText
+
+PS:
+
+1. In airtable, timeZone "client" exist, but teable not. So default transform to Etc/GMT.

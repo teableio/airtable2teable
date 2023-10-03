@@ -34,37 +34,39 @@ const result = await dbMigrate.execute();
 
 ## Process:
 
-- [x] singleLineText
-- [x] email
-- [x] url
-- [x] multilineText
-- [x] number
-- [x] percent
-- [x] currency
-- [x] singleSelect
-- [x] multipleSelects
-- [x] singleCollaborator
-- [x] multipleCollaborators
-- [x] multipleRecordLinks
-- [x] date
-- [x] dateTime
-- [x] phoneNumber
-- [x] multipleAttachments
-- [x] checkbox
-- [x] formula
-- [x] createdTime
-- [x] rollup
-- [x] count
-- [x] lookup
-- [x] multipleLookupValues
-- [x] autoNumber
-- [x] barcode
-- [x] rating
-- [x] richText
-- [x] duration
-- [x] lastModifiedTime
-- [x] button
-- [x] createdBy
-- [x] lastModifiedBy
+airtable data model -> teable data model
+
+- [x] singleLineText -> singleLineText
+- [x] email -> singleLineText
+- [x] url -> singleLineText
+- [x] multilineText -> singleLineText
+- [x] number -> number
+- [x] percent -> number
+- [x] currency -> number
+- [ ] singleSelect
+- [ ] multipleSelects
+- [ ] singleCollaborator
+- [ ] multipleCollaborators
+- [ ] multipleRecordLinks
+- [ ] date
+- [ ] dateTime
+- [x] phoneNumber -> singleLineText
+- [ ] multipleAttachments
+- [ ] checkbox
+- [ ] formula
+- [ ] createdTime
+- [ ] rollup
+- [ ] count
+- [ ] lookup
+- [ ] multipleLookupValues
+- [ ] autoNumber
+- [x] barcode -> singleLineText
+- [ ] rating
+- [x] richText -> singleLineText
+- [ ] duration
+- [ ] lastModifiedTime
+- [ ] button
+- [ ] createdBy
+- [ ] lastModifiedBy
 - [ ] externalSyncSource
 - [ ] aiText

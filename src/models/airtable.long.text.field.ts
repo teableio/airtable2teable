@@ -1,8 +1,15 @@
+import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
   AirtableField,
   IAirtableLongTextField,
+  TeableCellValueType,
+  TeableDbFieldType,
+  TeableField,
+  TeableFieldType,
 } from 'types';
+
+import { TeableSingleLineTextField } from './teable.single.line.text.field';
 
 export class AirtableLongTextField extends AirtableField {
   constructor(field: IAirtableLongTextField) {
@@ -15,5 +22,19 @@ export class AirtableLongTextField extends AirtableField {
 
   getCellValue(value: any): string {
     return value;
+  }
+
+  transformDataModel(): TeableField {
+    const json = {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: TeableFieldType.SingleLineText,
+      dbFieldType: TeableDbFieldType.Text,
+      options: {},
+      cellValueType: TeableCellValueType.String,
+      isComputed: false,
+    };
+    return plainToInstance(TeableSingleLineTextField, json);
   }
 }

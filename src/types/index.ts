@@ -6,6 +6,7 @@ export * from './airtable.view';
 export * from './airtable.view.type.enum';
 export * from './fields';
 export * from './teable.cell.value.type';
+export * from './teable.color.enum';
 export * from './teable.db.field.type';
 export * from './teable.field';
 export * from './teable.field.type.enum';

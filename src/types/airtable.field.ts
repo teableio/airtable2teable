@@ -9,7 +9,7 @@ import { TeableField } from './teable.field';
 import { TeableFieldType } from './teable.field.type.enum';
 
 export abstract class AirtableField {
-  protected constructor(private readonly field: IAirtableField) {}
+  protected constructor(protected readonly field: IAirtableField) {}
 
   get id(): string {
     return this.field.id;

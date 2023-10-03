@@ -123,6 +123,7 @@ export class DBMigrate {
             filter: '{}',
             group: '{}',
             options: '{}',
+            // todo: no right order
             order: i + 1,
             version: 1,
             created_time: time,
@@ -150,7 +151,7 @@ export class DBMigrate {
             type: teableDataModel.type,
             cell_value_type: 'string',
             is_multiple_cell_value: false,
-            db_field_type: 'TEXT',
+            db_field_type: teableDataModel.dbFieldType,
             db_field_name: `unnamed_${field.id}`,
             not_null: false,
             unique: false,
@@ -170,6 +171,7 @@ export class DBMigrate {
             last_modified_by: 'admin',
           },
         });
+        teableDataModel.validateOptions();
         const columnSql = `
         ALTER TABLE visual_${tableMeta.id} ADD COLUMN unnamed_${field.id} ${teableDataModel.dbFieldType}
         `;
@@ -182,7 +184,7 @@ export class DBMigrate {
     const fileName = 'db.teable';
     const observable = new Observable((subscriber) => {
       const readStream = createReadStream(`${this.option.to.dirPath}/temp.db`);
-      const gzipStream = createGzip();
+      const gzipStream = createGzip({ level: 9 });
       const writeStream = createWriteStream(
         `${this.option.to.dirPath}/${fileName}`,
       );

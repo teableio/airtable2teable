@@ -13,7 +13,7 @@ export class AirtableCollaboratorField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getCellValue(value: any): string {
+  getTeableCellValue(value: any): string {
     return value?.name;
   }
 }

@@ -20,8 +20,13 @@ export class AirtableBarcodeField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getCellValue(value: any): string {
-    return value?.text;
+  getTeableCellValue(value: unknown): string {
+    return (
+      value as {
+        type?: string;
+        text: string;
+      }
+    ).text;
   }
 
   transformDataModel(): TeableField {

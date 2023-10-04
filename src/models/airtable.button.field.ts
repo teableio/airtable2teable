@@ -13,7 +13,7 @@ export class AirtableButtonField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getCellValue(value: any): string {
+  getTeableCellValue(value: any): string {
     return value?.label;
   }
 }

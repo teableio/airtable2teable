@@ -20,7 +20,7 @@ export class AirtableSingleSelectField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getCellValue(value: any): string {
+  getTeableCellValue(value: any): string {
     return value;
   }
 

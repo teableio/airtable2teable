@@ -13,7 +13,7 @@ export class AirtableMultipleCollaboratorsField extends AirtableField {
     return AirtableCellTypeEnum.ARRAY;
   }
 
-  getCellValue(value: any): string[] {
+  getTeableCellValue(value: any): string[] {
     return value.map((v) => v.name);
   }
 }

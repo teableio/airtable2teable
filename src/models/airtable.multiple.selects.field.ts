@@ -20,7 +20,7 @@ export class AirtableMultipleSelectsField extends AirtableField {
     return AirtableCellTypeEnum.ARRAY;
   }
 
-  getCellValue(value: any): string[] {
+  getTeableCellValue(value: any): string[] {
     return value;
   }
 

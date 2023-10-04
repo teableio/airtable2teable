@@ -20,7 +20,7 @@ export class AirtableNumberField extends AirtableField {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getCellValue(value: any): number {
+  getTeableCellValue(value: any): number {
     return value;
   }
 

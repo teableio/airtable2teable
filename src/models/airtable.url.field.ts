@@ -20,8 +20,8 @@ export class AirtableUrlField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getCellValue(value: any): string {
-    return value;
+  getTeableCellValue(value: unknown): string {
+    return value as string;
   }
 
   transformDataModel(): TeableField {

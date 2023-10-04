@@ -36,10 +36,10 @@ const result = await dbMigrate.execute();
 
 airtable data model -> teable data model
 
-- [x] singleLineText -> singleLineText
-- [x] email -> singleLineText
-- [x] url -> singleLineText
-- [x] multilineText -> singleLineText
+- [x] singleLineText -> singleLineText √
+- [x] email -> singleLineText √
+- [x] url -> singleLineText √
+- [x] multilineText -> singleLineText √
 - [x] number -> number
 - [x] percent -> number
 - [x] currency -> number
@@ -50,7 +50,7 @@ airtable data model -> teable data model
 - [ ] multipleRecordLinks
 - [x] date -> datetime
 - [x] dateTime -> datetime
-- [x] phoneNumber -> singleLineText
+- [x] phoneNumber -> singleLineText √
 - [ ] multipleAttachments
 - [x] checkbox -> checkbox
 - [ ] formula
@@ -60,9 +60,9 @@ airtable data model -> teable data model
 - [ ] lookup
 - [ ] multipleLookupValues
 - [x] autoNumber -> number
-- [x] barcode -> singleLineText
+- [x] barcode -> singleLineText √
 - [x] rating -> rating
-- [x] richText -> singleLineText
+- [x] richText -> singleLineText √
 - [ ] duration
 - [x] lastModifiedTime -> datetime
 - [ ] button

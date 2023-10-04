@@ -40,9 +40,9 @@ airtable data model -> teable data model
 - [x] email -> singleLineText √
 - [x] url -> singleLineText √
 - [x] multilineText -> singleLineText √
-- [x] number -> number
-- [x] percent -> number
-- [x] currency -> number
+- [x] number -> number √
+- [x] percent -> number √
+- [x] currency -> number √
 - [x] singleSelect -> singleSelect
 - [x] multipleSelects -> multipleSelects
 - [ ] singleCollaborator
@@ -59,7 +59,7 @@ airtable data model -> teable data model
 - [ ] count
 - [ ] lookup
 - [ ] multipleLookupValues
-- [x] autoNumber -> number
+- [x] autoNumber -> number √
 - [x] barcode -> singleLineText √
 - [x] rating -> rating
 - [x] richText -> singleLineText √

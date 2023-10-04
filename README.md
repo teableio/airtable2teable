@@ -43,8 +43,8 @@ airtable data model -> teable data model
 - [x] number -> number
 - [x] percent -> number
 - [x] currency -> number
-- [ ] singleSelect
-- [ ] multipleSelects
+- [x] singleSelect -> singleSelect
+- [x] multipleSelects -> multipleSelects
 - [ ] singleCollaborator
 - [ ] multipleCollaborators
 - [ ] multipleRecordLinks

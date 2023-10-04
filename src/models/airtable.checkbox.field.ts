@@ -20,8 +20,8 @@ export class AirtableCheckboxField extends AirtableField {
     return AirtableCellTypeEnum.TRUE;
   }
 
-  getTeableCellValue(value: any): true {
-    return value;
+  getTeableCellValue(value: unknown): boolean {
+    return value as boolean | null;
   }
 
   transformDataModel(): TeableField {

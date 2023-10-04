@@ -52,7 +52,7 @@ airtable data model -> teable data model
 - [x] dateTime -> datetime
 - [x] phoneNumber -> singleLineText √
 - [ ] multipleAttachments
-- [x] checkbox -> checkbox
+- [x] checkbox -> checkbox √
 - [ ] formula
 - [x] createdTime -> datetime
 - [ ] rollup
@@ -61,7 +61,7 @@ airtable data model -> teable data model
 - [ ] multipleLookupValues
 - [x] autoNumber -> number √
 - [x] barcode -> singleLineText √
-- [x] rating -> rating
+- [x] rating -> rating √
 - [x] richText -> singleLineText √
 - [ ] duration
 - [x] lastModifiedTime -> datetime

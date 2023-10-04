@@ -21,8 +21,8 @@ export class AirtableRatingField extends AirtableField {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableCellValue(value: any): number {
-    return value;
+  getTeableCellValue(value: unknown): number {
+    return value as number;
   }
 
   transformDataModel(): TeableField {

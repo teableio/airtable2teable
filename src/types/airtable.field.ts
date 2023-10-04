@@ -27,7 +27,9 @@ export abstract class AirtableField {
     return this.field.description;
   }
 
-  abstract getTeableCellValue(value: unknown): string | Date | boolean | number;
+  abstract getTeableCellValue(
+    value: unknown,
+  ): string | Date | boolean | number | null;
 
   transformDataModel(): TeableField {
     const json = {

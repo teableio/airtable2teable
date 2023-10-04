@@ -1,8 +1,15 @@
+import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
   AirtableField,
   IAirtableCheckboxField,
+  TeableCellValueType,
+  TeableDbFieldType,
+  TeableField,
+  TeableFieldType,
 } from 'types';
+
+import { TeableCheckboxField } from './teable.checkbox.field';
 
 export class AirtableCheckboxField extends AirtableField {
   constructor(field: IAirtableCheckboxField) {
@@ -15,5 +22,19 @@ export class AirtableCheckboxField extends AirtableField {
 
   getCellValue(value: any): true {
     return value;
+  }
+
+  transformDataModel(): TeableField {
+    const json = {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: TeableFieldType.Checkbox,
+      dbFieldType: TeableDbFieldType.Integer,
+      options: {},
+      cellValueType: TeableCellValueType.Boolean,
+      isComputed: false,
+    };
+    return plainToInstance(TeableCheckboxField, json);
   }
 }

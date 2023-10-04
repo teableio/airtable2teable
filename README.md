@@ -52,16 +52,16 @@ airtable data model -> teable data model
 - [x] dateTime -> datetime
 - [x] phoneNumber -> singleLineText
 - [ ] multipleAttachments
-- [ ] checkbox
+- [x] checkbox -> checkbox
 - [ ] formula
 - [x] createdTime -> datetime
 - [ ] rollup
 - [ ] count
 - [ ] lookup
 - [ ] multipleLookupValues
-- [ ] autoNumber
+- [x] autoNumber -> number
 - [x] barcode -> singleLineText
-- [ ] rating
+- [x] rating -> rating
 - [x] richText -> singleLineText
 - [ ] duration
 - [x] lastModifiedTime -> datetime

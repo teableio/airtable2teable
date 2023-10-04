@@ -1,4 +1,7 @@
 import { plainToInstance } from 'class-transformer';
+import * as dayjs from 'dayjs';
+import * as timezone from 'dayjs/plugin/timezone';
+import * as utc from 'dayjs/plugin/utc';
 import {
   AirtableCellTypeEnum,
   AirtableField,
@@ -15,6 +18,9 @@ import {
   TimeFormatting,
 } from './teable.date.field';
 
+dayjs.extend(timezone);
+dayjs.extend(utc);
+
 export class AirtableLastModifiedTimeField extends AirtableField {
   constructor(field: IAirtableLastModifiedTimeField) {
     super(field);
@@ -24,8 +30,16 @@ export class AirtableLastModifiedTimeField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableCellValue(value: any): string {
-    return value;
+  getTeableCellValue(value: unknown): string {
+    const formatValue = dayjs
+      .utc(value as string)
+      .tz(
+        this.field.options.timeZone && this.field.options.timeZone !== 'client'
+          ? this.field.options.timeZone
+          : 'Etc/GMT',
+      );
+    if (!formatValue.isValid()) return null;
+    return formatValue.toISOString();
   }
 
   transformDataModel(): TeableField {
@@ -45,7 +59,7 @@ export class AirtableLastModifiedTimeField extends AirtableField {
             : TimeFormatting.None,
           timeZone:
             this.field.options.timeZone &&
-            this.field.options.timeZone === 'client'
+            this.field.options.timeZone !== 'client'
               ? this.field.options.timeZone
               : 'Etc/GMT',
         },

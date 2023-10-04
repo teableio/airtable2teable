@@ -48,13 +48,13 @@ airtable data model -> teable data model
 - [ ] singleCollaborator
 - [ ] multipleCollaborators
 - [ ] multipleRecordLinks
-- [x] date -> datetime
-- [x] dateTime -> datetime
+- [x] date -> datetime √
+- [x] dateTime -> datetime √
 - [x] phoneNumber -> singleLineText √
 - [ ] multipleAttachments
 - [x] checkbox -> checkbox √
 - [ ] formula
-- [x] createdTime -> datetime
+- [x] createdTime -> datetime √
 - [ ] rollup
 - [ ] count
 - [ ] lookup
@@ -64,7 +64,7 @@ airtable data model -> teable data model
 - [x] rating -> rating √
 - [x] richText -> singleLineText √
 - [ ] duration
-- [x] lastModifiedTime -> datetime
+- [x] lastModifiedTime -> datetime √
 - [ ] button
 - [ ] createdBy
 - [ ] lastModifiedBy

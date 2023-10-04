@@ -1,4 +1,5 @@
 import { plainToInstance } from 'class-transformer';
+import * as _ from 'lodash';
 import {
   AirtableCellTypeEnum,
   AirtableField,
@@ -20,8 +21,14 @@ export class AirtableSingleSelectField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableCellValue(value: any): string {
-    return value;
+  getTeableCellValue(value: unknown): string {
+    const values: string[] = (value as any[]).map((v) => {
+      if (_.isString(v)) {
+        return v;
+      }
+      return v.name;
+    });
+    return String(values);
   }
 
   transformDataModel(): TeableField {

@@ -20,8 +20,8 @@ export class AirtableMultipleSelectsField extends AirtableField {
     return AirtableCellTypeEnum.ARRAY;
   }
 
-  getTeableCellValue(value: any): string[] {
-    return value;
+  getTeableCellValue(value: unknown): string {
+    return String(value);
   }
 
   transformDataModel(): TeableField {

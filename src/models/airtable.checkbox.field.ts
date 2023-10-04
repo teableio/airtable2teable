@@ -20,7 +20,7 @@ export class AirtableCheckboxField extends AirtableField {
     return AirtableCellTypeEnum.TRUE;
   }
 
-  getTeableCellValue(value: unknown): boolean {
+  getTeableDBCellValue(value: unknown): boolean {
     return value as boolean | null;
   }
 

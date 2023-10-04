@@ -13,7 +13,7 @@ export class AirtableLookupField extends AirtableField {
     return AirtableCellTypeEnum.ARRAY;
   }
 
-  getTeableCellValue(value: any): any[] {
+  getTeableDBCellValue(value: any): any[] {
     return value;
   }
 }

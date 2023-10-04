@@ -21,7 +21,7 @@ export class AirtableSingleSelectField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableCellValue(value: unknown): string {
+  getTeableDBCellValue(value: unknown): string {
     const values: string[] = (value as any[]).map((v) => {
       if (_.isString(v)) {
         return v;

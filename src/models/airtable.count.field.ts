@@ -13,7 +13,7 @@ export class AirtableCountField extends AirtableField {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableCellValue(value: any): string {
+  getTeableDBCellValue(value: any): string {
     return value;
   }
 }

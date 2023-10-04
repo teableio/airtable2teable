@@ -20,7 +20,7 @@ export class AirtablePhoneField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableCellValue(value: unknown): string {
+  getTeableDBCellValue(value: unknown): string {
     return value as string;
   }
 

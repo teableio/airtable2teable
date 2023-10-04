@@ -20,7 +20,7 @@ export class AirtableCurrencyField extends AirtableField {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableCellValue(value: unknown): number {
+  getTeableDBCellValue(value: unknown): number {
     return value as number;
   }
 

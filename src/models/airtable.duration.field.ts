@@ -13,7 +13,7 @@ export class AirtableDurationField extends AirtableField {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableCellValue(value: any): number {
+  getTeableDBCellValue(value: any): number {
     return value;
   }
 }

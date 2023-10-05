@@ -30,10 +30,10 @@ export class AirtableDateField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableDBCellValue(value: unknown): Date {
+  getTeableDBCellValue(value: unknown): string {
     const formatValue = dayjs.utc(value as string).tz('Etc/GMT');
     if (!formatValue.isValid()) return null;
-    return formatValue.toDate();
+    return `'${formatValue.toISOString()}'`;
   }
 
   transformDataModel(): TeableField {

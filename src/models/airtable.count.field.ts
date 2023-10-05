@@ -14,6 +14,6 @@ export class AirtableCountField extends AirtableField {
   }
 
   getTeableDBCellValue(value: any): string {
-    return value;
+    return `'${value}'`;
   }
 }

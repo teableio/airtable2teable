@@ -21,12 +21,14 @@ export class AirtableBarcodeField extends AirtableField {
   }
 
   getTeableDBCellValue(value: unknown): string {
-    return (
-      value as {
-        type?: string;
-        text: string;
-      }
-    ).text;
+    return `'${
+      (
+        value as {
+          type?: string;
+          text: string;
+        }
+      ).text
+    }'`;
   }
 
   transformDataModel(): TeableField {

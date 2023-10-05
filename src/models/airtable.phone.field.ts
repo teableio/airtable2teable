@@ -21,7 +21,7 @@ export class AirtablePhoneField extends AirtableField {
   }
 
   getTeableDBCellValue(value: unknown): string {
-    return value as string;
+    return `'${value as string}'`;
   }
 
   transformDataModel(): TeableField {

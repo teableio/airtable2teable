@@ -7,7 +7,8 @@ import * as path from 'path';
 import { firstValueFrom, Observable } from 'rxjs';
 
 import { getAirtableField } from './models';
-import { IAirtableTable } from './types';
+import { AirtableField, IAirtableTable } from './types';
+import { IAirtableRecord } from './types/fields/airtable.record';
 
 export class DBMigrate {
   private readonly dbFilePath: string;
@@ -41,8 +42,9 @@ export class DBMigrate {
       await this.init();
     }
     // 1. add table meta.
-    await this.generateTableMeta();
+    const teableMeta = await this.generateTableMeta();
     // 2. add records.
+    await this.migrateRecords(teableMeta);
     // end.
     await this.generateTeableFile();
   }
@@ -62,7 +64,10 @@ export class DBMigrate {
     await firstValueFrom(observable);
   }
 
-  async generateTableMeta() {
+  async generateTableMeta(): Promise<
+    Record<string, Record<string, AirtableField>>
+  > {
+    const result: Record<string, Record<string, AirtableField>> = {};
     // 1. Get airtable table meta.
     const response = await axios.get<{ tables: IAirtableTable[] }>(
       `https://api.airtable.com/v0/meta/bases/${this.option.from.baseId}/tables`,
@@ -138,11 +143,13 @@ export class DBMigrate {
         `;
         await this.client.$executeRawUnsafe(viewSql);
       }
+      result[table.id] = {};
       // 2.3 add fields
       for (const field of table.fields) {
         const airtableDataModel = getAirtableField(field);
         const teableDataModel = airtableDataModel.transformDataModel();
         teableDataModel.validateOptions();
+        result[table.id][airtableDataModel.id] = airtableDataModel;
         await this.client.field.create({
           data: {
             id: teableDataModel.id,
@@ -178,6 +185,7 @@ export class DBMigrate {
         await this.client.$executeRawUnsafe(columnSql);
       }
     }
+    return result;
   }
 
   async generateTeableFile(): Promise<string> {
@@ -196,5 +204,82 @@ export class DBMigrate {
     await firstValueFrom(observable);
     rmSync(`${this.option.to.dirPath}/temp.db`);
     return fileName;
+  }
+
+  async migrateRecords(
+    tableMeta: Record<string, Record<string, AirtableField>>,
+  ) {
+    for (const tableId in tableMeta) {
+      // 0. Get table field models.
+      const fieldsModelMap = tableMeta[tableId];
+      // 1. Get airtable record.
+      const response = await axios.get<{
+        offset?: string;
+        records: IAirtableRecord[];
+      }>(
+        `https://api.airtable.com/v0/${this.option.from.baseId}/${tableId}?returnFieldsByFieldId=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.option.from.airtableToken}`,
+          },
+        },
+      );
+      if (response.status !== 200) {
+        throw new Error(
+          `Response Status: ${response.status}, Response Message: ${response.statusText}`,
+        );
+      }
+      const records = response.data.records;
+      let fieldsSql = '';
+      const fieldIds = [];
+      for (const fieldId in fieldsModelMap) {
+        fieldsSql += `, unnamed_${fieldId}`;
+        fieldIds.push(fieldId);
+      }
+      const recordSqlHeader = `
+        INSERT INTO visual_${tableId} (
+          __id, 
+          __auto_number, 
+          __row_default, 
+          __created_time, 
+          __last_modified_time, 
+          __created_by, 
+          __last_modified_by,
+          __version
+          ${fieldsSql}
+        )
+        VALUES
+      `;
+      let autoNumber = 1;
+      const rows: string[] = [];
+      const time = new Date().toISOString();
+      for (const record of records) {
+        const fieldValues = fieldIds
+          .map((fieldId) => {
+            const cellValue = record.fields[fieldId];
+            return fieldsModelMap[fieldId].getTeableDBCellValue(cellValue);
+          })
+          .join(', ');
+        const row = `
+          (
+            '${record.id}', 
+            ${autoNumber}, 
+            ${autoNumber - 1}, 
+            '${time}',
+            '${time}',
+            'admin', 
+            'admin', 
+            1, 
+            ${fieldValues}
+          )
+        `;
+        rows.push(row);
+        autoNumber++;
+      }
+      const rowsSql = `
+        ${recordSqlHeader} ${rows.join(', ')};
+        `;
+      await this.client.$executeRawUnsafe(rowsSql);
+    }
   }
 }

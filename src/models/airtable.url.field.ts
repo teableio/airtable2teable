@@ -21,7 +21,7 @@ export class AirtableUrlField extends AirtableField {
   }
 
   getTeableDBCellValue(value: unknown): string {
-    return value as string;
+    return `'${value as string}'`;
   }
 
   transformDataModel(): TeableField {

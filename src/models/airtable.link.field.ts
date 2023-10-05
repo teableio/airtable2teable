@@ -9,7 +9,7 @@ export class AirtableLinkField extends AirtableField {
     return AirtableCellTypeEnum.ARRAY;
   }
 
-  getTeableDBCellValue(value: any): string[] {
-    return value;
+  getTeableDBCellValue(value: unknown): string {
+    return `'${String(value)}'`;
   }
 }

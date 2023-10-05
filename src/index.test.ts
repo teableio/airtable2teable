@@ -45,6 +45,22 @@ describe('DBMigrate', () => {
     });
     await dbMigrate.init();
     await dbMigrate.generateTableMeta();
-    // rmSync(`${__dirname}\\temp.db`);
+    rmSync(`${__dirname}\\temp.db`);
+  }, 300000);
+
+  test('migrateRecords table meta', async () => {
+    const dbMigrate = new DBMigrate({
+      from: {
+        baseId: 'appfj6B27vlQf3TWm',
+        airtableToken:
+          'patYDGPJsV1aGD74T.ba2237ab2f4affd3c6b0f194b317354bf44764ca1b770d992a7365f2d9003daa',
+      },
+      to: {
+        dirPath: __dirname,
+      },
+    });
+    await dbMigrate.init();
+    const tableMeta = await dbMigrate.generateTableMeta();
+    await dbMigrate.migrateRecords(tableMeta);
   }, 300000);
 });

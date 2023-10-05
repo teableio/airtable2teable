@@ -21,7 +21,7 @@ export class AirtableMultipleSelectsField extends AirtableField {
   }
 
   getTeableDBCellValue(value: unknown): string {
-    return String(value);
+    return `'${String(value)}'`;
   }
 
   transformDataModel(): TeableField {

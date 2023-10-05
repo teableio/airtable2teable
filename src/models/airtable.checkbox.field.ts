@@ -21,7 +21,7 @@ export class AirtableCheckboxField extends AirtableField {
   }
 
   getTeableDBCellValue(value: unknown): boolean {
-    return value as boolean | null;
+    return !!(value as boolean);
   }
 
   transformDataModel(): TeableField {

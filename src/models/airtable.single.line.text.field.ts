@@ -21,7 +21,7 @@ export class AirtableSingleLineTextField extends AirtableField {
   }
 
   getTeableDBCellValue(value: unknown): string {
-    return value as string;
+    return `'${value}'`;
   }
 
   transformDataModel(): TeableField {

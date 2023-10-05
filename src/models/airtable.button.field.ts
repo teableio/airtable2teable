@@ -14,6 +14,6 @@ export class AirtableButtonField extends AirtableField {
   }
 
   getTeableDBCellValue(value: any): string {
-    return value?.label;
+    return `'${value?.label}'`;
   }
 }

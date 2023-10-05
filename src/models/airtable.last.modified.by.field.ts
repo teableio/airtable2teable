@@ -14,6 +14,6 @@ export class AirtableLastModifiedByField extends AirtableField {
   }
 
   getTeableDBCellValue(value: any): string {
-    return value.name;
+    return `'${value.name}'`;
   }
 }

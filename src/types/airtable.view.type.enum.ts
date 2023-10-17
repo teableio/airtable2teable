@@ -5,8 +5,5 @@ export enum AirtableViewTypeEnum {
   GalleryView = 'gallery',
   KanbanView = 'kanban',
   TimelineView = 'timeline',
-  /**
-   * Block is Gantt View.
-   */
   GanttView = 'block',
 }

@@ -2,7 +2,7 @@ import {
   AirtableCellTypeEnum,
   AirtableField,
   IAirtableAiTextField,
-} from 'types';
+} from '../types';
 
 export class AirtableAiTextField extends AirtableField {
   constructor(field: IAirtableAiTextField) {

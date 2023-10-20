@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-import { TeableSdk } from './teable-sdks';
+import { getAirtableField } from './models';
+import { FieldKeyType, TeableSdk } from './teable-sdks';
 import { IAirtableTable } from './types';
 import { ViewMapper } from './util';
 
@@ -30,7 +31,9 @@ export class ApiMigrate {
 
   private async generateTable() {
     const space = await this.sdkTeable.getSpace(this.option.to.spaceId);
-    const base = await space.createBase({});
+    const base = await space.createBase({
+      spaceId: space.id,
+    });
     // 1. Get airtable table meta.
     const response = await axios.get<{ tables: IAirtableTable[] }>(
       `https://api.airtable.com/v0/meta/bases/${this.option.from.baseId}/tables`,
@@ -46,17 +49,29 @@ export class ApiMigrate {
       );
     }
     const tables = response.data.tables;
+    const tablesMap = {};
+    let i = 1;
     for (const table of tables) {
+      let j = 1;
       const teableTable = await base.createTable({
         name: table.name,
         description: table.description,
+        order: i++,
+        views: table.views.map((view) => {
+          return {
+            name: view.name,
+            type: ViewMapper[view.type] as any,
+            order: j++,
+          };
+        }),
+        fieldKeyType: FieldKeyType.Id,
+        fields: table.fields.map((field) => {
+          const airtableDataModel = getAirtableField(field);
+          return airtableDataModel.transformTeableFieldCreateRo();
+        }),
       });
-      for (const view of table.views) {
-        await teableTable.createView({
-          name: view.name,
-          type: ViewMapper[view.type],
-        });
-      }
+      tablesMap[teableTable.id] = teableTable;
     }
+    return tablesMap;
   }
 }

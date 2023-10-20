@@ -56,4 +56,23 @@ export class AirtableDateField extends AirtableField {
     };
     return plainToInstance(TeableDateField, json);
   }
+
+  // transformTeableFieldCreateRo(): IFieldRo {
+  //   return {
+  //     id: this.id,
+  //     type: TeableFieldType.Date,
+  //     name: this.name,
+  //     description: this.description,
+  //     isLookup: false,
+  //     options: {
+  //       // todo: mark
+  //       formatting: {
+  //         date: DateFormattingPreset.ISO,
+  //         time: TimeFormatting.None,
+  //         timeZone: 'Etc/GMT',
+  //       },
+  //       defaultValue: 'now',
+  //     },
+  //   };
+  // }
 }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ISdkConfig } from './index';
-import { ITableFullVo, IViewRo } from './types';
+import { ITableFullVo, IViewRo } from './schemas';
 import { assertResponse } from './util';
 import { View } from './view';
 

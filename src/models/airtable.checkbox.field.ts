@@ -9,6 +9,7 @@ import {
   TeableFieldType,
 } from 'types';
 
+import { IFieldRo } from '../teable-sdks';
 import { TeableCheckboxField } from './teable.checkbox.field';
 
 export class AirtableCheckboxField extends AirtableField {
@@ -36,5 +37,16 @@ export class AirtableCheckboxField extends AirtableField {
       isComputed: false,
     };
     return plainToInstance(TeableCheckboxField, json);
+  }
+
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      id: this.id,
+      type: TeableFieldType.Checkbox,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {},
+    };
   }
 }

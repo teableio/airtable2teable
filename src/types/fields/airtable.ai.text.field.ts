@@ -8,7 +8,7 @@ export interface IAirtableAiTextField extends IAirtableField {
 
 export interface IAirtableAiTextFieldOptions {
   /**
-   * The prompt that is used to generate the results in the AI field, additional object types may be added in the future. Currently, this is an array of strings or objects that identify any fields interpolated into the prompt.
+   * The prompt that is used to generate the results in the AI field, additional object schemas may be added in the future. Currently, this is an array of strings or objects that identify any fields interpolated into the prompt.
    *
    * The prompt will not currently be provided if this field config is within another fields configuration (like a lookup field)
    */

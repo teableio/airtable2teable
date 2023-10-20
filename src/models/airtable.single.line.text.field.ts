@@ -9,6 +9,7 @@ import {
   TeableFieldType,
 } from 'types';
 
+import { IFieldRo } from '../teable-sdks';
 import { TeableSingleLineTextField } from './teable.single.line.text.field';
 
 export class AirtableSingleLineTextField extends AirtableField {
@@ -36,5 +37,16 @@ export class AirtableSingleLineTextField extends AirtableField {
       isComputed: false,
     };
     return plainToInstance(TeableSingleLineTextField, json);
+  }
+
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      id: this.id,
+      type: TeableFieldType.SingleLineText,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {},
+    };
   }
 }

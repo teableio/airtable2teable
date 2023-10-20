@@ -1,10 +1,11 @@
 import axios from 'axios';
 
+import { IGetSpaceVo } from './schemas';
 import { Space } from './space';
-import { IGetSpaceVo } from './types';
 import { assertResponse } from './util';
 
 export * from './base';
+export * from './schemas';
 export * from './space';
 export * from './table';
 

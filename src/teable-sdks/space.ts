@@ -2,8 +2,7 @@ import axios from 'axios';
 
 import { Base } from './base';
 import { ISdkConfig } from './index';
-import { IGetSpaceVo } from './types';
-import { ICreateBaseRo, ICreateBaseVo } from './types/api.base';
+import { ICreateBaseRo, ICreateBaseVo, IGetSpaceVo } from './schemas';
 import { assertResponse } from './util';
 
 export class Space {

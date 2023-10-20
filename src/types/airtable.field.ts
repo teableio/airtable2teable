@@ -1,6 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 
 import { TeableSingleLineTextField } from '../models';
+import { IFieldRo } from '../teable-sdks';
 import { AirtableFieldTypeEnum } from './airtable.field.type.enum';
 import { IAirtableField } from './fields';
 import { TeableCellValueType } from './teable.cell.value.type';
@@ -43,5 +44,16 @@ export abstract class AirtableField {
       isComputed: false,
     };
     return plainToInstance(TeableSingleLineTextField, json);
+  }
+
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      id: this.id,
+      type: TeableFieldType.SingleLineText,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {},
+    };
   }
 }

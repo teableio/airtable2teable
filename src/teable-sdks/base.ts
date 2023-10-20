@@ -1,8 +1,8 @@
-import axios from 'axios/index';
+import axios from 'axios';
 
 import { ISdkConfig } from './index';
+import { ICreateTableRo, IGetBaseVo, ITableFullVo } from './schemas';
 import { Table } from './table';
-import { ICreateTableRo, IGetBaseVo, ITableFullVo } from './types';
 import { assertResponse } from './util';
 
 export class Base {
@@ -32,6 +32,7 @@ export class Base {
   }
 
   async createTable(table: ICreateTableRo) {
+    console.log(table);
     const response = await axios.post<ITableFullVo>(
       `${this.config.host}/api/base/${this.id}/table`,
       {

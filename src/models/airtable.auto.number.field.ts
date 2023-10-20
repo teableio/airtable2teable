@@ -9,6 +9,7 @@ import {
   TeableFieldType,
 } from 'types';
 
+import { IFieldRo } from '../teable-sdks';
 import { NumberFormattingType, TeableNumberField } from './teable.number.field';
 
 export class AirtableAutoNumberField extends AirtableField {
@@ -41,5 +42,18 @@ export class AirtableAutoNumberField extends AirtableField {
       isComputed: false,
     };
     return plainToInstance(TeableNumberField, json);
+  }
+
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      id: this.id,
+      type: TeableFieldType.Number,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {
+        formatting: { type: NumberFormattingType.Decimal, precision: 0 },
+      },
+    };
   }
 }

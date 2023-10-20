@@ -1,5 +1,5 @@
 import { ISdkConfig } from './index';
-import { IViewVo } from './types';
+import { IViewVo } from './schemas';
 
 export class View {
   constructor(

@@ -10,7 +10,8 @@ import {
   TeableFieldType,
 } from 'types';
 
-import { RatingIcon, TeableRatingField } from './teable.rating.field';
+import { IFieldRo, RatingIcon } from '../teable-sdks';
+import { TeableRatingField } from './teable.rating.field';
 
 export class AirtableRatingField extends AirtableField {
   constructor(field: IAirtableRatingField) {
@@ -41,5 +42,20 @@ export class AirtableRatingField extends AirtableField {
       isComputed: false,
     };
     return plainToInstance(TeableRatingField, json);
+  }
+
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      id: this.id,
+      type: TeableFieldType.Rating,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {
+        icon: RatingIcon.Star,
+        color: Colors.YellowBright,
+        max: this.field.options?.max,
+      },
+    };
   }
 }

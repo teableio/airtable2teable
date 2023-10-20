@@ -9,6 +9,7 @@ import {
   TeableFieldType,
 } from 'types';
 
+import { IFieldRo } from '../teable-sdks';
 import { TeableSingleSelectField } from './teable.single.select.field';
 
 export class AirtableSingleSelectField extends AirtableField {
@@ -39,5 +40,18 @@ export class AirtableSingleSelectField extends AirtableField {
       isComputed: false,
     };
     return plainToInstance(TeableSingleSelectField, json);
+  }
+
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      id: this.id,
+      type: TeableFieldType.SingleSelect,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {
+        choices: this.field.options?.choices || [],
+      },
+    };
   }
 }

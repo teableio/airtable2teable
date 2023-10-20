@@ -9,6 +9,7 @@ import {
   TeableFieldType,
 } from 'types';
 
+import { IFieldRo } from '../teable-sdks';
 import { TeableMultipleSelectField } from './teable.multiple.select.field';
 
 export class AirtableMultipleSelectsField extends AirtableField {
@@ -39,5 +40,18 @@ export class AirtableMultipleSelectsField extends AirtableField {
       isComputed: false,
     };
     return plainToInstance(TeableMultipleSelectField, json);
+  }
+
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      id: this.id,
+      type: TeableFieldType.MultipleSelect,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {
+        choices: this.field.options?.choices || [],
+      },
+    };
   }
 }

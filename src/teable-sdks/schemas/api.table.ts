@@ -1,6 +1,13 @@
 import { IdPrefix } from 'types';
 import { z } from 'zod';
 
+import {
+  fieldKeyTypeRoSchema,
+  fieldRoSchema,
+  fieldVoSchema,
+} from './api.field';
+import { viewRoSchema, viewVoSchema } from './api.view';
+
 export const tableFullVoSchema = z.object({
   id: z.string().startsWith(IdPrefix.Table),
   name: z.string(),
@@ -10,12 +17,15 @@ export const tableFullVoSchema = z.object({
   order: z.number(),
   lastModifiedTime: z.string(),
   defaultViewId: z.string().startsWith(IdPrefix.View).optional(),
+  fields: fieldVoSchema.array(),
+  views: viewVoSchema.array(),
 });
 
 export type ITableFullVo = z.infer<typeof tableFullVoSchema>;
 
 export const tableRoSchema = tableFullVoSchema
   .omit({
+    // todo: mark
     id: true,
     dbTableName: true,
     lastModifiedTime: true,
@@ -27,8 +37,16 @@ export const tableRoSchema = tableFullVoSchema
   })
   .merge(
     z.object({
+      views: viewRoSchema.array().optional(),
+      fieldKeyType: fieldKeyTypeRoSchema,
+      fields: fieldRoSchema.array().optional(),
       order: z.number().optional(),
     }),
   );
 
 export type ICreateTableRo = z.infer<typeof tableRoSchema>;
+
+export const tableVoSchema = tableFullVoSchema.partial({
+  fields: true,
+  views: true,
+});

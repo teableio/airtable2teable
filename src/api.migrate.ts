@@ -69,6 +69,7 @@ export class ApiMigrate {
           const airtableDataModel = getAirtableField(field);
           return airtableDataModel.transformTeableFieldCreateRo();
         }),
+        records: [],
       });
       tablesMap[teableTable.id] = teableTable;
     }

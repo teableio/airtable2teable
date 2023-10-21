@@ -6,6 +6,7 @@ import {
   fieldRoSchema,
   fieldVoSchema,
 } from './api.field';
+import { createRecordsRoSchema } from './api.record';
 import { viewRoSchema, viewVoSchema } from './api.view';
 
 export const tableFullVoSchema = z.object({
@@ -40,6 +41,7 @@ export const tableRoSchema = tableFullVoSchema
       views: viewRoSchema.array().optional(),
       fieldKeyType: fieldKeyTypeRoSchema,
       fields: fieldRoSchema.array().optional(),
+      records: createRecordsRoSchema.shape.records.optional(),
       order: z.number().optional(),
     }),
   );
@@ -49,4 +51,5 @@ export type ICreateTableRo = z.infer<typeof tableRoSchema>;
 export const tableVoSchema = tableFullVoSchema.partial({
   fields: true,
   views: true,
+  records: true,
 });

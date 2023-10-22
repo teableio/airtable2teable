@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { TeableSingleLineTextField } from '../models';
 import { IFieldRo } from '../teable-sdks';
 import { AirtableFieldTypeEnum } from './airtable.field.type.enum';
-import { IAirtableField } from './fields';
+import { AirtableFieldOptions, IAirtableField } from './fields';
 import { TeableCellValueType } from './teable.cell.value.type';
 import { TeableDbFieldType } from './teable.db.field.type';
 import { TeableField } from './teable.field';
@@ -26,6 +26,10 @@ export abstract class AirtableField {
 
   get description(): string {
     return this.field.description;
+  }
+
+  get options(): AirtableFieldOptions {
+    return this.field.options;
   }
 
   abstract getTeableDBCellValue(

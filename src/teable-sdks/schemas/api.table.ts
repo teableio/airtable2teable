@@ -6,7 +6,7 @@ import {
   fieldRoSchema,
   fieldVoSchema,
 } from './api.field';
-import { createRecordsRoSchema } from './api.record';
+import { createRecordsRoSchema, recordSchema } from './api.record';
 import { viewRoSchema, viewVoSchema } from './api.view';
 
 export const tableFullVoSchema = z.object({
@@ -20,6 +20,7 @@ export const tableFullVoSchema = z.object({
   defaultViewId: z.string().startsWith(IdPrefix.View).optional(),
   fields: fieldVoSchema.array(),
   views: viewVoSchema.array(),
+  records: recordSchema.array(),
 });
 
 export type ITableFullVo = z.infer<typeof tableFullVoSchema>;

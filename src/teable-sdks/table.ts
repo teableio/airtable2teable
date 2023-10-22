@@ -11,7 +11,7 @@ export class Table {
     private info: ITableFullVo,
   ) {}
 
-  get id() {
+  get id(): string {
     return this.info.id;
   }
 

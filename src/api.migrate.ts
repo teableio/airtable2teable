@@ -1,8 +1,13 @@
 import axios from 'axios';
 
-import { getAirtableField } from './models';
-import { FieldKeyType, Table, TeableSdk } from './teable-sdks';
-import { AirtableField, IAirtableRecord, IAirtableTable } from './types';
+import { AirtableLinkField, getAirtableField } from './models';
+import { FieldKeyType, IFieldRo, Table, TeableSdk } from './teable-sdks';
+import {
+  AirtableField,
+  AirtableFieldTypeEnum,
+  IAirtableRecord,
+  IAirtableTable,
+} from './types';
 import { ViewMapper } from './util';
 
 export class ApiMigrate {
@@ -39,17 +44,43 @@ export class ApiMigrate {
     const tables = await this.getAirtableTables();
     const recordsMap = await this.getAirtableRecords(tables);
     const tablesMap: Record<string, Table> = {};
+    const migratedTableIds = new Set<string>();
+    const tablesRecordIdsMap: Record<string, Record<string, string>> = {};
     let i = 1;
     for (const table of tables) {
       const records = recordsMap[table.id];
       const fieldsMap: Record<string, AirtableField> = {};
-      const fields = table.fields.map((field) => {
-        const airtableDataModel = getAirtableField(field);
+      const fields: IFieldRo[] = [];
+      table.fields.forEach((field) => {
+        let airtableDataModel: AirtableField;
+        if (field.type === AirtableFieldTypeEnum.MultipleRecordLinks) {
+          if (
+            field.options?.linkedTableId &&
+            migratedTableIds.has(field.options?.linkedTableId)
+          ) {
+            airtableDataModel = new AirtableLinkField({
+              id: field.id,
+              name: field.name,
+              description: field.description,
+              type: AirtableFieldTypeEnum.MultipleRecordLinks,
+              options: {
+                isReversed: field.options.isReversed as boolean,
+                prefersSingleRecordLink: field.options
+                  .prefersSingleRecordLink as boolean,
+                linkedTableId: tablesMap[field.options.linkedTableId].id,
+              },
+            });
+          } else {
+            return;
+          }
+        } else {
+          airtableDataModel = getAirtableField(field);
+        }
         fieldsMap[field.name] = airtableDataModel;
-        return airtableDataModel.transformTeableFieldCreateRo();
+        fields.push(airtableDataModel.transformTeableFieldCreateRo());
       });
       let j = 1;
-      tablesMap[table.id] = await base.createTable({
+      const newTable = await base.createTable({
         name: table.name,
         description: table.description,
         order: i++,
@@ -67,13 +98,34 @@ export class ApiMigrate {
           for (const fieldName in record.fields) {
             const cellValue = record.fields[fieldName];
             const fieldModel = fieldsMap[fieldName];
-            newRecord[fieldName] = fieldModel.getApiCellValue(cellValue);
+            if (fieldModel) {
+              if (
+                fieldModel.type === AirtableFieldTypeEnum.MultipleRecordLinks
+              ) {
+                if (fieldModel.options?.linkedTableId) {
+                  const recordIdsMap =
+                    tablesRecordIdsMap[fieldModel.options.linkedTableId];
+                  newRecord[fieldName] = (cellValue as string[]).map(
+                    (recordId) => recordIdsMap[recordId],
+                  );
+                }
+              } else {
+                newRecord[fieldName] = fieldModel.getApiCellValue(cellValue);
+              }
+            }
           }
           return {
             fields: newRecord,
           };
         }),
       });
+      const recordIdsMap: Record<string, string> = {};
+      for (let k = 0; k < records.length; k++) {
+        recordIdsMap[records[k].id] = newTable.vo.records[k].id;
+      }
+      tablesRecordIdsMap[newTable.id] = recordIdsMap;
+      tablesMap[table.id] = newTable;
+      migratedTableIds.add(table.id);
     }
     return { tables, tablesMap };
   }

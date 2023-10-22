@@ -480,12 +480,6 @@ const refineOptions = (
   }
 };
 
-export const fieldRoSchema = baseFieldRoSchema
-  // .merge(
-  // z.object({
-  //   id: z.string().startsWith(IdPrefix.Field).optional(),
-  // }),
-  // )
-  .superRefine(refineOptions);
+export const fieldRoSchema = baseFieldRoSchema.superRefine(refineOptions);
 
 export type IFieldRo = z.infer<typeof fieldRoSchema>;

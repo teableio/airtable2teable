@@ -16,4 +16,8 @@ export class AirtableSyncSourceField extends AirtableField {
   getTeableDBCellValue(value: any): string {
     return `'${value}'`;
   }
+
+  getApiCellValue(value: unknown): string {
+    return value as string;
+  }
 }

@@ -16,4 +16,8 @@ export class AirtableFormulaField extends AirtableField {
   getTeableDBCellValue(value: any): string {
     return `'${value}'`;
   }
+
+  getApiCellValue(value: any): string {
+    return value;
+  }
 }

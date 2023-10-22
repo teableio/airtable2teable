@@ -25,6 +25,10 @@ export class AirtableMultipleSelectsField extends AirtableField {
     return `'${String(value)}'`;
   }
 
+  getApiCellValue(value: unknown): string[] {
+    return value as string[];
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -44,7 +48,6 @@ export class AirtableMultipleSelectsField extends AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.MultipleSelect,
       name: this.name,
       description: this.description,

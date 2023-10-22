@@ -25,6 +25,10 @@ export class AirtableCheckboxField extends AirtableField {
     return !!(value as boolean);
   }
 
+  getApiCellValue(value: any): boolean {
+    return !!(value as boolean);
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -41,7 +45,6 @@ export class AirtableCheckboxField extends AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.Checkbox,
       name: this.name,
       description: this.description,

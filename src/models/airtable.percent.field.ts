@@ -25,6 +25,10 @@ export class AirtablePercentField extends AirtableField {
     return value as number;
   }
 
+  getApiCellValue(value: unknown): number {
+    return value as number;
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -51,7 +55,6 @@ export class AirtablePercentField extends AirtableField {
         this.field.options.precision > 5 ? 5 : this.field.options.precision;
     }
     return {
-      id: this.id,
       type: TeableFieldType.Number,
       name: this.name,
       description: this.description,

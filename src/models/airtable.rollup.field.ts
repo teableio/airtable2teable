@@ -16,4 +16,8 @@ export class AirtableRollupField extends AirtableField {
   getTeableDBCellValue(value: any): string {
     return `'${value}'`;
   }
+
+  getApiCellValue(value: any): string {
+    return value;
+  }
 }

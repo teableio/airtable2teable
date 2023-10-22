@@ -20,9 +20,12 @@ export class AirtableCreatedByField extends AirtableField {
     return `'${value?.name}'`;
   }
 
+  getApiCellValue(value: any): string {
+    return value?.name;
+  }
+
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.SingleSelect,
       name: this.name,
       description: this.description,

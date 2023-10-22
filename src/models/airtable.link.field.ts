@@ -12,4 +12,8 @@ export class AirtableLinkField extends AirtableField {
   getTeableDBCellValue(value: unknown): string {
     return `'${String(value)}'`;
   }
+
+  getApiCellValue(value: unknown): string {
+    return String(value);
+  }
 }

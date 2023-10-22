@@ -16,4 +16,8 @@ export class AirtableAiTextField extends AirtableField {
   getTeableDBCellValue(value: any): string {
     return `'${value?.value}'`;
   }
+
+  getApiCellValue(value: any): string {
+    return value?.value;
+  }
 }

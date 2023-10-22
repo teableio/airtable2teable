@@ -16,4 +16,8 @@ export class AirtableAttachmentField extends AirtableField {
   getTeableDBCellValue(value: any): string {
     return `'${value?.filename}'`;
   }
+
+  getApiCellValue(value: any): string {
+    return value?.map((file) => file.filename).join(',');
+  }
 }

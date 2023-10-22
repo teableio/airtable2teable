@@ -12,6 +12,7 @@ import {
   TeableFieldType,
 } from 'types';
 
+import { IFieldRo } from '../teable-sdks';
 import {
   DateFormattingPreset,
   TeableDateField,
@@ -42,6 +43,18 @@ export class AirtableDateTimeField extends AirtableField {
     return `'${formatValue.toISOString()}'`;
   }
 
+  getApiCellValue(value: unknown): string {
+    const formatValue = dayjs
+      .utc(value as string)
+      .tz(
+        this.field.options.timeZone === 'client'
+          ? 'Etc/GMT'
+          : this.field.options.timeZone,
+      );
+    if (!formatValue.isValid()) return null;
+    return formatValue.toISOString();
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -69,27 +82,26 @@ export class AirtableDateTimeField extends AirtableField {
     return plainToInstance(TeableDateField, json);
   }
 
-  // transformTeableFieldCreateRo(): IFieldRo {
-  //   return {
-  //     id: this.id,
-  //     type: TeableFieldType.Date,
-  //     name: this.name,
-  //     description: this.description,
-  //     isLookup: false,
-  //     options: {
-  //       formatting: {
-  //         date: DateFormattingPreset.ISO,
-  //         time:
-  //           this.field.options?.timeFormat?.name === '12hour'
-  //             ? TimeFormatting.Hour12
-  //             : TimeFormatting.Hour24,
-  //         timeZone:
-  //           this.field.options?.timeZone === 'client'
-  //             ? 'Etc/GMT'
-  //             : this.field.options.timeZone,
-  //       },
-  //       defaultValue: 'now',
-  //     },
-  //   };
-  // }
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      type: TeableFieldType.Date,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {
+        formatting: {
+          date: DateFormattingPreset.ISO,
+          time:
+            this.field.options?.timeFormat?.name === '12hour'
+              ? TimeFormatting.Hour12
+              : TimeFormatting.Hour24,
+          timeZone:
+            this.field.options?.timeZone === 'client'
+              ? 'Etc/GMT'
+              : this.field.options.timeZone,
+        },
+        defaultValue: 'now',
+      },
+    };
+  }
 }

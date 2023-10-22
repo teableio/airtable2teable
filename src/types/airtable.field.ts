@@ -32,6 +32,10 @@ export abstract class AirtableField {
     value: unknown,
   ): string | Date | boolean | number | null;
 
+  abstract getApiCellValue(
+    value: unknown,
+  ): string | number | boolean | object | string[] | object[] | null;
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -48,7 +52,6 @@ export abstract class AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.SingleLineText,
       name: this.name,
       description: this.description,

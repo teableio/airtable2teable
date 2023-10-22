@@ -31,6 +31,10 @@ export class Table {
     return this.info.order;
   }
 
+  get vo() {
+    return this.info;
+  }
+
   async createView(view: IViewRo) {
     const response = await axios.post<ITableFullVo>(
       `${this.config.host}/api/table/${this.id}/view`,

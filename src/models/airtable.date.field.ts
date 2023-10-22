@@ -12,6 +12,7 @@ import {
   TeableFieldType,
 } from 'types';
 
+import { IFieldRo } from '../teable-sdks';
 import {
   DateFormattingPreset,
   TeableDateField,
@@ -36,6 +37,12 @@ export class AirtableDateField extends AirtableField {
     return `'${formatValue.toISOString()}'`;
   }
 
+  getApiCellValue(value: any): string {
+    const formatValue = dayjs.utc(value as string).tz('Etc/GMT');
+    if (!formatValue.isValid()) return null;
+    return formatValue.toISOString();
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -57,22 +64,21 @@ export class AirtableDateField extends AirtableField {
     return plainToInstance(TeableDateField, json);
   }
 
-  // transformTeableFieldCreateRo(): IFieldRo {
-  //   return {
-  //     id: this.id,
-  //     type: TeableFieldType.Date,
-  //     name: this.name,
-  //     description: this.description,
-  //     isLookup: false,
-  //     options: {
-  //       // todo: mark
-  //       formatting: {
-  //         date: DateFormattingPreset.ISO,
-  //         time: TimeFormatting.None,
-  //         timeZone: 'Etc/GMT',
-  //       },
-  //       defaultValue: 'now',
-  //     },
-  //   };
-  // }
+  transformTeableFieldCreateRo(): IFieldRo {
+    return {
+      type: TeableFieldType.Date,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {
+        // todo: mark
+        formatting: {
+          date: DateFormattingPreset.ISO,
+          time: TimeFormatting.None,
+          timeZone: 'Etc/GMT',
+        },
+        defaultValue: 'now',
+      },
+    };
+  }
 }

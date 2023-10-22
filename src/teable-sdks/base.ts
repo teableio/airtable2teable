@@ -32,7 +32,6 @@ export class Base {
   }
 
   async createTable(table: ICreateTableRo) {
-    console.log(table);
     const response = await axios.post<ITableFullVo>(
       `${this.config.host}/api/base/${this.id}/table`,
       {

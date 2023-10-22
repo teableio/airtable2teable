@@ -20,9 +20,12 @@ export class AirtableButtonField extends AirtableField {
     return `'${value?.label}'`;
   }
 
+  getApiCellValue(value: any): string {
+    return value?.label;
+  }
+
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.SingleLineText,
       name: this.name,
       description: this.description,

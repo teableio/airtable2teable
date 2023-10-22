@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as https from 'https';
 
 import { IGetSpaceVo } from './schemas';
 import { Space } from './space';
@@ -26,6 +27,9 @@ export class TeableSdk {
         headers: {
           Authorization: `Bearer ${this.config.token}`,
         },
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
       },
     );
     assertResponse(response);

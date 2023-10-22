@@ -25,6 +25,10 @@ export class AirtableAutoNumberField extends AirtableField {
     return value as number;
   }
 
+  getApiCellValue(value: unknown): number {
+    return value as number;
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -46,7 +50,6 @@ export class AirtableAutoNumberField extends AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.Number,
       name: this.name,
       description: this.description,

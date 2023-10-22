@@ -1,6 +1,7 @@
 export * from './airtable.cell.type.enum';
 export * from './airtable.field';
 export * from './airtable.field.type.enum';
+export * from './airtable.record';
 export * from './airtable.table';
 export * from './airtable.view';
 export * from './airtable.view.type.enum';

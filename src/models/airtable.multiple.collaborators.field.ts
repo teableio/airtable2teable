@@ -17,12 +17,15 @@ export class AirtableMultipleCollaboratorsField extends AirtableField {
   }
 
   getTeableDBCellValue(value: unknown): string {
-    return `'${String((value as any[]).map((v) => v.name))}'`;
+    return `'${String((value as any[])?.map((v) => v.name))}'`;
+  }
+
+  getApiCellValue(value: unknown): string[] {
+    return (value as any[])?.map((v) => v.name);
   }
 
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.MultipleSelect,
       name: this.name,
       description: this.description,

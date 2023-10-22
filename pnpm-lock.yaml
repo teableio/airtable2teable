@@ -15,7 +15,7 @@ dependencies:
     specifier: ^5.2.0
     version: 5.4.2(@prisma/generator-helper@5.4.2)(@prisma/internals@5.4.2)
   axios:
-    specifier: ^1.5.0
+    specifier: 1.5.1
     version: 1.5.1
   class-transformer:
     specifier: ^0.5.1

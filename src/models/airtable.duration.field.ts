@@ -16,4 +16,8 @@ export class AirtableDurationField extends AirtableField {
   getTeableDBCellValue(value: any): number {
     return value;
   }
+
+  getApiCellValue(value: any): number {
+    return value;
+  }
 }

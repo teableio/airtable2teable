@@ -32,6 +32,15 @@ export class AirtableBarcodeField extends AirtableField {
     }'`;
   }
 
+  getApiCellValue(value: any): string {
+    return (
+      value as {
+        type?: string;
+        text: string;
+      }
+    )?.text;
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -48,7 +57,6 @@ export class AirtableBarcodeField extends AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.SingleLineText,
       name: this.name,
       description: this.description,

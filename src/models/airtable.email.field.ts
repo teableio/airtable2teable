@@ -25,6 +25,10 @@ export class AirtableEmailField extends AirtableField {
     return `'${value as string}'`;
   }
 
+  getApiCellValue(value: unknown): string {
+    return value as string;
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -41,7 +45,6 @@ export class AirtableEmailField extends AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.SingleLineText,
       name: this.name,
       description: this.description,

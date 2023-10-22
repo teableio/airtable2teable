@@ -26,6 +26,10 @@ export class AirtableRatingField extends AirtableField {
     return value as number;
   }
 
+  getApiCellValue(value: unknown): number {
+    return value as number;
+  }
+
   transformDataModel(): TeableField {
     const json = {
       id: this.id,
@@ -46,7 +50,6 @@ export class AirtableRatingField extends AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     return {
-      id: this.id,
       type: TeableFieldType.Rating,
       name: this.name,
       description: this.description,

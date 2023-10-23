@@ -36,9 +36,7 @@ export abstract class AirtableField {
     value: unknown,
   ): string | Date | boolean | number | null;
 
-  abstract getApiCellValue(
-    value: unknown,
-  ): string | number | boolean | object | string[] | object[] | null;
+  abstract getApiCellValue(value: unknown, ...others: unknown[]): unknown;
 
   transformDataModel(): TeableField {
     const json = {

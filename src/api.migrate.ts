@@ -80,6 +80,25 @@ export class ApiMigrate {
         fields.push(airtableDataModel.transformTeableFieldCreateRo());
       });
       let j = 1;
+
+      const records2Create = records.map((record) => {
+        const newRecord: Record<string, any> = {};
+        for (const fieldName in record.fields) {
+          const cellValue = record.fields[fieldName];
+          const fieldModel = fieldsMap[fieldName];
+          if (fieldModel) {
+            newRecord[fieldName] = fieldModel.getApiCellValue(
+              cellValue,
+              tablesRecordIdsMap,
+            );
+          }
+        }
+        return {
+          fields: newRecord,
+        };
+      });
+
+      // console.log('records2Create', JSON.stringify(records2Create, null, 2));
       const newTable = await base.createTable({
         name: table.name,
         description: table.description,
@@ -93,31 +112,7 @@ export class ApiMigrate {
         }),
         fieldKeyType: FieldKeyType.Name,
         fields: fields,
-        records: records.map((record) => {
-          const newRecord: Record<string, any> = {};
-          for (const fieldName in record.fields) {
-            const cellValue = record.fields[fieldName];
-            const fieldModel = fieldsMap[fieldName];
-            if (fieldModel) {
-              if (
-                fieldModel.type === AirtableFieldTypeEnum.MultipleRecordLinks
-              ) {
-                if (fieldModel.options?.linkedTableId) {
-                  const recordIdsMap =
-                    tablesRecordIdsMap[fieldModel.options.linkedTableId];
-                  newRecord[fieldName] = (cellValue as string[]).map(
-                    (recordId) => recordIdsMap[recordId],
-                  );
-                }
-              } else {
-                newRecord[fieldName] = fieldModel.getApiCellValue(cellValue);
-              }
-            }
-          }
-          return {
-            fields: newRecord,
-          };
-        }),
+        records: records2Create,
       });
       const recordIdsMap: Record<string, string> = {};
       for (let k = 0; k < records.length; k++) {

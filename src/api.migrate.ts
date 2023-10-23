@@ -13,8 +13,8 @@ import {
   AirtableFieldTypeEnum,
   IAirtableRecord,
   IAirtableTable,
+  TeableViewTypeEnum,
 } from './types';
-import { ViewMapper } from './util';
 
 export class ApiMigrate {
   private sdkTeable: TeableSdk;
@@ -53,7 +53,7 @@ export class ApiMigrate {
     let i = 1;
     for (const table of tables) {
       const airtableRecords = await this.getAirtableRecords(table);
-      const airtableFieldsMap = this.getAirableFieldMap(
+      const airtableFieldsMap = this.getAirtableFieldsMap(
         table,
         migratedAirtableTableIds,
         teableTablesMap,
@@ -74,7 +74,7 @@ export class ApiMigrate {
         views: table.views.map((view) => {
           return {
             name: view.name,
-            type: ViewMapper[view.type] as any,
+            type: TeableViewTypeEnum.Grid,
             order: j++,
           };
         }),
@@ -116,7 +116,7 @@ export class ApiMigrate {
     });
   }
 
-  private getAirableFieldMap(
+  private getAirtableFieldsMap(
     table: any,
     migratedAirtableTableIds: Set<string>,
     teableTablesMap: Record<string, Table>,

@@ -21,3 +21,5 @@ export const createRecordsRoSchema = z.object({
     })
     .array(),
 });
+
+export type IRecordsRo = z.infer<typeof createRecordsRoSchema.shape.records>;

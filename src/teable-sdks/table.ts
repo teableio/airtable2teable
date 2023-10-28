@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ISdkConfig } from './index';
+import { ICreateRecordsVo, IRecordsRo, ISdkConfig, IViewVo } from './index';
 import { ITableFullVo, IViewRo } from './schemas';
 import { assertResponse } from './util';
 import { View } from './view';
@@ -36,7 +36,7 @@ export class Table {
   }
 
   async createView(view: IViewRo) {
-    const response = await axios.post<ITableFullVo>(
+    const response = await axios.post<IViewVo>(
       `${this.config.host}/api/table/${this.id}/view`,
       {
         ...view,
@@ -49,5 +49,38 @@ export class Table {
     );
     assertResponse(response);
     return new View(this.config, { ...response.data });
+  }
+
+  async createRecords(records: IRecordsRo) {
+    const response = await axios.post<ICreateRecordsVo[]>(
+      `${this.config.host}/api/table/${this.id}/record`,
+      {
+        fieldKeyType: 'name',
+        typecast: true,
+        records: records,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.config.token}`,
+        },
+      },
+    );
+    assertResponse(response);
+    return response.data;
+  }
+
+  async deleteRecords(recordIds: string[]) {
+    const response = await axios.delete<ICreateRecordsVo[]>(
+      `${this.config.host}/api/table/${this.id}/record`,
+      {
+        params: {
+          recordIds,
+        },
+        headers: {
+          Authorization: `Bearer ${this.config.token}`,
+        },
+      },
+    );
+    assertResponse(response);
   }
 }

@@ -80,8 +80,11 @@ export class ApiMigrate {
         }),
         fieldKeyType: FieldKeyType.Name,
         fields: teableFieldCreateRos,
-        records: teableRecordCreateRos,
       });
+      await teableTable.deleteRecords(
+        teableTable.vo.records.map((record) => record.id),
+      );
+      await teableTable.createRecords(teableRecordCreateRos);
       const a2tRecordIdMap: Record<string, string> = {};
       for (let k = 0; k < airtableRecords.length; k++) {
         a2tRecordIdMap[airtableRecords[k].id] = teableTable.vo.records[k].id;

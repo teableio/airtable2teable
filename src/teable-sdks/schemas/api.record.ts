@@ -13,6 +13,17 @@ export const recordSchema = z.object({
   recordOrder: z.record(z.number()),
 });
 
+export const recordsVoSchema = z.object({
+  records: recordSchema.array(),
+  offset: z.string().optional(),
+});
+
+export const createRecordsVoSchema = recordsVoSchema.omit({
+  offset: true,
+});
+
+export type ICreateRecordsVo = z.infer<typeof createRecordsVoSchema>;
+
 export const createRecordsRoSchema = z.object({
   fieldKeyType: fieldKeyTypeRoSchema,
   records: z

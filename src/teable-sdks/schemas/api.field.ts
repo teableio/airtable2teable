@@ -125,7 +125,7 @@ export const numberFieldOptionsSchema = z
 // datetime field options
 export enum TimeFormatting {
   Hour24 = 'HH:mm',
-  Hour12 = 'hh:mm',
+  Hour12 = 'hh:mm A',
   None = 'None',
 }
 

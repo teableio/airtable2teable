@@ -74,3 +74,5 @@ airtable data model -> teable data model
 PS:
 
 1. In airtable, timeZone "client" exist, but teable not. So default transform to Etc/GMT.
+2. Link Relationship
+![](./asset/image/link-relationship.png)

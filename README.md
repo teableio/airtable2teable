@@ -32,46 +32,7 @@ const dbMigrate = new DBMigrate({
 const result = await dbMigrate.execute();
 ```
 
-## Process:
-
-airtable data model -> teable data model
-
-- [x] singleLineText -> singleLineText √
-- [x] email -> singleLineText √
-- [x] url -> singleLineText √
-- [x] multilineText -> singleLineText √
-- [x] number -> number √
-- [x] percent -> number √
-- [x] currency -> number √
-- [x] singleSelect -> singleSelect √
-- [x] multipleSelects -> multipleSelects √
-- [ ] singleCollaborator
-- [ ] multipleCollaborators
-- [ ] multipleRecordLinks
-- [x] date -> datetime √
-- [x] dateTime -> datetime √
-- [x] phoneNumber -> singleLineText √
-- [ ] multipleAttachments
-- [x] checkbox -> checkbox √
-- [ ] formula
-- [x] createdTime -> datetime √
-- [ ] rollup
-- [ ] count
-- [ ] lookup
-- [ ] multipleLookupValues
-- [x] autoNumber -> number √
-- [x] barcode -> singleLineText √
-- [x] rating -> rating √
-- [x] richText -> singleLineText √
-- [ ] duration
-- [x] lastModifiedTime -> datetime √
-- [ ] button
-- [ ] createdBy
-- [ ] lastModifiedBy
-- [ ] externalSyncSource
-- [ ] aiText
-
-PS:
+## Emmm
 
 1. In airtable, timeZone "client" exist, but teable not. So default transform to Etc/GMT.
 2. Link Relationship

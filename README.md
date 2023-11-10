@@ -37,3 +37,4 @@ const result = await dbMigrate.execute();
 1. In airtable, timeZone "client" exist, but teable not. So default transform to Etc/GMT.
 2. Link Relationship
 ![](./asset/image/link-relationship.png)
+3. In Airtable, there not is field which causes a circular reference.

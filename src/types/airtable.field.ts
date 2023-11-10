@@ -52,7 +52,7 @@ export abstract class AirtableField {
     return plainToInstance(TeableSingleLineTextField, json);
   }
 
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableFieldCreateRo(...others: unknown[]): IFieldRo {
     return {
       type: TeableFieldType.SingleLineText,
       name: this.name,

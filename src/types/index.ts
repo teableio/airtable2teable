@@ -16,3 +16,4 @@ export * from './teable.id.prefix';
 export * from './teable.relationship';
 export * from './teable.statistics.func';
 export * from './teable.view.type.enum';
+export * from './at.tt.map';

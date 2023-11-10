@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ICreateRecordsVo, IRecordsRo, ISdkConfig, IViewVo } from './index';
-import { ITableFullVo, IViewRo } from './schemas';
+import { IFieldRo, IFieldVo, ITableFullVo, IViewRo } from './schemas';
 import { assertResponse } from './util';
 import { View } from './view';
 
@@ -52,7 +52,7 @@ export class Table {
   }
 
   async createRecords(records: IRecordsRo) {
-    const response = await axios.post<ICreateRecordsVo[]>(
+    const response = await axios.post<ICreateRecordsVo>(
       `${this.config.host}/api/table/${this.id}/record`,
       {
         fieldKeyType: 'name',
@@ -82,5 +82,21 @@ export class Table {
       },
     );
     assertResponse(response);
+  }
+
+  async createField(field: IFieldRo) {
+    const response = await axios.post<IFieldVo>(
+      `${this.config.host}/api/table/${this.id}/field`,
+      {
+        ...field,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.config.token}`,
+        },
+      },
+    );
+    assertResponse(response);
+    return response.data;
   }
 }

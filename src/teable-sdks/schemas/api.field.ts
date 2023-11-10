@@ -36,12 +36,14 @@ export const linkFieldOptionsSchema = z
 export const lookupOptionsVoSchema = linkFieldOptionsSchema
   .pick({
     foreignTableId: true,
+    // the field in the foreign table that will be displayed as the current field
     lookupFieldId: true,
     relationship: true,
     dbForeignKeyName: true,
   })
   .merge(
     z.object({
+      // The id of Linked record field to use for lookup
       linkFieldId: z.string(),
     }),
   );
@@ -483,3 +485,7 @@ const refineOptions = (
 export const fieldRoSchema = baseFieldRoSchema.superRefine(refineOptions);
 
 export type IFieldRo = z.infer<typeof fieldRoSchema>;
+
+export type IFieldVo = z.infer<typeof fieldVoSchema>;
+
+export type ILinkFieldOptions = z.infer<typeof linkFieldOptionsSchema>;

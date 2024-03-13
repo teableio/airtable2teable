@@ -8,15 +8,12 @@
   "scripts": {
     "clean": "rimraf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.test.ts\"",
-    "lint": "eslint \"src/**/*.ts\" \"test/**/*.test.ts\" --fix",
+    "lint": "eslint \"src/**/*.ts\" --fix",
     "build": "pnpm run clean && tsc -p tsconfig.build.json && tsc-alias",
     "prepare": "husky install",
     "test": "jest"
   },
   "dependencies": {
-    "@prisma/client": "^5.2.0",
-    "@prisma/internals": "^5.2.0",
-    "@prisma/migrate": "^5.2.0",
     "axios": "1.5.1",
     "class-transformer": "^0.5.1",
     "dayjs": "^1.11.10",

@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+import { AirtableSdk } from './airtable-sdks';
 import {
   AirtableLinkField,
   AirtableLongTextField,
@@ -17,13 +16,13 @@ import {
   AirtableFieldTypeEnum,
   IAirtableField,
   IAirtableRecord,
-  IAirtableTable,
   IaT2tT,
   TeableViewTypeEnum,
 } from './types';
 
 export class ApiMigrate {
-  private sdkTeable: TeableSdk;
+  private teableSdk: TeableSdk;
+  private airtableSdk: AirtableSdk;
 
   constructor(
     private readonly option: {
@@ -37,9 +36,10 @@ export class ApiMigrate {
       };
     },
   ) {
-    this.sdkTeable = new TeableSdk({
+    this.teableSdk = new TeableSdk({
       token: option.to.teableToken,
     });
+    this.airtableSdk = new AirtableSdk(option.from.airtableToken);
   }
 
   async execute() {
@@ -47,12 +47,12 @@ export class ApiMigrate {
   }
 
   private async generateTables() {
-    const space = await this.sdkTeable.getSpace(this.option.to.spaceId);
+    const space = await this.teableSdk.getSpace(this.option.to.spaceId);
     const base = await space.createBase({
       spaceId: space.id,
       name: new Date().toISOString(),
     });
-    const tables = await this.getAirtableTables();
+    const tables = await this.airtableSdk.getTables(this.option.from.baseId);
     const aTid2tT: Record<string, Table> = {};
     const migratedAirtableTableIds = new Set<string>();
     const at2tT: IaT2tT = {};
@@ -60,7 +60,7 @@ export class ApiMigrate {
     const airtableLookupFieldMap: Record<string, IAirtableField[]> = {};
     let i = 1;
     for (const table of tables) {
-      const airtableRecords = await this.getAirtableRecords(table);
+      const airtableRecords = await this.airtableSdk.getRecords(table);
       const airtableFieldsMap = this.getAirtableFieldsMap(
         table,
         migratedAirtableTableIds,
@@ -91,7 +91,7 @@ export class ApiMigrate {
         fields: teableFieldCreateRos,
       });
       at2tT[table.id] = {
-        [teableTable.id]: {}
+        [teableTable.id]: {},
       };
       const name2FieldId = table.fields.reduce((result, field) => {
         result[field.name] = field.id;
@@ -198,49 +198,5 @@ export class ApiMigrate {
       airtableFieldsMap[field.name] = airtableDataModel;
     });
     return airtableFieldsMap;
-  }
-
-  private async getAirtableTables() {
-    const response = await axios.get<{ tables: IAirtableTable[] }>(
-      `https://api.airtable.com/v0/meta/bases/${this.option.from.baseId}/tables`,
-      {
-        headers: {
-          Authorization: `Bearer ${this.option.from.airtableToken}`,
-        },
-      },
-    );
-    if (response.status !== 200) {
-      throw new Error(
-        `Response Status: ${response.status}, Response Message: ${response.statusText}`,
-      );
-    }
-    return response.data.tables;
-  }
-
-  private async getAirtableRecords(table: IAirtableTable) {
-    const records: IAirtableRecord[] = [];
-    let offset = '0';
-    do {
-      const response = await axios.get<{
-        offset?: string;
-        records: IAirtableRecord[];
-      }>(`https://api.airtable.com/v0/${this.option.from.baseId}/${table.id}`, {
-        params: {
-          offset,
-          maxRecords: 1000,
-        },
-        headers: {
-          Authorization: `Bearer ${this.option.from.airtableToken}`,
-        },
-      });
-      if (response.status !== 200) {
-        throw new Error(
-          `Response Status: ${response.status}, Response Message: ${response.statusText}`,
-        );
-      }
-      records.push(...response.data.records);
-      offset = response.data.offset;
-    } while (offset);
-    return records;
   }
 }

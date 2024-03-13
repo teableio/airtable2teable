@@ -1,4 +1,4 @@
-import { AirtableLinkField, getAirtableField } from 'models';
+import { getAirtableField } from 'models';
 import { IFieldRo, ILinkFieldOptions } from 'teable-sdks';
 import {
   AirtableCellTypeEnum,
@@ -27,6 +27,7 @@ export class AirtableLookupField extends AirtableField {
   transformTeableFieldCreateRo(
     currentAirtableTableId: string,
     at2tT: IaT2tT,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ...others: unknown[]
   ): IFieldRo {
     if (!this.options?.isValid) {

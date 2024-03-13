@@ -1,6 +1,4 @@
-import axios from 'axios';
 import { ApiMigrate } from './api.migrate';
-import { IAirtableTable } from 'types';
 
 describe('api migrate', () => {
   test('create table meta by api migrate', async () => {
@@ -98,7 +96,7 @@ describe('api migrate', () => {
     for (const table of tables) {
       for (const field of table.fields) {
         fieldId2Field[field.id] = field;
-        if(field.type === 'multipleLookupValues' && field.options.isValid) {
+        if (field.type === 'multipleLookupValues' && field.options.isValid) {
           fieldIds.add(field.id);
         }
       }
@@ -107,13 +105,13 @@ describe('api migrate', () => {
     const recursion = (fieldId) => {
       const field = fieldId2Field[fieldId];
       const lookupedField = fieldId2Field[field.options.fieldIdInLinkedTable];
-      if(lookupedField.type === 'multipleLookupValues') {
+      if (lookupedField.type === 'multipleLookupValues') {
         recursion(lookupedField.id);
       }
       rollupSequence.push(fieldId);
       fieldIds.delete(fieldId);
-    }
-    while(fieldIds.size > 0) {
+    };
+    while (fieldIds.size > 0) {
       const fieldId = [...fieldIds][0];
       recursion(fieldId);
     }

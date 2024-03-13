@@ -52,6 +52,7 @@ export abstract class AirtableField {
     return plainToInstance(TeableSingleLineTextField, json);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   transformTeableFieldCreateRo(...others: unknown[]): IFieldRo {
     return {
       type: TeableFieldType.SingleLineText,

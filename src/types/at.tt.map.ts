@@ -1,5 +1,4 @@
-import { IFieldVo } from "teable-sdks";
-
+import { IFieldVo } from 'teable-sdks';
 
 export interface IaT2tT {
   [airtableTableId: string]: {

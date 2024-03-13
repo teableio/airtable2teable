@@ -4,7 +4,7 @@
   "description": "The data pipeline from airtable database to teable database.",
   "homepage": "https://github.com/y-t99/airtable2teable",
   "main": "index.js",
-  "author": "itou ng",
+  "author": "teable",
   "scripts": {
     "clean": "rimraf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.test.ts\"",
@@ -14,7 +14,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "axios": "1.5.1",
+    "axios": "1.6.7",
     "class-transformer": "^0.5.1",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",

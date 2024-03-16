@@ -19,22 +19,6 @@ Scope: `data.records:read`, `schema.bases:read`.
 
 ## Quick Start
 
-```typescript
-const dbMigrate = new DBMigrate({
-  from: {
-    baseId: '',
-    airtableToken: ''
-  },
-  to: {
-    dirPath: `${__dirname}`
-  }
-});
-const result = await dbMigrate.execute();
+```shell
+teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID>
 ```
-
-## Emmm
-
-1. In airtable, timeZone "client" exist, but teable not. So default transform to Etc/GMT.
-2. Link Relationship
-![](./asset/image/link-relationship.png)
-3. In Airtable, there not is field which causes a circular reference.

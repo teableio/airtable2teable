@@ -18,7 +18,7 @@ export interface ISdkConfig {
 export class TeableSdk {
   constructor(private config: ISdkConfig) {
     this.config.host =
-      config.host || process.env.TEABLE_HOST || 'https://teable.io/';
+      config.host || process.env.TEABLE_HOST || 'https://app.teable.io';
   }
 
   async getSpaces(): Promise<Space[]> {

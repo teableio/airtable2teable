@@ -17,6 +17,8 @@ grants access, with the following limitations:
 To import airtable Base data into a teable Workspace, the token requires the following
 Scope: `data.records:read`, `schema.bases:read`.
 
+[Teable - Access Token](https://help.teable.io/developer/api/access-token)
+
 ## Quick Start
 
 ```shell

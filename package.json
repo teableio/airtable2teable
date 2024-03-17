@@ -3,21 +3,19 @@
   "version": "0.0.0",
   "description": "The data pipeline from airtable database to teable database.",
   "homepage": "https://github.com/y-t99/airtable2teable",
-  "main": "index.js",
-  "author": "itou ng",
+  "main": "dist/index.js",
+  "author": "teable",
   "scripts": {
     "clean": "rimraf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.test.ts\"",
-    "lint": "eslint \"src/**/*.ts\" \"test/**/*.test.ts\" --fix",
-    "build": "yarn run clean && tsc -p tsconfig.build.json && tsc-alias",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "build": "tsc -p tsconfig.build.json && tsc-alias",
     "prepare": "husky install",
     "test": "jest"
   },
   "dependencies": {
-    "@prisma/client": "^5.2.0",
-    "@prisma/internals": "^5.2.0",
-    "@prisma/migrate": "^5.2.0",
-    "axios": "1.5.1",
+    "@oclif/core": "^3.25.2",
+    "axios": "1.6.7",
     "class-transformer": "^0.5.1",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
@@ -44,6 +42,18 @@
     "tsc-alias": "^1.8.7",
     "typescript": "^5.0.4"
   },
+  "oclif": {
+    "bin": "teatool",
+    "dirname": "teatool",
+    "commands": {
+      "strategy": "explicit",
+      "target": "./dist/commands/index.js",
+      "identifier": "COMMANDS"
+    }
+  },
+  "bin": {
+    "teatool": "./bin/run.js"
+  },
   "jest": {
     "verbose": true,
     "transform": {
@@ -64,11 +74,13 @@
     ]
   },
   "files": [
+    "/bin",
     "/dist",
     "package.json",
     "README.md"
   ],
   "engines": {
+    "node": ">=18.0.0",
     "pnpm": ">=8.9.0",
     "npm": "please-use-pnpm"
   },

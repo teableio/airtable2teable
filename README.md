@@ -17,24 +17,12 @@ grants access, with the following limitations:
 To import airtable Base data into a teable Workspace, the token requires the following
 Scope: `data.records:read`, `schema.bases:read`.
 
+[Teable - Access Token](https://help.teable.io/developer/api/access-token)
+
 ## Quick Start
 
-```typescript
-const dbMigrate = new DBMigrate({
-  from: {
-    baseId: '',
-    airtableToken: ''
-  },
-  to: {
-    dirPath: `${__dirname}`
-  }
-});
-const result = await dbMigrate.execute();
+```shell
+teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID>
+Airatable Token: <AIRTABLE_TOKEN>
+Teable Token: <Teable_TOKEN>
 ```
-
-## Emmm
-
-1. In airtable, timeZone "client" exist, but teable not. So default transform to Etc/GMT.
-2. Link Relationship
-![](./asset/image/link-relationship.png)
-3. In Airtable, there not is field which causes a circular reference.

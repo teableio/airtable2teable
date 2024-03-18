@@ -1,7 +1,15 @@
-import { IdPrefix } from 'types';
+import { IdPrefix, TeableFieldKeyType } from 'types';
 import { z } from 'zod';
 
-import { fieldKeyTypeRoSchema } from './api.field';
+export const fieldKeyTypeRoSchema = z
+  .nativeEnum(TeableFieldKeyType, {
+    errorMap: () => ({
+      message: 'Error fieldKeyType, You should set it to "name" or "id"',
+    }),
+  })
+  .default(TeableFieldKeyType.Name) // is not work with optional()...
+  .transform((v) => v ?? TeableFieldKeyType.Name)
+  .optional();
 
 export const recordSchema = z.object({
   id: z.string().startsWith(IdPrefix.Record),

@@ -4,19 +4,14 @@ import {
   AirtableLongTextField,
   getAirtableField,
 } from './models';
-import {
-  FieldKeyType,
-  IFieldRo,
-  IRecordsRo,
-  Table,
-  TeableSdk,
-} from './teable-sdks';
+import { IFieldRo, IRecordsRo, Table, TeableSdk } from './teable-sdks';
 import {
   AirtableField,
   AirtableFieldTypeEnum,
   IAirtableField,
   IAirtableRecord,
   IaT2tT,
+  TeableFieldKeyType,
   TeableViewTypeEnum,
 } from './types';
 
@@ -87,7 +82,7 @@ export class ApiMigrate {
             order: j++,
           };
         }),
-        fieldKeyType: FieldKeyType.Name,
+        fieldKeyType: TeableFieldKeyType.Name,
         fields: teableFieldCreateRos,
       });
       at2tT[table.id] = {

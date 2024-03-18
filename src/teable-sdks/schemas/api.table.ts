@@ -2,12 +2,12 @@ import { IdPrefix } from 'types';
 import { z } from 'zod';
 
 import {
+  createRecordsRoSchema,
   fieldKeyTypeRoSchema,
-  fieldRoSchema,
-  fieldVoSchema,
-} from './api.field';
-import { createRecordsRoSchema, recordSchema } from './api.record';
+  recordSchema,
+} from './api.record';
 import { viewRoSchema, viewVoSchema } from './api.view';
+import { createFieldRoSchema, fieldVoSchema } from './fields';
 
 export const tableFullVoSchema = z.object({
   id: z.string().startsWith(IdPrefix.Table),
@@ -15,33 +15,35 @@ export const tableFullVoSchema = z.object({
   dbTableName: z.string(),
   description: z.string().optional(),
   icon: z.string().emoji().optional(),
-  order: z.number(),
-  lastModifiedTime: z.string(),
-  defaultViewId: z.string().startsWith(IdPrefix.View).optional(),
   fields: fieldVoSchema.array(),
   views: viewVoSchema.array(),
   records: recordSchema.array(),
+  order: z.number(),
+  lastModifiedTime: z.string(),
+  defaultViewId: z.string().startsWith(IdPrefix.View).optional(),
 });
 
 export type ITableFullVo = z.infer<typeof tableFullVoSchema>;
 
 export const tableRoSchema = tableFullVoSchema
   .omit({
-    // todo: mark
     id: true,
-    dbTableName: true,
     lastModifiedTime: true,
     defaultViewId: true,
   })
   .partial({
     name: true,
+    dbTableName: true,
     order: true,
   })
   .merge(
     z.object({
+      name: tableFullVoSchema.shape.name.min(1).optional(),
+      description: tableFullVoSchema.shape.description.nullable(),
+      icon: tableFullVoSchema.shape.icon.nullable(),
       views: viewRoSchema.array().optional(),
       fieldKeyType: fieldKeyTypeRoSchema,
-      fields: fieldRoSchema.array().optional(),
+      fields: createFieldRoSchema.array().optional(),
       records: createRecordsRoSchema.shape.records.optional(),
       order: z.number().optional(),
     }),

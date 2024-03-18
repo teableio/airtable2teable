@@ -11,6 +11,7 @@ export * from './teable.cell.value.type';
 export * from './teable.color.enum';
 export * from './teable.db.field.type';
 export * from './teable.field';
+export * from './teable.field.key.enum';
 export * from './teable.field.type.enum';
 export * from './teable.field.vo';
 export * from './teable.id.prefix';

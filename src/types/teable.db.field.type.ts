@@ -5,4 +5,5 @@ export enum TeableDbFieldType {
   Real = 'REAL',
   Blob = 'BLOB',
   Json = 'JSON',
+  Boolean = 'BOOLEAN',
 }

@@ -13,7 +13,9 @@ export const fieldKeyTypeRoSchema = z
 
 export const recordSchema = z.object({
   id: z.string().startsWith(IdPrefix.Record),
+  name: z.string(),
   fields: z.record(z.unknown()),
+  autoNumber: z.number(),
   createdTime: z.string().optional(),
   lastModifiedTime: z.string().optional(),
   createdBy: z.string().optional(),
@@ -32,13 +34,18 @@ export const createRecordsVoSchema = recordsVoSchema.omit({
 
 export type ICreateRecordsVo = z.infer<typeof createRecordsVoSchema>;
 
+export const typecastSchema = z.boolean().optional();
+
 export const createRecordsRoSchema = z.object({
   fieldKeyType: fieldKeyTypeRoSchema,
+  typecast: typecastSchema,
   records: z
     .object({
       fields: recordSchema.shape.fields,
     })
     .array(),
 });
+
+export type ICreateRecordsRo = z.infer<typeof createRecordsRoSchema>;
 
 export type IRecordsRo = z.infer<typeof createRecordsRoSchema.shape.records>;

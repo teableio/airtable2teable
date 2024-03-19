@@ -2,19 +2,19 @@ import {
   AirtableCellTypeEnum,
   AirtableField,
   IAirtableLinkField,
-  Relationship,
   TeableFieldType,
+  TeableRelationship,
 } from 'types';
 
 import { IFieldRo } from '../teable-sdks';
 
 export class AirtableLinkField extends AirtableField {
-  relationship: Relationship;
+  relationship: TeableRelationship;
   constructor(field: IAirtableLinkField) {
     super(field);
     this.relationship = this.field.options?.prefersSingleRecordLink
-      ? Relationship.ManyOne
-      : Relationship.OneMany;
+      ? TeableRelationship.ManyOne
+      : TeableRelationship.OneMany;
   }
 
   get cellType(): AirtableCellTypeEnum {
@@ -37,10 +37,10 @@ export class AirtableLinkField extends AirtableField {
       throw new Error('linkedTableId is not defined');
     }
     const recordIdsMap = tablesRecordIdsMap[linkedTableId];
-    if (this.relationship === Relationship.ManyOne) {
+    if (this.relationship === TeableRelationship.ManyOne) {
       return { id: recordIdsMap[value[0]] };
     }
-    if (this.relationship === Relationship.OneMany) {
+    if (this.relationship === TeableRelationship.OneMany) {
       return value.map((id) => ({
         id: recordIdsMap[id],
       }));

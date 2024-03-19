@@ -1,13 +1,13 @@
 import { IdPrefix } from 'types';
 import { z } from 'zod';
 
+import { createFieldRoSchema, fieldVoSchema } from './fields';
 import {
   createRecordsRoSchema,
   fieldKeyTypeRoSchema,
   recordSchema,
-} from './api.record';
-import { viewRoSchema, viewVoSchema } from './api.view';
-import { createFieldRoSchema, fieldVoSchema } from './fields';
+} from './record.schema';
+import { viewRoSchema, viewVoSchema } from './views';
 
 export const tableFullVoSchema = z.object({
   id: z.string().startsWith(IdPrefix.Table),
@@ -50,9 +50,3 @@ export const tableRoSchema = tableFullVoSchema
   );
 
 export type ICreateTableRo = z.infer<typeof tableRoSchema>;
-
-export const tableVoSchema = tableFullVoSchema.partial({
-  fields: true,
-  views: true,
-  records: true,
-});

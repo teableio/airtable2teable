@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 export const TIME_ZONE_LIST = [
   'utc',
   'Africa/Abidjan',
@@ -433,5 +431,3 @@ export const TIME_ZONE_LIST = [
   'Pacific/Wake',
   'Pacific/Wallis',
 ] as const;
-
-export const timeZoneStringSchema = z.enum(TIME_ZONE_LIST);

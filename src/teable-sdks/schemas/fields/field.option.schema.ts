@@ -77,3 +77,5 @@ export const lookupOptionsRoSchema = lookupOptionsVoSchema.pick({
   lookupFieldId: true,
   linkFieldId: true,
 });
+
+export type ILinkFieldOptions = z.infer<typeof linkFieldOptionsSchema>;

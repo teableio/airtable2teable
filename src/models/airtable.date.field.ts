@@ -31,14 +31,8 @@ export class AirtableDateField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableDBCellValue(value: unknown): string {
-    const formatValue = dayjs.utc(value as string).tz('Etc/GMT');
-    if (!formatValue.isValid()) return null;
-    return `'${formatValue.toISOString()}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    const formatValue = dayjs.utc(value as string).tz('Etc/GMT');
+  getApiCellValue(value: string): string {
+    const formatValue = dayjs.utc(value).tz('Etc/GMT');
     if (!formatValue.isValid()) return null;
     return formatValue.toISOString();
   }

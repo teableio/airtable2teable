@@ -4,8 +4,17 @@ import {
   IAirtableMultipleCollaboratorsField,
   TeableFieldType,
 } from 'types';
+import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
+import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+
+export const multipleCollaboratorCellValueSchema =
+  collaboratorCellValueSchema.array();
+
+export type IMultipleCollaboratorCellValueVo = z.infer<
+  typeof multipleCollaboratorCellValueSchema
+>;
 
 export class AirtableMultipleCollaboratorsField extends AirtableField {
   constructor(field: IAirtableMultipleCollaboratorsField) {
@@ -20,8 +29,8 @@ export class AirtableMultipleCollaboratorsField extends AirtableField {
     return `'${String((value as any[])?.map((v) => v.name))}'`;
   }
 
-  getApiCellValue(value: unknown): string[] {
-    return (value as any[])?.map((v) => v.name);
+  getApiCellValue(value: IMultipleCollaboratorCellValueVo) {
+    return value?.map((v) => v.name);
   }
 
   transformTeableFieldCreateRo(): IFieldRo {

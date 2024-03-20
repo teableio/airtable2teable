@@ -4,8 +4,20 @@ import {
   IAirtableCollaboratorField,
   TeableFieldType,
 } from 'types';
+import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
+
+export const collaboratorCellValueSchema = z.object({
+  id: z.string(),
+  email: z.string().optional(),
+  name: z.string().optional(),
+  profilePicUrl: z.string().optional(),
+});
+
+export type ICollaboratorCellValueVo = z.infer<
+  typeof collaboratorCellValueSchema
+>;
 
 export class AirtableCollaboratorField extends AirtableField {
   constructor(field: IAirtableCollaboratorField) {
@@ -13,15 +25,11 @@ export class AirtableCollaboratorField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.name}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return value?.name;
+  getApiCellValue(value: ICollaboratorCellValueVo) {
+    return value.name;
   }
 
   transformTeableFieldCreateRo(): IFieldRo {

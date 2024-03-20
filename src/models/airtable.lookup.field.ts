@@ -6,6 +6,13 @@ import {
   IAirtableLookupField,
   IaT2tT,
 } from 'types';
+import { z } from 'zod';
+
+export const lookupCellValueSchema = z
+  .union([z.number(), z.string(), z.boolean(), z.any()])
+  .array();
+
+export type ILookupCellValueVo = z.infer<typeof lookupCellValueSchema>;
 
 export class AirtableLookupField extends AirtableField {
   constructor(field: IAirtableLookupField) {
@@ -16,12 +23,8 @@ export class AirtableLookupField extends AirtableField {
     return AirtableCellTypeEnum.ARRAY;
   }
 
-  getTeableDBCellValue(value: unknown): string {
-    return `'${String(value)}'`;
-  }
-
-  getApiCellValue(value: unknown): string {
-    return String(value);
+  getApiCellValue(value: ILookupCellValueVo) {
+    return value;
   }
 
   transformTeableFieldCreateRo(

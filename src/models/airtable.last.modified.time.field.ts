@@ -43,9 +43,9 @@ export class AirtableLastModifiedTimeField extends AirtableField {
     return `'${formatValue.toISOString()}'`;
   }
 
-  getApiCellValue(value: unknown): string {
+  getApiCellValue(value: string): string {
     const formatValue = dayjs
-      .utc(value as string)
+      .utc(value)
       .tz(
         this.field.options.timeZone && this.field.options.timeZone !== 'client'
           ? this.field.options.timeZone

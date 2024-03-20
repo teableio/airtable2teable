@@ -1,8 +1,20 @@
+import { z } from 'zod';
+
 import {
+  AirtableCellState,
   AirtableCellTypeEnum,
   AirtableField,
   IAirtableAiTextField,
 } from '../types';
+
+export const aiTextCellValueSchema = z.object({
+  state: z.nativeEnum(AirtableCellState),
+  isStale: z.boolean(),
+  errorType: z.string().optional(),
+  value: z.string().nullable(),
+});
+
+export type IAiTextCellValueVo = z.infer<typeof aiTextCellValueSchema>;
 
 export class AirtableAiTextField extends AirtableField {
   constructor(field: IAirtableAiTextField) {
@@ -10,14 +22,10 @@ export class AirtableAiTextField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.value}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return value?.value;
+  getApiCellValue(value: IAiTextCellValueVo) {
+    return value.value;
   }
 }

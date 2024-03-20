@@ -8,9 +8,17 @@ import {
   TeableField,
   TeableFieldType,
 } from 'types';
+import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
 import { TeableSingleLineTextField } from './teable.single.line.text.field';
+
+export const barcodeCellValueSchema = z.object({
+  type: z.string().nullable().optional(),
+  text: z.string().optional(),
+});
+
+export type IBarcodeCellValueVo = z.infer<typeof barcodeCellValueSchema>;
 
 export class AirtableBarcodeField extends AirtableField {
   constructor(field: IAirtableBarcodeField) {
@@ -18,27 +26,11 @@ export class AirtableBarcodeField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: unknown): string {
-    return `'${
-      (
-        value as {
-          type?: string;
-          text: string;
-        }
-      ).text
-    }'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return (
-      value as {
-        type?: string;
-        text: string;
-      }
-    )?.text;
+  getApiCellValue(value: IBarcodeCellValueVo) {
+    return value.text;
   }
 
   transformDataModel(): TeableField {

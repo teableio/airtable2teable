@@ -4,8 +4,12 @@ import {
   IAirtableCreatedByField,
   TeableFieldType,
 } from 'types';
+import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
+import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+
+export type ICreatedByCellValueVo = z.infer<typeof collaboratorCellValueSchema>;
 
 export class AirtableCreatedByField extends AirtableField {
   constructor(field: IAirtableCreatedByField) {
@@ -13,15 +17,11 @@ export class AirtableCreatedByField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.name}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return value?.name;
+  getApiCellValue(value: ICreatedByCellValueVo) {
+    return value.name;
   }
 
   transformTeableFieldCreateRo(): IFieldRo {

@@ -21,12 +21,8 @@ export class AirtableCurrencyField extends AirtableField {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableDBCellValue(value: unknown): number {
-    return value as number;
-  }
-
-  getApiCellValue(value: unknown): number {
-    return value as number;
+  getApiCellValue(value: number): number {
+    return value;
   }
 
   transformDataModel(): TeableField {

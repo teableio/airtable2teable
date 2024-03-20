@@ -4,8 +4,16 @@ import {
   IAirtableButtonField,
   TeableFieldType,
 } from 'types';
+import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
+
+export const buttonCellValueSchema = z.object({
+  label: z.string(),
+  url: z.string().nullable(),
+});
+
+export type IButtonCellValueVo = z.infer<typeof buttonCellValueSchema>;
 
 export class AirtableButtonField extends AirtableField {
   constructor(field: IAirtableButtonField) {
@@ -13,15 +21,11 @@ export class AirtableButtonField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.label}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return value?.label;
+  getApiCellValue(value: IButtonCellValueVo) {
+    return value.label;
   }
 
   transformTeableFieldCreateRo(): IFieldRo {

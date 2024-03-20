@@ -12,12 +12,7 @@ export class AirtableSyncSourceField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }
-
-  getTeableDBCellValue(value: any): string {
-    return `'${value}'`;
-  }
-
-  getApiCellValue(value: unknown): string {
-    return value as string;
+  getApiCellValue(value: string) {
+    return value;
   }
 }

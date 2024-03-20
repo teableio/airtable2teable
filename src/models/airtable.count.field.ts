@@ -3,7 +3,11 @@ import {
   AirtableField,
   IAirtableCountField,
 } from 'types';
+import { z } from 'zod';
 
+export const countCellValueSchema = z.number();
+
+export type ICountCellValueVo = z.infer<typeof countCellValueSchema>;
 export class AirtableCountField extends AirtableField {
   constructor(field: IAirtableCountField) {
     super(field);
@@ -13,11 +17,7 @@ export class AirtableCountField extends AirtableField {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value}'`;
-  }
-
-  getApiCellValue(value: any): string {
+  getApiCellValue(value: ICountCellValueVo) {
     return value;
   }
 }

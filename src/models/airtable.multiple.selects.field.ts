@@ -25,8 +25,8 @@ export class AirtableMultipleSelectsField extends AirtableField {
     return `'${String(value)}'`;
   }
 
-  getApiCellValue(value: unknown): string[] {
-    return value as string[];
+  getApiCellValue(value: string[]): string[] {
+    return value;
   }
 
   transformDataModel(): TeableField {

@@ -21,12 +21,8 @@ export class AirtablePercentField extends AirtableField {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableDBCellValue(value: unknown): number {
-    return value as number;
-  }
-
-  getApiCellValue(value: unknown): number {
-    return value as number;
+  getApiCellValue(value: number) {
+    return value;
   }
 
   transformDataModel(): TeableField {

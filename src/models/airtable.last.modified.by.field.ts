@@ -4,8 +4,14 @@ import {
   IAirtableLastModifiedByField,
   TeableFieldType,
 } from 'types';
+import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
+import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+
+export type ILastModifiedCellValueVo = z.infer<
+  typeof collaboratorCellValueSchema
+>;
 
 export class AirtableLastModifiedByField extends AirtableField {
   constructor(field: IAirtableLastModifiedByField) {
@@ -13,14 +19,10 @@ export class AirtableLastModifiedByField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value.name}'`;
-  }
-
-  getApiCellValue(value: any): string {
+  getApiCellValue(value: ILastModifiedCellValueVo) {
     return value.name;
   }
 

@@ -31,21 +31,9 @@ export class AirtableDateTimeField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableDBCellValue(value: unknown): string {
+  getApiCellValue(value: string): string {
     const formatValue = dayjs
-      .utc(value as string)
-      .tz(
-        this.field.options.timeZone === 'client'
-          ? 'Etc/GMT'
-          : this.field.options.timeZone,
-      );
-    if (!formatValue.isValid()) return null;
-    return `'${formatValue.toISOString()}'`;
-  }
-
-  getApiCellValue(value: unknown): string {
-    const formatValue = dayjs
-      .utc(value as string)
+      .utc(value)
       .tz(
         this.field.options.timeZone === 'client'
           ? 'Etc/GMT'

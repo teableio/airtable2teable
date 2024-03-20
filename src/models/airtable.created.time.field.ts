@@ -11,6 +11,7 @@ import {
   TeableField,
   TeableFieldType,
 } from 'types';
+import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
 import {
@@ -22,6 +23,12 @@ import {
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
+export const createdTimeCellValueSchema = z.string();
+
+export type ICreatedTimeCellValueVo = z.infer<
+  typeof createdTimeCellValueSchema
+>;
+
 export class AirtableCreatedTimeField extends AirtableField {
   constructor(field: IAirtableCreatedTimeField) {
     super(field);
@@ -31,21 +38,9 @@ export class AirtableCreatedTimeField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableDBCellValue(value: unknown): string {
+  getApiCellValue(value: ICreatedTimeCellValueVo) {
     const formatValue = dayjs
-      .utc(value as string)
-      .tz(
-        this.field.options.timeZone && this.field.options.timeZone !== 'client'
-          ? this.field.options.timeZone
-          : 'Etc/GMT',
-      );
-    if (!formatValue.isValid()) return null;
-    return `'${formatValue.toISOString()}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    const formatValue = dayjs
-      .utc(value as string)
+      .utc(value)
       .tz(
         this.field.options.timeZone && this.field.options.timeZone !== 'client'
           ? this.field.options.timeZone

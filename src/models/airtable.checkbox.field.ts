@@ -8,9 +8,14 @@ import {
   TeableField,
   TeableFieldType,
 } from 'types';
+import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
 import { TeableCheckboxField } from './teable.checkbox.field';
+
+export const checkboxCellValueSchema = z.boolean().nullable();
+
+export type ICheckboxCellValueVo = z.infer<typeof checkboxCellValueSchema>;
 
 export class AirtableCheckboxField extends AirtableField {
   constructor(field: IAirtableCheckboxField) {
@@ -20,13 +25,8 @@ export class AirtableCheckboxField extends AirtableField {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.TRUE;
   }
-
-  getTeableDBCellValue(value: unknown): boolean {
-    return !!(value as boolean);
-  }
-
-  getApiCellValue(value: any): boolean {
-    return !!(value as boolean);
+  getApiCellValue(value: ICheckboxCellValueVo) {
+    return value;
   }
 
   transformDataModel(): TeableField {

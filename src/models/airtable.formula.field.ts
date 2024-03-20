@@ -3,6 +3,15 @@ import {
   AirtableField,
   IAirtableFormulaField,
 } from 'types';
+import { z } from 'zod';
+
+export const formulaCellValueSchema = z.union([
+  z.string(),
+  z.number(),
+  z.union([z.string(), z.number()]).array(),
+]);
+
+export type IFormulaCellValueVo = z.infer<typeof formulaCellValueSchema>;
 
 export class AirtableFormulaField extends AirtableField {
   constructor(field: IAirtableFormulaField) {
@@ -10,14 +19,10 @@ export class AirtableFormulaField extends AirtableField {
   }
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.ANY;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value}'`;
-  }
-
-  getApiCellValue(value: any): string {
+  getApiCellValue(value: IFormulaCellValueVo) {
     return value;
   }
 }

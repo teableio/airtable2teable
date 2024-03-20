@@ -21,10 +21,6 @@ export class AirtableLinkField extends AirtableField {
     return AirtableCellTypeEnum.ARRAY;
   }
 
-  getTeableDBCellValue(value: unknown): string {
-    return `'${String(value)}'`;
-  }
-
   getApiCellValue(
     value: string[],
     tablesRecordIdsMap: Record<string, Record<string, string>>,

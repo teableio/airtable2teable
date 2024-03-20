@@ -13,11 +13,7 @@ export class AirtableRollupField extends AirtableField {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value}'`;
-  }
-
-  getApiCellValue(value: any): string {
+  getApiCellValue(value: string | number) {
     return value;
   }
 }

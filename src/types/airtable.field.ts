@@ -32,10 +32,6 @@ export abstract class AirtableField {
     return this.field.options;
   }
 
-  abstract getTeableDBCellValue(
-    value: unknown,
-  ): string | Date | boolean | number | null;
-
   abstract getApiCellValue(value: unknown, ...others: unknown[]): unknown;
 
   transformDataModel(): TeableField {

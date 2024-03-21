@@ -4,8 +4,6 @@ import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableLastModifiedTimeField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -13,6 +11,7 @@ import {
 } from 'types';
 
 import { IFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import {
   DateFormattingPreset,
   TeableDateField,
@@ -22,11 +21,7 @@ import {
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-export class AirtableLastModifiedTimeField extends AirtableField {
-  constructor(field: IAirtableLastModifiedTimeField) {
-    super(field);
-  }
-
+export class AirtableLastModifiedTimeField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }
@@ -35,8 +30,8 @@ export class AirtableLastModifiedTimeField extends AirtableField {
     const formatValue = dayjs
       .utc(value as string)
       .tz(
-        this.field.options.timeZone && this.field.options.timeZone !== 'client'
-          ? this.field.options.timeZone
+        this.options.timeZone && this.options.timeZone !== 'client'
+          ? this.options.timeZone
           : 'Etc/GMT',
       );
     if (!formatValue.isValid()) return null;
@@ -47,8 +42,8 @@ export class AirtableLastModifiedTimeField extends AirtableField {
     const formatValue = dayjs
       .utc(value)
       .tz(
-        this.field.options.timeZone && this.field.options.timeZone !== 'client'
-          ? this.field.options.timeZone
+        this.options.timeZone && this.options.timeZone !== 'client'
+          ? this.options.timeZone
           : 'Etc/GMT',
       );
     if (!formatValue.isValid()) return null;
@@ -65,15 +60,14 @@ export class AirtableLastModifiedTimeField extends AirtableField {
       options: {
         formatting: {
           date: DateFormattingPreset.ISO,
-          time: this.field.options.timeFormat
-            ? this.field.options.timeFormat.name === '12hour'
+          time: this.options.timeFormat
+            ? this.options.timeFormat.name === '12hour'
               ? TimeFormatting.Hour12
               : TimeFormatting.Hour24
             : TimeFormatting.None,
           timeZone:
-            this.field.options.timeZone &&
-            this.field.options.timeZone !== 'client'
-              ? this.field.options.timeZone
+            this.options.timeZone && this.options.timeZone !== 'client'
+              ? this.options.timeZone
               : 'Etc/GMT',
         },
         defaultValue: 'now',
@@ -94,7 +88,7 @@ export class AirtableLastModifiedTimeField extends AirtableField {
         formatting: {
           date: DateFormattingPreset.ISO,
           time:
-            this.field.options?.timeFormat?.name === '12hour'
+            this.options?.timeFormat?.name === '12hour'
               ? TimeFormatting.Hour12
               : TimeFormatting.Hour24,
           timeZone: 'Etc/GMT',

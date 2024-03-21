@@ -1,8 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableAutoNumberField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -11,17 +9,14 @@ import {
 import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import { NumberFormattingType, TeableNumberField } from './teable.number.field';
 
 export const autoNumberCellValueSchema = z.number();
 
 export type IAutoNumberCellValueVo = z.infer<typeof autoNumberCellValueSchema>;
 
-export class AirtableAutoNumberField extends AirtableField {
-  constructor(field: IAirtableAutoNumberField) {
-    super(field);
-  }
-
+export class AirtableAutoNumberField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }

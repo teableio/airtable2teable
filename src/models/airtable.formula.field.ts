@@ -1,9 +1,7 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableFormulaField,
-} from 'types';
+import { AirtableCellTypeEnum } from 'types';
 import { z } from 'zod';
+
+import { AirtableFieldVo } from './airtable.field.vo';
 
 export const formulaCellValueSchema = z.union([
   z.string(),
@@ -13,11 +11,7 @@ export const formulaCellValueSchema = z.union([
 
 export type IFormulaCellValueVo = z.infer<typeof formulaCellValueSchema>;
 
-export class AirtableFormulaField extends AirtableField {
-  constructor(field: IAirtableFormulaField) {
-    super(field);
-  }
-
+export class AirtableFormulaField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ANY;
   }

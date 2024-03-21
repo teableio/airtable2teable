@@ -34,16 +34,9 @@ export * from './rating.field';
 export * from './rollup.field';
 export * from './select.field';
 
-export const emptyOptionsSchema = z.null();
-
-export type IEmptyOptionsVo = z.infer<typeof emptyOptionsSchema>;
-
 export const objectOptionsSchema = z.object({});
 
-export type IObjectOptionsVo = z.infer<typeof objectOptionsSchema>;
-
 export const unionFieldOptionsVoSchema = z.union([
-  emptyOptionsSchema,
   objectOptionsSchema,
   aiTextFieldOptionsSchema,
   attachmentFieldOptionsSchema,
@@ -62,3 +55,5 @@ export const unionFieldOptionsVoSchema = z.union([
   formulaFieldOptionsSchema,
   rollupFieldOptionsSchema,
 ]);
+
+export type IFieldOptionsVoSchema = z.infer<typeof unionFieldOptionsVoSchema>;

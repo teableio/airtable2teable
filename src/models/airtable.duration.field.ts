@@ -1,14 +1,8 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableDurationField,
-} from 'types';
+import { AirtableCellTypeEnum } from 'types';
 
-export class AirtableDurationField extends AirtableField {
-  constructor(field: IAirtableDurationField) {
-    super(field);
-  }
+import { AirtableFieldVo } from './airtable.field.vo';
 
+export class AirtableDurationField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }

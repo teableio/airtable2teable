@@ -1,8 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtablePercentField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -10,13 +8,10 @@ import {
 } from 'types';
 
 import { IFieldRo, NumberFormattingType } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import { TeableNumberField } from './teable.number.field';
 
-export class AirtablePercentField extends AirtableField {
-  constructor(field: IAirtablePercentField) {
-    super(field);
-  }
-
+export class AirtablePercentField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
@@ -35,7 +30,7 @@ export class AirtablePercentField extends AirtableField {
       options: {
         formatting: {
           type: NumberFormattingType.Percent,
-          precision: this.field.options?.precision,
+          precision: this.options?.precision,
         },
       },
       cellValueType: TeableCellValueType.Number,
@@ -46,9 +41,8 @@ export class AirtablePercentField extends AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     let precision = 0;
-    if (this.field.options?.precision) {
-      precision =
-        this.field.options.precision > 5 ? 5 : this.field.options.precision;
+    if (this.options?.precision) {
+      precision = this.options.precision > 5 ? 5 : this.options.precision;
     }
     return {
       type: TeableFieldType.Number,

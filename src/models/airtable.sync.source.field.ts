@@ -1,14 +1,8 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableSyncSourceField,
-} from 'types';
+import { AirtableCellTypeEnum } from 'types';
 
-export class AirtableSyncSourceField extends AirtableField {
-  constructor(field: IAirtableSyncSourceField) {
-    super(field);
-  }
+import { AirtableFieldVo } from './airtable.field.vo';
 
+export class AirtableSyncSourceField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }

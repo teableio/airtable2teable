@@ -1,14 +1,8 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableRollupField,
-} from 'types';
+import { AirtableCellTypeEnum } from 'types';
 
-export class AirtableRollupField extends AirtableField {
-  constructor(field: IAirtableRollupField) {
-    super(field);
-  }
+import { AirtableFieldVo } from './airtable.field.vo';
 
+export class AirtableRollupField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }

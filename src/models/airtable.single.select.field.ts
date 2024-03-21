@@ -1,8 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableSingleSelectField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -10,13 +8,10 @@ import {
 } from 'types';
 
 import { IFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import { TeableSingleSelectField } from './teable.single.select.field';
 
-export class AirtableSingleSelectField extends AirtableField {
-  constructor(field: IAirtableSingleSelectField) {
-    super(field);
-  }
-
+export class AirtableSingleSelectField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }
@@ -33,7 +28,7 @@ export class AirtableSingleSelectField extends AirtableField {
       type: TeableFieldType.SingleSelect,
       dbFieldType: TeableDbFieldType.Text,
       options: {
-        choices: this.field.options.choices || [],
+        choices: this.options.choices || [],
       },
       cellValueType: TeableCellValueType.String,
       isMultipleCellValue: false,
@@ -50,7 +45,7 @@ export class AirtableSingleSelectField extends AirtableField {
       isLookup: false,
       options: {
         choices:
-          this.field.options?.choices?.map((choice) => {
+          this.options?.choices?.map((choice) => {
             return {
               name: choice.name,
             };

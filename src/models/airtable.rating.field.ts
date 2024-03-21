@@ -1,9 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
   Colors,
-  IAirtableRatingField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -11,13 +9,10 @@ import {
 } from 'types';
 
 import { IFieldRo, RatingIcon } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import { TeableRatingField } from './teable.rating.field';
 
-export class AirtableRatingField extends AirtableField {
-  constructor(field: IAirtableRatingField) {
-    super(field);
-  }
-
+export class AirtableRatingField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
@@ -36,7 +31,7 @@ export class AirtableRatingField extends AirtableField {
       options: {
         icon: RatingIcon.Star,
         color: Colors.YellowBright,
-        max: this.field.options.max,
+        max: this.options.max,
       },
       cellValueType: TeableCellValueType.Number,
       isComputed: false,
@@ -53,7 +48,7 @@ export class AirtableRatingField extends AirtableField {
       options: {
         icon: RatingIcon.Star,
         color: Colors.YellowBright,
-        max: this.field.options?.max,
+        max: this.options?.max,
       },
     };
   }

@@ -1,8 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtablePhoneField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -10,13 +8,10 @@ import {
 } from 'types';
 
 import { IFieldRo, SingleLineTextDisplayType } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import { TeableSingleLineTextField } from './teable.single.line.text.field';
 
-export class AirtablePhoneField extends AirtableField {
-  constructor(field: IAirtablePhoneField) {
-    super(field);
-  }
-
+export class AirtablePhoneField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }

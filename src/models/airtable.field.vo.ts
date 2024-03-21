@@ -1,36 +1,26 @@
 import { plainToInstance } from 'class-transformer';
+import {
+  AirtableFieldTypeEnum,
+  TeableCellValueType,
+  TeableDbFieldType,
+  TeableField,
+  TeableFieldType,
+} from 'types';
 
+import { IAirtableFieldVo, IFieldOptionsVoSchema } from '../airtable-sdks';
 import { TeableSingleLineTextField } from '../models';
 import { IFieldRo } from '../teable-sdks';
-import { AirtableFieldTypeEnum } from './airtable.field.type.enum';
-import { AirtableFieldOptions, IAirtableField } from './fields';
-import { TeableCellValueType } from './teable.cell.value.type';
-import { TeableDbFieldType } from './teable.db.field.type';
-import { TeableField } from './teable.field';
-import { TeableFieldType } from './teable.field.type.enum';
 
-export abstract class AirtableField {
-  protected constructor(protected readonly field: IAirtableField) {}
+export abstract class AirtableFieldVo implements IAirtableFieldVo {
+  id!: string;
 
-  get id(): string {
-    return this.field.id;
-  }
+  name!: string;
 
-  get name(): string {
-    return this.field.name;
-  }
+  type!: AirtableFieldTypeEnum;
 
-  get type(): AirtableFieldTypeEnum {
-    return this.field.type;
-  }
+  description?: string;
 
-  get description(): string {
-    return this.field.description;
-  }
-
-  get options(): AirtableFieldOptions {
-    return this.field.options;
-  }
+  options?: IFieldOptionsVoSchema;
 
   abstract getApiCellValue(value: unknown, ...others: unknown[]): unknown;
 

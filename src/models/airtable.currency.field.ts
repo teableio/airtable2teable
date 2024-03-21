@@ -1,8 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableCurrencyField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -10,13 +8,10 @@ import {
 } from 'types';
 
 import { IFieldRo, NumberFormattingType } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import { TeableNumberField } from './teable.number.field';
 
-export class AirtableCurrencyField extends AirtableField {
-  constructor(field: IAirtableCurrencyField) {
-    super(field);
-  }
-
+export class AirtableCurrencyField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
@@ -35,8 +30,8 @@ export class AirtableCurrencyField extends AirtableField {
       options: {
         formatting: {
           type: NumberFormattingType.Currency,
-          precision: this.field.options?.precision,
-          symbol: this.field.options?.symbol,
+          precision: this.options?.precision,
+          symbol: this.options?.symbol,
         },
       },
       cellValueType: TeableCellValueType.Number,
@@ -47,9 +42,8 @@ export class AirtableCurrencyField extends AirtableField {
 
   transformTeableFieldCreateRo(): IFieldRo {
     let precision = 0;
-    if (this.field.options?.precision) {
-      precision =
-        this.field.options.precision > 5 ? 5 : this.field.options.precision;
+    if (this.options?.precision) {
+      precision = this.options.precision > 5 ? 5 : this.options.precision;
     }
     return {
       type: TeableFieldType.Number,
@@ -60,7 +54,7 @@ export class AirtableCurrencyField extends AirtableField {
         formatting: {
           type: NumberFormattingType.Currency,
           precision: precision,
-          symbol: this.field.options?.symbol,
+          symbol: this.options?.symbol,
         },
       },
     };

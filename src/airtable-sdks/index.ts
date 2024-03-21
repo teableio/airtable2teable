@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { IAirtableRecord, IAirtableTable } from '../types';
 
-export * from './fields';
+export * from './schemas';
 
 export class AirtableSdk {
   private airtableToken: string;

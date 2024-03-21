@@ -1,13 +1,9 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableMultipleCollaboratorsField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
 import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+import { AirtableFieldVo } from './airtable.field.vo';
 
 export const multipleCollaboratorCellValueSchema =
   collaboratorCellValueSchema.array();
@@ -16,11 +12,7 @@ export type IMultipleCollaboratorCellValueVo = z.infer<
   typeof multipleCollaboratorCellValueSchema
 >;
 
-export class AirtableMultipleCollaboratorsField extends AirtableField {
-  constructor(field: IAirtableMultipleCollaboratorsField) {
-    super(field);
-  }
-
+export class AirtableMultipleCollaboratorsField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }

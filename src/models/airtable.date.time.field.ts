@@ -4,8 +4,6 @@ import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableDateTimeField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -13,6 +11,7 @@ import {
 } from 'types';
 
 import { IFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import {
   DateFormattingPreset,
   TeableDateField,
@@ -22,11 +21,7 @@ import {
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-export class AirtableDateTimeField extends AirtableField {
-  constructor(field: IAirtableDateTimeField) {
-    super(field);
-  }
-
+export class AirtableDateTimeField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }
@@ -35,9 +30,7 @@ export class AirtableDateTimeField extends AirtableField {
     const formatValue = dayjs
       .utc(value)
       .tz(
-        this.field.options.timeZone === 'client'
-          ? 'Etc/GMT'
-          : this.field.options.timeZone,
+        this.options.timeZone === 'client' ? 'Etc/GMT' : this.options.timeZone,
       );
     if (!formatValue.isValid()) return null;
     return formatValue.toISOString();
@@ -54,13 +47,13 @@ export class AirtableDateTimeField extends AirtableField {
         formatting: {
           date: DateFormattingPreset.ISO,
           time:
-            this.field.options.timeFormat.name === '12hour'
+            this.options.timeFormat.name === '12hour'
               ? TimeFormatting.Hour12
               : TimeFormatting.Hour24,
           timeZone:
-            this.field.options.timeZone === 'client'
+            this.options.timeZone === 'client'
               ? 'Etc/GMT'
-              : this.field.options.timeZone,
+              : this.options.timeZone,
         },
         defaultValue: 'now',
       },
@@ -80,13 +73,13 @@ export class AirtableDateTimeField extends AirtableField {
         formatting: {
           date: DateFormattingPreset.ISO,
           time:
-            this.field.options?.timeFormat?.name === '12hour'
+            this.options?.timeFormat?.name === '12hour'
               ? TimeFormatting.Hour12
               : TimeFormatting.Hour24,
           timeZone:
-            this.field.options?.timeZone === 'client'
+            this.options?.timeZone === 'client'
               ? 'Etc/GMT'
-              : this.field.options.timeZone,
+              : this.options.timeZone,
         },
         defaultValue: 'now',
       },

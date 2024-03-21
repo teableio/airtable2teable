@@ -1,21 +1,13 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableCreatedByField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
 import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+import { AirtableFieldVo } from './airtable.field.vo';
 
 export type ICreatedByCellValueVo = z.infer<typeof collaboratorCellValueSchema>;
 
-export class AirtableCreatedByField extends AirtableField {
-  constructor(field: IAirtableCreatedByField) {
-    super(field);
-  }
-
+export class AirtableCreatedByField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.OBJECT;
   }

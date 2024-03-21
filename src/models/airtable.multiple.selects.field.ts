@@ -1,8 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableMultipleSelectsField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -10,13 +8,10 @@ import {
 } from 'types';
 
 import { IFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import { TeableMultipleSelectField } from './teable.multiple.select.field';
 
-export class AirtableMultipleSelectsField extends AirtableField {
-  constructor(field: IAirtableMultipleSelectsField) {
-    super(field);
-  }
-
+export class AirtableMultipleSelectsField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }
@@ -37,7 +32,7 @@ export class AirtableMultipleSelectsField extends AirtableField {
       type: TeableFieldType.MultipleSelect,
       dbFieldType: TeableDbFieldType.Json,
       options: {
-        choices: this.field.options.choices || [],
+        choices: this.options.choices || [],
       },
       cellValueType: TeableCellValueType.String,
       isMultipleCellValue: true,
@@ -53,7 +48,7 @@ export class AirtableMultipleSelectsField extends AirtableField {
       description: this.description,
       isLookup: false,
       options: {
-        choices: this.field.options?.choices || [],
+        choices: this.options?.choices || [],
       },
     };
   }

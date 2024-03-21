@@ -1,12 +1,9 @@
 import { getAirtableField } from 'models';
 import { IFieldRo, ILinkFieldOptions } from 'teable-sdks';
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableLookupField,
-  IaT2tT,
-} from 'types';
+import { AirtableCellTypeEnum, IaT2tT } from 'types';
 import { z } from 'zod';
+
+import { AirtableFieldVo } from './airtable.field.vo';
 
 export const lookupCellValueSchema = z
   .union([z.number(), z.string(), z.boolean(), z.any()])
@@ -14,11 +11,7 @@ export const lookupCellValueSchema = z
 
 export type ILookupCellValueVo = z.infer<typeof lookupCellValueSchema>;
 
-export class AirtableLookupField extends AirtableField {
-  constructor(field: IAirtableLookupField) {
-    super(field);
-  }
-
+export class AirtableLookupField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }

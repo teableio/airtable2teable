@@ -1,23 +1,15 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableLastModifiedByField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
 import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+import { AirtableFieldVo } from './airtable.field.vo';
 
 export type ILastModifiedCellValueVo = z.infer<
   typeof collaboratorCellValueSchema
 >;
 
-export class AirtableLastModifiedByField extends AirtableField {
-  constructor(field: IAirtableLastModifiedByField) {
-    super(field);
-  }
-
+export class AirtableLastModifiedByField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.OBJECT;
   }

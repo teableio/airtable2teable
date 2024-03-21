@@ -6,8 +6,8 @@ import {
 } from './models';
 import { IFieldRo, IRecordsRo, Table, TeableSdk } from './teable-sdks';
 import {
-  AirtableField,
   AirtableFieldTypeEnum,
+  AirtableFieldVo,
   IAirtableField,
   IAirtableRecord,
   IaT2tT,
@@ -123,7 +123,7 @@ export class ApiMigrate {
 
   private getRecordCreateRos(
     airtableRecords: IAirtableRecord[],
-    airtableFieldsMap: Record<string, AirtableField>,
+    airtableFieldsMap: Record<string, AirtableFieldVo>,
     teableTablesRecordIdsMap: Record<string, Record<string, string>>,
   ): IRecordsRo {
     return airtableRecords.map((record) => {
@@ -149,10 +149,10 @@ export class ApiMigrate {
     migratedAirtableTableIds: Set<string>,
     teableTablesMap: Record<string, Table>,
     airtableLookupFieldMap: Record<string, IAirtableField[]>,
-  ): Record<string, AirtableField> {
-    const airtableFieldsMap: Record<string, AirtableField> = {};
+  ): Record<string, AirtableFieldVo> {
+    const airtableFieldsMap: Record<string, AirtableFieldVo> = {};
     table.fields.forEach((field) => {
-      let airtableDataModel: AirtableField;
+      let airtableDataModel: AirtableFieldVo;
       if (field.type === AirtableFieldTypeEnum.MultipleRecordLinks) {
         if (
           field.options?.linkedTableId &&

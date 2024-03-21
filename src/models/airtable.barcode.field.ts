@@ -1,8 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableBarcodeField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -11,6 +9,7 @@ import {
 import { z } from 'zod';
 
 import { IFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import { TeableSingleLineTextField } from './teable.single.line.text.field';
 
 export const barcodeCellValueSchema = z.object({
@@ -20,11 +19,7 @@ export const barcodeCellValueSchema = z.object({
 
 export type IBarcodeCellValueVo = z.infer<typeof barcodeCellValueSchema>;
 
-export class AirtableBarcodeField extends AirtableField {
-  constructor(field: IAirtableBarcodeField) {
-    super(field);
-  }
-
+export class AirtableBarcodeField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.OBJECT;
   }

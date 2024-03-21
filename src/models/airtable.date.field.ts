@@ -4,8 +4,6 @@ import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
 import {
   AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableDateField,
   TeableCellValueType,
   TeableDbFieldType,
   TeableField,
@@ -13,6 +11,7 @@ import {
 } from 'types';
 
 import { IFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 import {
   DateFormattingPreset,
   TeableDateField,
@@ -22,11 +21,7 @@ import {
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-export class AirtableDateField extends AirtableField {
-  constructor(field: IAirtableDateField) {
-    super(field);
-  }
-
+export class AirtableDateField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }

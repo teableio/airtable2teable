@@ -1,11 +1,7 @@
+import { AirtableCellState, AirtableCellTypeEnum } from 'types';
 import { z } from 'zod';
 
-import {
-  AirtableCellState,
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableAiTextField,
-} from '../types';
+import { AirtableFieldVo } from './airtable.field.vo';
 
 export const aiTextCellValueSchema = z.object({
   state: z.nativeEnum(AirtableCellState),
@@ -16,11 +12,7 @@ export const aiTextCellValueSchema = z.object({
 
 export type IAiTextCellValueVo = z.infer<typeof aiTextCellValueSchema>;
 
-export class AirtableAiTextField extends AirtableField {
-  constructor(field: IAirtableAiTextField) {
-    super(field);
-  }
-
+export class AirtableAiTextField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.OBJECT;
   }

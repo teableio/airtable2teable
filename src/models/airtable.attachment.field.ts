@@ -1,9 +1,7 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableAttachmentField,
-} from 'types';
+import { AirtableCellTypeEnum } from 'types';
 import { z } from 'zod';
+
+import { AirtableFieldVo } from './airtable.field.vo';
 
 export const attachmentCellValueSchema = z
   .object({
@@ -40,11 +38,7 @@ export const attachmentCellValueSchema = z
 
 export type IAttachmentCellValueVo = z.infer<typeof attachmentCellValueSchema>;
 
-export class AirtableAttachmentField extends AirtableField {
-  constructor(field: IAirtableAttachmentField) {
-    super(field);
-  }
-
+export class AirtableAttachmentField extends AirtableFieldVo {
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }

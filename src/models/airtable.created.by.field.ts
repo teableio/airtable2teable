@@ -1,37 +1,32 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableCreatedByField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
+import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableCreatedByField extends AirtableField {
-  constructor(field: IAirtableCreatedByField) {
-    super(field);
-  }
+export type ICreatedByCellValueVo = z.infer<typeof collaboratorCellValueSchema>;
+
+export class AirtableCreatedByField extends AirtableFieldVo {
+  options: undefined;
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.name}'`;
+  getApiCellValue(value: ICreatedByCellValueVo) {
+    return value.name;
   }
 
-  getApiCellValue(value: any): string {
-    return value?.name;
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.SingleSelect,
+      type: TeableFieldType.User,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices: [],
+        isMultiple: false,
+        shouldNotify: false,
       },
     };
   }

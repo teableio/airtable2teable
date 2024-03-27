@@ -1,59 +1,21 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtablePercentField,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 
-import { IFieldRo, NumberFormattingType } from '../teable-sdks';
-import { TeableNumberField } from './teable.number.field';
+import { INumberFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, NumberFormattingType } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtablePercentField extends AirtableField {
-  constructor(field: IAirtablePercentField) {
-    super(field);
-  }
+export class AirtablePercentField extends AirtableFieldVo {
+  options: INumberFieldOptionsVo;
 
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableDBCellValue(value: unknown): number {
-    return value as number;
+  getApiCellValue(value: number) {
+    return value;
   }
 
-  getApiCellValue(value: unknown): number {
-    return value as number;
-  }
-
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.Number,
-      dbFieldType: TeableDbFieldType.Real,
-      options: {
-        formatting: {
-          type: NumberFormattingType.Percent,
-          precision: this.field.options?.precision,
-        },
-      },
-      cellValueType: TeableCellValueType.Number,
-      isComputed: false,
-    };
-    return plainToInstance(TeableNumberField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
-    let precision = 0;
-    if (this.field.options?.precision) {
-      precision =
-        this.field.options.precision > 5 ? 5 : this.field.options.precision;
-    }
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.Number,
       name: this.name,
@@ -62,7 +24,7 @@ export class AirtablePercentField extends AirtableField {
       options: {
         formatting: {
           type: NumberFormattingType.Percent,
-          precision: precision,
+          precision: this.options.precision > 5 ? 5 : this.options.precision,
         },
       },
     };

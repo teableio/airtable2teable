@@ -1,37 +1,41 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableCollaboratorField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { IObjectOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableCollaboratorField extends AirtableField {
-  constructor(field: IAirtableCollaboratorField) {
-    super(field);
-  }
+export const collaboratorCellValueSchema = z.object({
+  id: z.string(),
+  email: z.string().optional(),
+  name: z.string().optional(),
+  profilePicUrl: z.string().optional(),
+});
+
+export type ICollaboratorCellValueVo = z.infer<
+  typeof collaboratorCellValueSchema
+>;
+
+export class AirtableCollaboratorField extends AirtableFieldVo {
+  options: IObjectOptionsVo;
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.name}'`;
+  getApiCellValue(value: ICollaboratorCellValueVo) {
+    return value.name;
   }
 
-  getApiCellValue(value: any): string {
-    return value?.name;
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.SingleSelect,
+      type: TeableFieldType.User,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices: [],
+        isMultiple: false,
+        shouldNotify: false,
       },
     };
   }

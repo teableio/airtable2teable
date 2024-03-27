@@ -1,37 +1,34 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableLastModifiedByField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
+import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableLastModifiedByField extends AirtableField {
-  constructor(field: IAirtableLastModifiedByField) {
-    super(field);
-  }
+export type ILastModifiedCellValueVo = z.infer<
+  typeof collaboratorCellValueSchema
+>;
+
+export class AirtableLastModifiedByField extends AirtableFieldVo {
+  options: undefined;
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value.name}'`;
-  }
-
-  getApiCellValue(value: any): string {
+  getApiCellValue(value: ILastModifiedCellValueVo) {
     return value.name;
   }
 
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.SingleSelect,
+      type: TeableFieldType.User,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices: [],
+        isMultiple: false,
+        shouldNotify: false,
       },
     };
   }

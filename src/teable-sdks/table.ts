@@ -1,7 +1,14 @@
 import axios from 'axios';
 
-import { ICreateRecordsVo, IRecordsRo, ISdkConfig, IViewVo } from './index';
-import { IFieldRo, IFieldVo, ITableFullVo, IViewRo } from './schemas';
+import { TeableFieldKeyType } from '../types';
+import {
+  ICreateRecordsRo,
+  ICreateRecordsVo,
+  IRecordsRo,
+  ISdkConfig,
+  IViewVo,
+} from './index';
+import { ICreateFieldRo, IFieldVo, ITableFullVo, IViewRo } from './schemas';
 import { assertResponse } from './util';
 import { View } from './view';
 
@@ -52,13 +59,14 @@ export class Table {
   }
 
   async createRecords(records: IRecordsRo) {
+    const ro: ICreateRecordsRo = {
+      fieldKeyType: TeableFieldKeyType.Name,
+      typecast: true,
+      records: records,
+    };
     const response = await axios.post<ICreateRecordsVo>(
       `${this.config.host}/api/table/${this.id}/record`,
-      {
-        fieldKeyType: 'name',
-        typecast: true,
-        records: records,
-      },
+      ro,
       {
         headers: {
           Authorization: `Bearer ${this.config.token}`,
@@ -84,7 +92,7 @@ export class Table {
     assertResponse(response);
   }
 
-  async createField(field: IFieldRo) {
+  async createField(field: ICreateFieldRo) {
     const response = await axios.post<IFieldVo>(
       `${this.config.host}/api/table/${this.id}/field`,
       {

@@ -1,61 +1,32 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableAutoNumberField,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
-import { NumberFormattingType, TeableNumberField } from './teable.number.field';
+import { ICreateFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableAutoNumberField extends AirtableField {
-  constructor(field: IAirtableAutoNumberField) {
-    super(field);
-  }
+export const autoNumberCellValueSchema = z.number();
+
+export type IAutoNumberCellValueVo = z.infer<typeof autoNumberCellValueSchema>;
+
+export class AirtableAutoNumberField extends AirtableFieldVo {
+  options: undefined;
 
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
 
-  getTeableDBCellValue(value: unknown): number {
-    return value as number;
+  getApiCellValue(value: IAutoNumberCellValueVo) {
+    return value;
   }
 
-  getApiCellValue(value: unknown): number {
-    return value as number;
-  }
-
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.Number,
-      dbFieldType: TeableDbFieldType.Real,
-      options: {
-        formatting: {
-          type: NumberFormattingType.Decimal,
-          precision: 0,
-        },
-      },
-      cellValueType: TeableCellValueType.Number,
-      isComputed: false,
-    };
-    return plainToInstance(TeableNumberField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.Number,
+      type: TeableFieldType.AutoNumber,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        formatting: { type: NumberFormattingType.Decimal, precision: 0 },
+        expression: 'AUTO_NUMBER()',
       },
     };
   }

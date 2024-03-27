@@ -1,11 +1,12 @@
 import { SafeParseReturnType } from 'zod';
 
+import { IFieldVo } from '../teable-sdks';
 import { TeableCellValueType } from './teable.cell.value.type';
 import { TeableDbFieldType } from './teable.db.field.type';
 import { TeableFieldType } from './teable.field.type.enum';
-import { IColumnMeta, IFieldVo, ILookupOptionsVo } from './teable.field.vo';
+import { TeableRelationship } from './teable.relationship';
 
-export abstract class TeableField implements IFieldVo {
+export abstract class TeableField {
   id!: string;
 
   name!: string;
@@ -18,13 +19,13 @@ export abstract class TeableField implements IFieldVo {
 
   isPrimary?: boolean;
 
-  columnMeta!: IColumnMeta;
-
   dbFieldName!: string;
 
   abstract type: TeableFieldType;
 
   isComputed?: boolean;
+
+  isPending?: boolean;
 
   hasError?: boolean;
 
@@ -42,7 +43,15 @@ export abstract class TeableField implements IFieldVo {
   // if this field is lookup field
   isLookup?: boolean;
 
-  lookupOptions?: ILookupOptionsVo;
+  lookupOptions?: {
+    foreignTableId: string;
+    lookupFieldId: string;
+    relationship: TeableRelationship;
+    fkHostTableName: string;
+    selfKeyName: string;
+    foreignKeyName: string;
+    linkFieldId: string;
+  };
 
   /**
    * some field may store a json type item, we need to know how to convert it to string

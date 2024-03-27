@@ -1,23 +1,63 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableAttachmentField,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { z } from 'zod';
 
-export class AirtableAttachmentField extends AirtableField {
-  constructor(field: IAirtableAttachmentField) {
-    super(field);
-  }
+import { IAttachmentFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
+
+export const attachmentCellValueSchema = z
+  .object({
+    id: z.string(),
+    type: z.string(),
+    filename: z.string(),
+    height: z.number(),
+    size: z.number(),
+    url: z.string(),
+    width: z.number(),
+    thumbnails: z.object({
+      full: z
+        .object({
+          url: z.string(),
+          height: z.number(),
+          width: z.number(),
+        })
+        .optional(),
+      large: z
+        .object({
+          url: z.string(),
+          height: z.number(),
+          width: z.number(),
+        })
+        .optional(),
+      small: z.object({
+        url: z.string(),
+        height: z.number(),
+        width: z.number(),
+      }),
+    }),
+  })
+  .array();
+
+export type IAttachmentCellValueVo = z.infer<typeof attachmentCellValueSchema>;
+
+export class AirtableAttachmentField extends AirtableFieldVo {
+  options?: IAttachmentFieldOptionsVo;
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.ARRAY;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.filename}'`;
-  }
-
-  getApiCellValue(value: any): string {
+  getApiCellValue(value: IAttachmentCellValueVo): string {
     return value?.map((file) => file.filename).join(',');
+  }
+
+  transformTeableCreateFieldRo(): ICreateFieldRo {
+    return {
+      type: TeableFieldType.Attachment,
+      name: this.name,
+      isLookup: false,
+      description: this.description,
+      options: {},
+    };
   }
 }

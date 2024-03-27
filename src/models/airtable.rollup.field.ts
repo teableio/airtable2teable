@@ -1,23 +1,27 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableRollupField,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 
-export class AirtableRollupField extends AirtableField {
-  constructor(field: IAirtableRollupField) {
-    super(field);
-  }
+import { IRollupFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
+
+export class AirtableRollupField extends AirtableFieldVo {
+  options: IRollupFieldOptionsVo;
 
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value}'`;
+  getApiCellValue(value: string | number) {
+    return value;
   }
 
-  getApiCellValue(value: any): string {
-    return value;
+  transformTeableCreateFieldRo(): ICreateFieldRo {
+    return {
+      type: TeableFieldType.SingleLineText,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {},
+    };
   }
 }

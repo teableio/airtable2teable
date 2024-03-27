@@ -1,30 +1,28 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableButtonField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableButtonField extends AirtableField {
-  constructor(field: IAirtableButtonField) {
-    super(field);
-  }
+export const buttonCellValueSchema = z.object({
+  label: z.string(),
+  url: z.string().nullable(),
+});
+
+export type IButtonCellValueVo = z.infer<typeof buttonCellValueSchema>;
+
+export class AirtableButtonField extends AirtableFieldVo {
+  options: undefined;
 
   get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
+    return AirtableCellTypeEnum.OBJECT;
   }
 
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.label}'`;
+  getApiCellValue(value: IButtonCellValueVo) {
+    return value.label;
   }
 
-  getApiCellValue(value: any): string {
-    return value?.label;
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.SingleLineText,
       name: this.name,

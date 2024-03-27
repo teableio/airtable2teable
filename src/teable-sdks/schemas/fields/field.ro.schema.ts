@@ -1,4 +1,3 @@
-import { IdPrefix } from 'types';
 import { z } from 'zod';
 
 import {
@@ -28,10 +27,11 @@ const baseFieldRoSchema = fieldVoSchema
     }),
   );
 
-export const createFieldRoSchema = baseFieldRoSchema.merge(
-  z.object({
-    id: z.string().startsWith(IdPrefix.Field),
-  }),
-);
+export const createFieldRoSchema = baseFieldRoSchema;
+// .merge(
+//   z.object({
+//     id: z.string().startsWith(IdPrefix.Field),
+//   }),
+// );
 
-export type IFieldRo = z.infer<typeof createFieldRoSchema>;
+export type ICreateFieldRo = z.infer<typeof createFieldRoSchema>;

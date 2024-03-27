@@ -1,7 +1,8 @@
 import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { IObjectOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 import { collaboratorCellValueSchema } from './airtable.collaborator.field';
 import { AirtableFieldVo } from './airtable.field.vo';
 
@@ -13,26 +14,25 @@ export type IMultipleCollaboratorCellValueVo = z.infer<
 >;
 
 export class AirtableMultipleCollaboratorsField extends AirtableFieldVo {
+  options: IObjectOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
-  }
-
-  getTeableDBCellValue(value: unknown): string {
-    return `'${String((value as any[])?.map((v) => v.name))}'`;
   }
 
   getApiCellValue(value: IMultipleCollaboratorCellValueVo) {
     return value?.map((v) => v.name);
   }
 
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.MultipleSelect,
+      type: TeableFieldType.User,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices: [],
+        isMultiple: true,
+        shouldNotify: false,
       },
     };
   }

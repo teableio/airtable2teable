@@ -7,7 +7,6 @@ export * from './airtable.icon.enum';
 export * from './airtable.record';
 export * from './airtable.table';
 export * from './airtable.time-zone';
-export * from './airtable.view';
 export * from './airtable.view.type.enum';
 export * from './at.tt.map';
 export * from './teable.cell.value.type';

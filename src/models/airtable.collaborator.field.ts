@@ -1,7 +1,8 @@
 import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { IObjectOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export const collaboratorCellValueSchema = z.object({
@@ -16,6 +17,8 @@ export type ICollaboratorCellValueVo = z.infer<
 >;
 
 export class AirtableCollaboratorField extends AirtableFieldVo {
+  options: IObjectOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.OBJECT;
   }
@@ -24,14 +27,15 @@ export class AirtableCollaboratorField extends AirtableFieldVo {
     return value.name;
   }
 
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.SingleSelect,
+      type: TeableFieldType.User,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices: [],
+        isMultiple: false,
+        shouldNotify: false,
       },
     };
   }

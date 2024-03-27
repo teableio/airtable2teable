@@ -1,25 +1,22 @@
-import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import {
+  AirtableCellTypeEnum,
+  IAirtableTable,
+  TeableFieldType,
+  TeableRelationship,
+} from 'types';
 
-import { IFieldRo } from '../teable-sdks';
+import { ILinkFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableLinkField extends AirtableFieldVo {
-  // relationship: TeableRelationship;
-  // constructor(field: IAirtableLinkField) {
-  //   super(field);
-  //   this.relationship = this.field.options?.prefersSingleRecordLink
-  //     ? TeableRelationship.ManyOne
-  //     : TeableRelationship.OneMany;
-  // }
+  options: ILinkFieldOptionsVo;
 
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }
 
-  getApiCellValue(
-    value: string[],
-    // tablesRecordIdsMap: Record<string, Record<string, string>>,
-  ) {
+  getApiCellValue(value: string[]) {
     if (!value) {
       return null;
     }
@@ -27,27 +24,46 @@ export class AirtableLinkField extends AirtableFieldVo {
     if (!linkedTableId) {
       throw new Error('linkedTableId is not defined');
     }
-    // const recordIdsMap = tablesRecordIdsMap[linkedTableId];
-    // if (this.relationship === TeableRelationship.ManyOne) {
-    //   return { id: recordIdsMap[value[0]] };
-    // }
-    // if (this.relationship === TeableRelationship.OneMany) {
-    //   return value.map((id) => ({
-    //     id: recordIdsMap[id],
-    //   }));
-    // }
     throw new Error('relationship is not support');
   }
 
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(tables: IAirtableTable[]): ICreateFieldRo {
+    const fields = tables
+      .map((table) => table.fields)
+      .flatMap((field) => field);
+    const inverseLinkFieldId = this.options.inverseLinkFieldId;
+    const inverseLinkField = fields.find(
+      (field) => field.id === inverseLinkFieldId,
+    );
+    if (!inverseLinkField) {
+      throw new Error('Inverse Link Field No Exist.');
+    }
+    const inverseLinkFieldOptions: ILinkFieldOptionsVo =
+      inverseLinkField.options;
+    let relationship: TeableRelationship;
+    if (
+      inverseLinkFieldOptions.prefersSingleRecordLink &&
+      this.options.prefersSingleRecordLink
+    ) {
+      relationship = TeableRelationship.OneOne;
+    } else if (
+      !inverseLinkFieldOptions.prefersSingleRecordLink &&
+      !this.options.prefersSingleRecordLink
+    ) {
+      relationship = TeableRelationship.ManyMany;
+    } else if (this.options.prefersSingleRecordLink) {
+      relationship = TeableRelationship.ManyOne;
+    } else {
+      relationship = TeableRelationship.OneMany;
+    }
     return {
       type: TeableFieldType.Link,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        // relationship: this.relationship,
-        foreignTableId: this.options?.linkedTableId,
+        relationship,
+        foreignTableId: this.options.linkedTableId,
       },
     };
   }

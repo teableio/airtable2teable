@@ -21,6 +21,7 @@ export * from './ai.text.field';
 export * from './attachment.field';
 export * from './checkbox.field';
 export * from './count.field';
+export * from './created.time.field';
 export * from './currency.field';
 export * from './date.field';
 export * from './date-time.field';
@@ -34,7 +35,9 @@ export * from './rating.field';
 export * from './rollup.field';
 export * from './select.field';
 
-export const objectOptionsSchema = z.object({});
+export const objectOptionsSchema = z.record(z.any());
+
+export type IObjectOptionsVo = z.infer<typeof objectOptionsSchema>;
 
 export const unionFieldOptionsVoSchema = z.union([
   objectOptionsSchema,
@@ -56,4 +59,4 @@ export const unionFieldOptionsVoSchema = z.union([
   rollupFieldOptionsSchema,
 ]);
 
-export type IFieldOptionsVoSchema = z.infer<typeof unionFieldOptionsVoSchema>;
+export type IFieldOptionsVo = z.infer<typeof unionFieldOptionsVoSchema>;

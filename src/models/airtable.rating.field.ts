@@ -1,18 +1,12 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  Colors,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 
-import { IFieldRo, RatingIcon } from '../teable-sdks';
+import { IRatingFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, RatingIcon } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
-import { TeableRatingField } from './teable.rating.field';
 
 export class AirtableRatingField extends AirtableFieldVo {
+  options: IRatingFieldOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
@@ -21,25 +15,7 @@ export class AirtableRatingField extends AirtableFieldVo {
     return value;
   }
 
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.Rating,
-      dbFieldType: TeableDbFieldType.Integer,
-      options: {
-        icon: RatingIcon.Star,
-        color: Colors.YellowBright,
-        max: this.options.max,
-      },
-      cellValueType: TeableCellValueType.Number,
-      isComputed: false,
-    };
-    return plainToInstance(TeableRatingField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.Rating,
       name: this.name,
@@ -47,8 +23,8 @@ export class AirtableRatingField extends AirtableFieldVo {
       isLookup: false,
       options: {
         icon: RatingIcon.Star,
-        color: Colors.YellowBright,
-        max: this.options?.max,
+        color: this.options.color,
+        max: this.options.max,
       },
     };
   }

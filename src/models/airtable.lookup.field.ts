@@ -1,9 +1,10 @@
-import { getAirtableField } from 'models';
-import { IFieldRo, ILinkFieldOptions } from 'teable-sdks';
-import { AirtableCellTypeEnum, IaT2tT } from 'types';
+import { ICreateFieldRo } from 'teable-sdks';
+import { AirtableCellTypeEnum, IAirtableTable, TeableFieldType } from 'types';
 import { z } from 'zod';
 
+import { ILookupFieldOptionsVo } from '../airtable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
+import { getAirtableField } from './index';
 
 export const lookupCellValueSchema = z
   .union([z.number(), z.string(), z.boolean(), z.any()])
@@ -12,6 +13,8 @@ export const lookupCellValueSchema = z
 export type ILookupCellValueVo = z.infer<typeof lookupCellValueSchema>;
 
 export class AirtableLookupField extends AirtableFieldVo {
+  options: ILookupFieldOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }
@@ -20,53 +23,36 @@ export class AirtableLookupField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableFieldCreateRo(
-    currentAirtableTableId: string,
-    at2tT: IaT2tT,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ...others: unknown[]
-  ): IFieldRo {
-    if (!this.options?.isValid) {
-      throw new Error('It not right lookup field.');
+  transformTeableCreateFieldRo(tables: IAirtableTable[]): ICreateFieldRo {
+    if (this.options.isValid) {
+      return {
+        type: TeableFieldType.SingleLineText,
+        name: this.name,
+        description: this.description,
+        isLookup: false,
+        options: {},
+      };
     }
-    const currentTeableTable = at2tT[currentAirtableTableId];
-    const currentTeableTableId = Object.keys(currentTeableTable)[0];
-    if (!currentTeableTableId) {
-      throw new Error('unkonwn table.');
-    }
-    const recordLinkField =
-      currentTeableTable[currentTeableTableId][this.options?.recordLinkFieldId];
-    if (!recordLinkField) {
-      throw new Error('unkonwn link field.');
-    }
-    const foreignTableId = (recordLinkField.options as ILinkFieldOptions)
-      .foreignTableId;
-    const tTid2aTid: Record<string, string> = {};
-    Object.entries(at2tT).forEach(([key, value]) => {
-      tTid2aTid[Object.keys(value)[0]] = key;
+    const lookupFieldId = this.options.fieldIdInLinkedTable;
+    const table = tables.find((table) => {
+      table.fields.find((field) => field.id === lookupFieldId);
     });
-    const lookupedTeableField =
-      at2tT[tTid2aTid[foreignTableId]][foreignTableId][
-        this.options?.fieldIdInLinkedTable
-      ];
-    if (!lookupedTeableField) {
-      throw new Error('unkonwn lookuped field.');
+    if (!table) {
+      throw new Error('Foreign Table No Exist');
     }
-    const airtableDataModel = getAirtableField({
-      ...this.options?.result,
-    });
+    const field = getAirtableField(
+      this.options.result,
+    ).transformTeableCreateFieldRo(tables);
     return {
-      ...airtableDataModel.transformTeableFieldCreateRo(
-        tTid2aTid[foreignTableId],
-        at2tT,
-      ),
       name: this.name,
-      description: this.description || '',
+      description: this.description,
+      type: field.type,
+      options: field.options,
       isLookup: true,
       lookupOptions: {
-        foreignTableId,
-        lookupFieldId: lookupedTeableField.id,
-        linkFieldId: recordLinkField.id,
+        foreignTableId: table.id,
+        lookupFieldId,
+        linkFieldId: this.options.recordLinkFieldId,
       },
     };
   }

@@ -1,17 +1,12 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 
-import { IFieldRo } from '../teable-sdks';
+import { ISelectFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
-import { TeableSingleSelectField } from './teable.single.select.field';
 
 export class AirtableSingleSelectField extends AirtableFieldVo {
+  options: ISelectFieldOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.STRING;
   }
@@ -20,36 +15,14 @@ export class AirtableSingleSelectField extends AirtableFieldVo {
     return value;
   }
 
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.SingleSelect,
-      dbFieldType: TeableDbFieldType.Text,
-      options: {
-        choices: this.options.choices || [],
-      },
-      cellValueType: TeableCellValueType.String,
-      isMultipleCellValue: false,
-      isComputed: false,
-    };
-    return plainToInstance(TeableSingleSelectField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.SingleSelect,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices:
-          this.options?.choices?.map((choice) => {
-            return {
-              name: choice.name,
-            };
-          }) || [],
+        choices: this.options.choices,
       },
     };
   }

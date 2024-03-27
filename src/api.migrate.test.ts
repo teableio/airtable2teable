@@ -4,12 +4,12 @@ describe('api migrate', () => {
   test('create table meta by api migrate', async () => {
     const apiMigrate = new ApiMigrate({
       from: {
-        airtableToken: process.env.AIRTABLE_TOKEN,
-        baseId: process.env.AIRTABLE_BASE_ID,
+        airtableToken: process.env.AIRTABLE_TOKEN as string,
+        baseId: process.env.AIRTABLE_BASE_ID as string,
       },
       to: {
-        teableToken: process.env.TEABLE_TOKEN,
-        spaceId: process.env.TEABLE_SPACE_ID,
+        teableToken: process.env.TEABLE_TOKEN as string,
+        spaceId: process.env.TEABLE_SPACE_ID as string,
       },
     });
     await apiMigrate.execute();
@@ -96,6 +96,8 @@ describe('api migrate', () => {
     for (const table of tables) {
       for (const field of table.fields) {
         fieldId2Field[field.id] = field;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (field.type === 'multipleLookupValues' && field.options.isValid) {
           fieldIds.add(field.id);
         }
@@ -108,6 +110,8 @@ describe('api migrate', () => {
       if (lookupedField.type === 'multipleLookupValues') {
         recursion(lookupedField.id);
       }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       rollupSequence.push(fieldId);
       fieldIds.delete(fieldId);
     };

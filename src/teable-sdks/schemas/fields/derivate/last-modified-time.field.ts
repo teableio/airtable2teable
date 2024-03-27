@@ -1,10 +1,10 @@
-import { extend } from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
+import * as dayjs from 'dayjs';
+import * as timezone from 'dayjs/plugin/timezone';
 import { z } from 'zod';
 
 import { datetimeFormattingSchema } from '../formatting';
 
-extend(timezone);
+dayjs.extend(timezone);
 
 export const lastModifiedTimeFieldOptionsSchema = z.object({
   expression: z.literal('LAST_MODIFIED_TIME()'),

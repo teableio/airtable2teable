@@ -1,15 +1,7 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableFieldTypeEnum,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { AirtableFieldTypeEnum } from 'types';
 
-import { IAirtableFieldVo, IFieldOptionsVoSchema } from '../airtable-sdks';
-import { TeableSingleLineTextField } from '../models';
-import { IFieldRo } from '../teable-sdks';
+import { IAirtableFieldVo, IFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 
 export abstract class AirtableFieldVo implements IAirtableFieldVo {
   id!: string;
@@ -20,32 +12,17 @@ export abstract class AirtableFieldVo implements IAirtableFieldVo {
 
   description?: string;
 
-  options?: IFieldOptionsVoSchema;
+  options?: IFieldOptionsVo;
+
+  constructor(vo: IAirtableFieldVo) {
+    this.id = vo.id;
+    this.name = vo.name;
+    this.type = vo.type;
+    this.description = vo.description;
+    this.options = vo.options;
+  }
 
   abstract getApiCellValue(value: unknown, ...others: unknown[]): unknown;
 
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.SingleLineText,
-      dbFieldType: TeableDbFieldType.Text,
-      options: {},
-      cellValueType: TeableCellValueType.String,
-      isComputed: false,
-    };
-    return plainToInstance(TeableSingleLineTextField, json);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  transformTeableFieldCreateRo(...others: unknown[]): IFieldRo {
-    return {
-      type: TeableFieldType.SingleLineText,
-      name: this.name,
-      description: this.description,
-      isLookup: false,
-      options: {},
-    };
-  }
+  abstract transformTeableCreateFieldRo(...args: unknown[]): ICreateFieldRo;
 }

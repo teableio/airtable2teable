@@ -1,16 +1,9 @@
 import { AirtableSdk } from './airtable-sdks';
+import { AirtableFieldVo, getAirtableField } from './models';
+import { ICreateFieldRo, IRecordsRo, Table, TeableSdk } from './teable-sdks';
 import {
-  AirtableLinkField,
-  AirtableLongTextField,
-  getAirtableField,
-} from './models';
-import { IFieldRo, IRecordsRo, Table, TeableSdk } from './teable-sdks';
-import {
-  AirtableFieldTypeEnum,
-  AirtableFieldVo,
-  IAirtableField,
   IAirtableRecord,
-  IaT2tT,
+  IAirtableTable,
   TeableFieldKeyType,
   TeableViewTypeEnum,
 } from './types';
@@ -48,29 +41,15 @@ export class ApiMigrate {
       name: new Date().toISOString(),
     });
     const tables = await this.airtableSdk.getTables(this.option.from.baseId);
+    const newTables: Table[] = [];
     const aTid2tT: Record<string, Table> = {};
-    const migratedAirtableTableIds = new Set<string>();
-    const at2tT: IaT2tT = {};
-    const teableTablesRecordIdsMap: Record<string, Record<string, string>> = {};
-    const airtableLookupFieldMap: Record<string, IAirtableField[]> = {};
     let i = 1;
     for (const table of tables) {
-      const airtableRecords = await this.airtableSdk.getRecords(table);
-      const airtableFieldsMap = this.getAirtableFieldsMap(
-        table,
-        migratedAirtableTableIds,
-        aTid2tT,
-        airtableLookupFieldMap,
-      );
-      const teableFieldCreateRos: IFieldRo[] = Object.values(
-        airtableFieldsMap,
-      ).map((field) => field.transformTeableFieldCreateRo());
+      const airtableFieldsByIdMap = this.getAirtableFieldsMap(table);
+      const teableFieldCreateRos: ICreateFieldRo[] = Object.values(
+        airtableFieldsByIdMap,
+      ).map((field) => field.transformTeableCreateFieldRo(tables, newTables));
       let j = 1;
-      const teableRecordCreateRos: IRecordsRo = this.getRecordCreateRos(
-        airtableRecords,
-        airtableFieldsMap,
-        teableTablesRecordIdsMap,
-      );
       const teableTable = await base.createTable({
         name: table.name,
         description: table.description,
@@ -80,43 +59,13 @@ export class ApiMigrate {
             name: view.name,
             type: TeableViewTypeEnum.Grid,
             order: j++,
+            columnMeta: {},
           };
         }),
         fieldKeyType: TeableFieldKeyType.Name,
         fields: teableFieldCreateRos,
       });
-      at2tT[table.id] = {
-        [teableTable.id]: {},
-      };
-      const name2FieldId = table.fields.reduce((result, field) => {
-        result[field.name] = field.id;
-        return result;
-      }, {});
-      teableTable.vo.fields.forEach((field) => {
-        const airatbleFieldId = name2FieldId[field.name];
-        at2tT[table.id][teableTable.id][airatbleFieldId] = field;
-      });
-      await teableTable.deleteRecords(
-        teableTable.vo.records.map((record) => record.id),
-      );
-      const records = await teableTable.createRecords(teableRecordCreateRos);
-      const a2tRecordIdMap: Record<string, string> = {};
-      for (let k = 0; k < airtableRecords.length; k++) {
-        a2tRecordIdMap[airtableRecords[k].id] = records.records[k]?.id;
-      }
-      teableTablesRecordIdsMap[teableTable.id] = a2tRecordIdMap;
-      aTid2tT[table.id] = teableTable;
-      migratedAirtableTableIds.add(table.id);
-    }
-    for (const airtableId of Object.keys(airtableLookupFieldMap)) {
-      const airtableFields = airtableLookupFieldMap[airtableId];
-      for (const airtableField of airtableFields) {
-        const airtableDataModel = getAirtableField(airtableField);
-        const teableFieldCreateRo =
-          airtableDataModel.transformTeableFieldCreateRo(airtableId, at2tT);
-        const teableTable = aTid2tT[airtableId];
-        await teableTable.createField(teableFieldCreateRo);
-      }
+      newTables.push(teableTable);
     }
     return { tables, tablesMap: aTid2tT };
   }
@@ -145,52 +94,11 @@ export class ApiMigrate {
   }
 
   private getAirtableFieldsMap(
-    table: any,
-    migratedAirtableTableIds: Set<string>,
-    teableTablesMap: Record<string, Table>,
-    airtableLookupFieldMap: Record<string, IAirtableField[]>,
+    table: IAirtableTable,
   ): Record<string, AirtableFieldVo> {
     const airtableFieldsMap: Record<string, AirtableFieldVo> = {};
     table.fields.forEach((field) => {
-      let airtableDataModel: AirtableFieldVo;
-      if (field.type === AirtableFieldTypeEnum.MultipleRecordLinks) {
-        if (
-          field.options?.linkedTableId &&
-          migratedAirtableTableIds.has(field.options?.linkedTableId)
-        ) {
-          airtableDataModel = new AirtableLinkField({
-            id: field.id,
-            name: field.name,
-            description: field.description,
-            type: AirtableFieldTypeEnum.MultipleRecordLinks,
-            options: {
-              isReversed: field.options.isReversed as boolean,
-              prefersSingleRecordLink: field.options
-                .prefersSingleRecordLink as boolean,
-              linkedTableId: teableTablesMap[field.options.linkedTableId].id,
-            },
-          });
-        } else {
-          return;
-        }
-      } else if (
-        // field.type === AirtableFieldTypeEnum.Count ||
-        // field.type === AirtableFieldTypeEnum.Rollup ||
-        field.type === AirtableFieldTypeEnum.MultipleLookupValues ||
-        field.type === AirtableFieldTypeEnum.Lookup
-      ) {
-        if (field.options?.isValid) {
-          airtableLookupFieldMap[table.id] =
-            airtableLookupFieldMap[table.id] || [];
-          airtableLookupFieldMap[table.id].push(field);
-          return;
-        } else {
-          airtableDataModel = new AirtableLongTextField(field as any);
-        }
-      } else {
-        airtableDataModel = getAirtableField(field);
-      }
-      airtableFieldsMap[field.name] = airtableDataModel;
+      airtableFieldsMap[field.id] = getAirtableField(field);
     });
     return airtableFieldsMap;
   }

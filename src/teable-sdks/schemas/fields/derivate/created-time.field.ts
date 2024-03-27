@@ -1,10 +1,10 @@
-import { extend } from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
+import * as dayjs from 'dayjs';
+import * as timezone from 'dayjs/plugin/timezone';
 import { z } from 'zod';
 
 import { datetimeFormattingSchema } from '../formatting.shcema';
 
-extend(timezone);
+dayjs.extend(timezone);
 
 export const createdTimeFieldOptionsSchema = z.object({
   expression: z.literal('CREATED_TIME()'),

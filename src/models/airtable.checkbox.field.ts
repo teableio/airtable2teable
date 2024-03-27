@@ -1,22 +1,17 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { ICheckFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
-import { TeableCheckboxField } from './teable.checkbox.field';
 
 export const checkboxCellValueSchema = z.boolean().nullable();
 
 export type ICheckboxCellValueVo = z.infer<typeof checkboxCellValueSchema>;
 
 export class AirtableCheckboxField extends AirtableFieldVo {
+  options: ICheckFieldOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.TRUE;
   }
@@ -24,21 +19,7 @@ export class AirtableCheckboxField extends AirtableFieldVo {
     return value;
   }
 
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.Checkbox,
-      dbFieldType: TeableDbFieldType.Integer,
-      options: {},
-      cellValueType: TeableCellValueType.Boolean,
-      isComputed: false,
-    };
-    return plainToInstance(TeableCheckboxField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.Checkbox,
       name: this.name,

@@ -1,5 +1,4 @@
-import { IAirtableView } from './airtable.view';
-import { IAirtableField } from './fields';
+import { IAirtableFieldVo, IAirtableViewVo } from '../airtable-sdks';
 
 export interface IAirtableTable {
   baseId: string;
@@ -10,6 +9,6 @@ export interface IAirtableTable {
   primaryFieldId: string;
   name: string;
   description?: string;
-  fields: IAirtableField[];
-  views: IAirtableView[];
+  fields: IAirtableFieldVo[];
+  views: IAirtableViewVo[];
 }

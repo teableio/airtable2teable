@@ -8,6 +8,6 @@ describe('sdks test', () => {
   });
 
   test('Get Tables', async () => {
-    await sdk.getTables(process.env.AIRTABLE_BASE_ID);
+    await sdk.getTables(process.env.AIRTABLE_BASE_ID as string);
   }, 60000);
 });

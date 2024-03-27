@@ -8,7 +8,7 @@ import {
   ISdkConfig,
   IViewVo,
 } from './index';
-import { IFieldRo, IFieldVo, ITableFullVo, IViewRo } from './schemas';
+import { ICreateFieldRo, IFieldVo, ITableFullVo, IViewRo } from './schemas';
 import { assertResponse } from './util';
 import { View } from './view';
 
@@ -92,7 +92,7 @@ export class Table {
     assertResponse(response);
   }
 
-  async createField(field: IFieldRo) {
+  async createField(field: ICreateFieldRo) {
     const response = await axios.post<IFieldVo>(
       `${this.config.host}/api/table/${this.id}/field`,
       {

@@ -1,7 +1,7 @@
 import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export const buttonCellValueSchema = z.object({
@@ -12,6 +12,8 @@ export const buttonCellValueSchema = z.object({
 export type IButtonCellValueVo = z.infer<typeof buttonCellValueSchema>;
 
 export class AirtableButtonField extends AirtableFieldVo {
+  options: undefined;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.OBJECT;
   }
@@ -20,7 +22,7 @@ export class AirtableButtonField extends AirtableFieldVo {
     return value.label;
   }
 
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.SingleLineText,
       name: this.name,

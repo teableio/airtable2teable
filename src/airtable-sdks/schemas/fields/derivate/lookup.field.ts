@@ -1,6 +1,6 @@
+import { AirtableFieldTypeEnum } from 'types';
 import { z } from 'zod';
 
-import { AirtableFieldTypeEnum } from '../../../types';
 import { unionFieldOptionsVoSchema } from './index';
 
 export const lookupFieldOptionsSchema = z.object({

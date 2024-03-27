@@ -1,17 +1,12 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 
-import { IFieldRo, NumberFormattingType } from '../teable-sdks';
+import { INumberFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, NumberFormattingType } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
-import { TeableNumberField } from './teable.number.field';
 
 export class AirtablePercentField extends AirtableFieldVo {
+  options: INumberFieldOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
@@ -20,30 +15,7 @@ export class AirtablePercentField extends AirtableFieldVo {
     return value;
   }
 
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.Number,
-      dbFieldType: TeableDbFieldType.Real,
-      options: {
-        formatting: {
-          type: NumberFormattingType.Percent,
-          precision: this.options?.precision,
-        },
-      },
-      cellValueType: TeableCellValueType.Number,
-      isComputed: false,
-    };
-    return plainToInstance(TeableNumberField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
-    let precision = 0;
-    if (this.options?.precision) {
-      precision = this.options.precision > 5 ? 5 : this.options.precision;
-    }
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.Number,
       name: this.name,
@@ -52,7 +24,7 @@ export class AirtablePercentField extends AirtableFieldVo {
       options: {
         formatting: {
           type: NumberFormattingType.Percent,
-          precision: precision,
+          precision: this.options.precision > 5 ? 5 : this.options.precision,
         },
       },
     };

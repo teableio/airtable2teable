@@ -1,7 +1,7 @@
 import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
-import { IFieldRo } from '../teable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 import { collaboratorCellValueSchema } from './airtable.collaborator.field';
 import { AirtableFieldVo } from './airtable.field.vo';
 
@@ -10,6 +10,8 @@ export type ILastModifiedCellValueVo = z.infer<
 >;
 
 export class AirtableLastModifiedByField extends AirtableFieldVo {
+  options: undefined;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.OBJECT;
   }
@@ -18,14 +20,15 @@ export class AirtableLastModifiedByField extends AirtableFieldVo {
     return value.name;
   }
 
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.SingleSelect,
+      type: TeableFieldType.User,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices: [],
+        isMultiple: false,
+        shouldNotify: false,
       },
     };
   }

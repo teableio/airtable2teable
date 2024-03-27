@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { IAirtableRecord, IAirtableTable } from '../types';
+import { IAirtableTableVo } from './schemas';
 
 export * from './schemas';
 
@@ -11,8 +12,8 @@ export class AirtableSdk {
     this.airtableToken = airtableToken;
   }
 
-  async getTables(baseId: string) {
-    const response = await axios.get<{ tables: IAirtableTable[] }>(
+  async getTables(baseId: string): Promise<IAirtableTable[]> {
+    const response = await axios.get<{ tables: IAirtableTableVo[] }>(
       `https://api.airtable.com/v0/meta/bases/${baseId}/tables`,
       {
         headers: {
@@ -25,7 +26,7 @@ export class AirtableSdk {
         `Response Status: ${response.status}, Response Message: ${response.statusText}`,
       );
     }
-    return response.data.tables?.map((e) => {
+    return response.data.tables.map((e: IAirtableTableVo) => {
       return {
         baseId: baseId,
         ...e,
@@ -35,7 +36,7 @@ export class AirtableSdk {
 
   async getRecords(table: IAirtableTable) {
     const records: IAirtableRecord[] = [];
-    let offset = '0';
+    let offset: string | undefined = '0';
     do {
       const response = await axios.get<{
         offset?: string;

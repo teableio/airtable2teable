@@ -1,17 +1,12 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 
-import { IFieldRo, NumberFormattingType } from '../teable-sdks';
+import { ICurrencyFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, NumberFormattingType } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
-import { TeableNumberField } from './teable.number.field';
 
 export class AirtableCurrencyField extends AirtableFieldVo {
+  options: ICurrencyFieldOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.NUMBER;
   }
@@ -20,29 +15,9 @@ export class AirtableCurrencyField extends AirtableFieldVo {
     return value;
   }
 
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.Number,
-      dbFieldType: TeableDbFieldType.Real,
-      options: {
-        formatting: {
-          type: NumberFormattingType.Currency,
-          precision: this.options?.precision,
-          symbol: this.options?.symbol,
-        },
-      },
-      cellValueType: TeableCellValueType.Number,
-      isComputed: false,
-    };
-    return plainToInstance(TeableNumberField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     let precision = 0;
-    if (this.options?.precision) {
+    if (this.options.precision) {
       precision = this.options.precision > 5 ? 5 : this.options.precision;
     }
     return {
@@ -54,7 +29,7 @@ export class AirtableCurrencyField extends AirtableFieldVo {
         formatting: {
           type: NumberFormattingType.Currency,
           precision: precision,
-          symbol: this.options?.symbol,
+          symbol: this.options.symbol,
         },
       },
     };

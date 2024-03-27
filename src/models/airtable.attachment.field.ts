@@ -1,6 +1,8 @@
-import { AirtableCellTypeEnum } from 'types';
+import { AirtableCellTypeEnum, TeableFieldType } from 'types';
 import { z } from 'zod';
 
+import { IAttachmentFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export const attachmentCellValueSchema = z
@@ -39,11 +41,23 @@ export const attachmentCellValueSchema = z
 export type IAttachmentCellValueVo = z.infer<typeof attachmentCellValueSchema>;
 
 export class AirtableAttachmentField extends AirtableFieldVo {
+  options?: IAttachmentFieldOptionsVo;
+
   get cellType(): AirtableCellTypeEnum {
     return AirtableCellTypeEnum.ARRAY;
   }
 
   getApiCellValue(value: IAttachmentCellValueVo): string {
     return value?.map((file) => file.filename).join(',');
+  }
+
+  transformTeableCreateFieldRo(): ICreateFieldRo {
+    return {
+      type: TeableFieldType.Attachment,
+      name: this.name,
+      isLookup: false,
+      description: this.description,
+      options: {},
+    };
   }
 }

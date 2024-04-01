@@ -29,6 +29,15 @@ export class AirtableFormulaField extends AirtableFieldVo {
   }
 
   transformTeableCreateFieldRo(): ICreateFieldRo {
+    if (!this.options.isValid) {
+      return {
+        type: TeableFieldType.SingleLineText,
+        name: this.name,
+        description: this.description,
+        isLookup: false,
+        options: {},
+      };
+    }
     return {
       type: TeableFieldType.Formula,
       name: this.name,

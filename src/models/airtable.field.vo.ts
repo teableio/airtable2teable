@@ -4,6 +4,8 @@ import { IAirtableFieldVo, IFieldOptionsVo } from '../airtable-sdks';
 import { ICreateFieldRo } from '../teable-sdks';
 
 export abstract class AirtableFieldVo implements IAirtableFieldVo {
+  tableId!: string;
+
   id!: string;
 
   name!: string;
@@ -15,6 +17,7 @@ export abstract class AirtableFieldVo implements IAirtableFieldVo {
   options?: IFieldOptionsVo;
 
   constructor(vo: IAirtableFieldVo) {
+    this.tableId = vo.tableId;
     this.id = vo.id;
     this.name = vo.name;
     this.type = vo.type;

@@ -1,7 +1,16 @@
-import { AirtableSdk } from './airtable-sdks';
+import * as _ from 'lodash';
+
+import {
+  AirtableSdk,
+  IAirtableFieldVo,
+  ICountFieldOptionsVo,
+  IFormulaFieldOptionsVo,
+  IRollupFieldOptionsVo,
+} from './airtable-sdks';
 import { AirtableFieldVo, getAirtableField } from './models';
 import { ICreateFieldRo, IRecordsRo, Table, TeableSdk } from './teable-sdks';
 import {
+  AirtableFieldTypeEnum,
   IAirtableRecord,
   IAirtableTable,
   TeableFieldKeyType,
@@ -41,6 +50,16 @@ export class ApiMigrate {
       name: new Date().toISOString(),
     });
     const tables = await this.airtableSdk.getTables(this.option.from.baseId);
+    const fields = tables.flatMap((table) => table.fields);
+    const fieldDependencies = fields
+      .map((field) => this.fieldDependency(field))
+      .filter((dependencies) => dependencies.length > 0)
+      .flatMap((dependencies) => {
+        return dependencies;
+      });
+    const lazy = _.unique(
+      fieldDependencies.map((fieldDependency) => fieldDependency[0]),
+    );
     const newTables: Table[] = [];
     const aTid2tT: Record<string, Table> = {};
     let i = 1;
@@ -48,7 +67,9 @@ export class ApiMigrate {
       const airtableFieldsByIdMap = this.getAirtableFieldsMap(table);
       const teableFieldCreateRos: ICreateFieldRo[] = Object.values(
         airtableFieldsByIdMap,
-      ).map((field) => field.transformTeableCreateFieldRo(tables, newTables));
+      )
+        .filter((field) => !lazy.find((e) => e === field.id))
+        .map((field) => field.transformTeableCreateFieldRo(tables, newTables));
       let j = 1;
       const teableTable = await base.createTable({
         name: table.name,
@@ -101,5 +122,40 @@ export class ApiMigrate {
       airtableFieldsMap[field.id] = getAirtableField(field);
     });
     return airtableFieldsMap;
+  }
+
+  /**
+   *
+   * @param field
+   * @private [depended on, be depended on]
+   */
+  private fieldDependency(field: IAirtableFieldVo): [string, string][] | [] {
+    if (field.type === AirtableFieldTypeEnum.Count && field.options.isValid) {
+      return [
+        [field.id, (field.options as ICountFieldOptionsVo).recordLinkFieldId!],
+      ];
+    } else if (
+      field.type === AirtableFieldTypeEnum.Formula &&
+      field.options.isValid
+    ) {
+      return (field.options as IFormulaFieldOptionsVo).referencedFieldIds!.map(
+        (referencedFieldId) => {
+          return [field.id, referencedFieldId];
+        },
+      );
+    } else if (
+      field.type === AirtableFieldTypeEnum.Rollup &&
+      field.options.isValid
+    ) {
+      return [
+        [field.id, (field.options as IRollupFieldOptionsVo).recordLinkFieldId!],
+        ...(field.options as IRollupFieldOptionsVo).referencedFieldIds?.map(
+          (referencedFieldId: string) => {
+            return [field.id, referencedFieldId];
+          },
+        ),
+      ];
+    }
+    return [];
   }
 }

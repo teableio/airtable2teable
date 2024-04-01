@@ -9,6 +9,6 @@ export interface IAirtableTable {
   primaryFieldId: string;
   name: string;
   description?: string;
-  fields: IAirtableFieldVo[];
+  fields: (IAirtableFieldVo & { tableId: string })[];
   views: IAirtableViewVo[];
 }

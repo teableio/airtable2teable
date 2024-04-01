@@ -30,6 +30,12 @@ export class AirtableSdk {
       return {
         baseId: baseId,
         ...e,
+        fields: e.fields.map((field) => {
+          return {
+            tableId: e.id,
+            ...field,
+          };
+        }),
       };
     });
   }

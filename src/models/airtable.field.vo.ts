@@ -16,7 +16,7 @@ export abstract class AirtableFieldVo implements IAirtableFieldVo {
 
   options?: IFieldOptionsVo;
 
-  constructor(vo: IAirtableFieldVo) {
+  constructor(vo: IAirtableFieldVo & { tableId: string }) {
     this.tableId = vo.tableId;
     this.id = vo.id;
     this.name = vo.name;

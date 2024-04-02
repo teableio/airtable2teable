@@ -6,7 +6,8 @@ import {
 } from 'types';
 
 import { ILinkFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo } from '../teable-sdks';
+import { ICreateFieldRo, ITableTableVo } from '../teable-sdks';
+import { mappingTable } from '../utils/table.util';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableLinkField extends AirtableFieldVo {
@@ -27,7 +28,10 @@ export class AirtableLinkField extends AirtableFieldVo {
     throw new Error('relationship is not support');
   }
 
-  transformTeableCreateFieldRo(tables: IAirtableTable[]): ICreateFieldRo {
+  transformTeableCreateFieldRo(
+    tables: IAirtableTable[],
+    newTables: ITableTableVo[],
+  ): ICreateFieldRo {
     const fields = tables
       .map((table) => table.fields)
       .flatMap((field) => field);
@@ -56,6 +60,11 @@ export class AirtableLinkField extends AirtableFieldVo {
     } else {
       relationship = TeableRelationship.OneMany;
     }
+    const newTable = mappingTable(
+      tables,
+      newTables,
+      this.options.linkedTableId,
+    );
     return {
       type: TeableFieldType.Link,
       name: this.name,
@@ -63,7 +72,7 @@ export class AirtableLinkField extends AirtableFieldVo {
       isLookup: false,
       options: {
         relationship,
-        foreignTableId: this.options.linkedTableId,
+        foreignTableId: newTable!.id,
       },
     };
   }

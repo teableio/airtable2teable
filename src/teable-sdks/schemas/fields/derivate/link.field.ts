@@ -19,3 +19,5 @@ export const linkFieldOptionsRoSchema = linkFieldOptionsSchema.pick({
   foreignTableId: true,
   isOneWay: true,
 });
+
+export type ILinkFieldOptions = z.infer<typeof linkFieldOptionsSchema>;

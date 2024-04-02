@@ -28,10 +28,13 @@ const baseFieldRoSchema = fieldVoSchema
   );
 
 export const createFieldRoSchema = baseFieldRoSchema;
-// .merge(
-//   z.object({
-//     id: z.string().startsWith(IdPrefix.Field),
-//   }),
-// );
 
 export type ICreateFieldRo = z.infer<typeof createFieldRoSchema>;
+
+export const updateFieldRoSchema = z.object({
+  name: baseFieldRoSchema.shape.name,
+  description: baseFieldRoSchema.shape.description,
+  dbFieldName: baseFieldRoSchema.shape.dbFieldName,
+});
+
+export type IUpdateFieldRo = z.infer<typeof updateFieldRoSchema>;

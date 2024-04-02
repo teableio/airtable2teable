@@ -77,7 +77,9 @@ export * from './teable.number.field';
 export * from './teable.rating.field';
 export * from './teable.single.line.text.field';
 
-export const getAirtableField = (field: IAirtableFieldVo): AirtableFieldVo => {
+export const getAirtableField = (
+  field: IAirtableFieldVo & { tableId: string },
+): AirtableFieldVo => {
   if (field?.type === AirtableFieldTypeEnum.AiText) {
     return new AirtableAiTextField(field);
   } else if (field?.type === AirtableFieldTypeEnum.MultipleAttachments) {

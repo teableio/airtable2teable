@@ -23,7 +23,7 @@ export const tableFullVoSchema = z.object({
   defaultViewId: z.string().startsWith(IdPrefix.View).optional(),
 });
 
-export type ITableFullVo = z.infer<typeof tableFullVoSchema>;
+export type ITableTableVo = z.infer<typeof tableFullVoSchema>;
 
 export const tableRoSchema = tableFullVoSchema
   .omit({

@@ -5,17 +5,27 @@ import {
   IAirtableFieldVo,
   ICountFieldOptionsVo,
   IFormulaFieldOptionsVo,
+  ILinkFieldOptionsVo,
+  ILookupFieldOptionsVo,
   IRollupFieldOptionsVo,
 } from './airtable-sdks';
 import { AirtableFieldVo, getAirtableField } from './models';
-import { ICreateFieldRo, IRecordsRo, Table, TeableSdk } from './teable-sdks';
+import {
+  ICreateFieldRo,
+  ILinkFieldOptions,
+  IRecordsRo,
+  ITableTableVo,
+  Table,
+  TeableSdk,
+} from './teable-sdks';
 import {
   AirtableFieldTypeEnum,
   IAirtableRecord,
-  IAirtableTable,
   TeableFieldKeyType,
+  TeableFieldType,
   TeableViewTypeEnum,
 } from './types';
+import { mappingTable } from './utils/table.util';
 
 export class ApiMigrate {
   private teableSdk: TeableSdk;
@@ -57,18 +67,31 @@ export class ApiMigrate {
       .flatMap((dependencies) => {
         return dependencies;
       });
-    const lazy = _.unique(
+    const lazy = _.uniq(
       fieldDependencies.map((fieldDependency) => fieldDependency[0]),
     );
-    const newTables: Table[] = [];
-    const aTid2tT: Record<string, Table> = {};
+    const newTables: ITableTableVo[] = [];
+    const teableTables: Table[] = [];
     let i = 1;
     for (const table of tables) {
-      const airtableFieldsByIdMap = this.getAirtableFieldsMap(table);
-      const teableFieldCreateRos: ICreateFieldRo[] = Object.values(
-        airtableFieldsByIdMap,
-      )
-        .filter((field) => !lazy.find((e) => e === field.id))
+      const airtableFields = table.fields.map((field) =>
+        getAirtableField(field),
+      );
+      const teableFieldCreateRos: ICreateFieldRo[] = airtableFields
+        .filter((field) => {
+          if (lazy.find((e) => e === field.id)) {
+            return false;
+          }
+          if (field.type === AirtableFieldTypeEnum.MultipleRecordLinks) {
+            const linkedTableId = (field.options as ILinkFieldOptionsVo)
+              .linkedTableId;
+            const newTable = mappingTable(tables, newTables, linkedTableId);
+            if (!newTable) {
+              return false;
+            }
+          }
+          return true;
+        })
         .map((field) => field.transformTeableCreateFieldRo(tables, newTables));
       let j = 1;
       const teableTable = await base.createTable({
@@ -86,9 +109,35 @@ export class ApiMigrate {
         fieldKeyType: TeableFieldKeyType.Name,
         fields: teableFieldCreateRos,
       });
-      newTables.push(teableTable);
+      const teableTableVo = teableTable.info;
+      newTables.push(teableTableVo);
+      teableTables.push(teableTable);
+      const linkFields = teableTableVo.fields
+        .filter((field) => field.type === TeableFieldType.Link)
+        .map((field) => field);
+      for (const linkField of linkFields) {
+        const options = linkField.options as ILinkFieldOptions;
+        const foreignTableId = options.foreignTableId;
+        const foreignTable = teableTables.find(
+          (table) => table.id === foreignTableId,
+        );
+        const mappingField = table.fields.find(
+          (field) => field.name === linkField.name,
+        );
+        const mappingFieldOptions = mappingField!
+          .options as ILinkFieldOptionsVo;
+        const mappingForeignTable = tables.find(
+          (table) => table.id === mappingFieldOptions.linkedTableId,
+        );
+        const mappingInverseField = mappingForeignTable!.fields.find(
+          (field) => field.id === mappingFieldOptions.inverseLinkFieldId,
+        );
+        const symmetricFieldId = options.symmetricFieldId!;
+        await foreignTable!.updateField(symmetricFieldId, {
+          name: mappingInverseField!.name,
+        });
+      }
     }
-    return { tables, tablesMap: aTid2tT };
   }
 
   private getRecordCreateRos(
@@ -112,16 +161,6 @@ export class ApiMigrate {
         fields: newRecord,
       };
     });
-  }
-
-  private getAirtableFieldsMap(
-    table: IAirtableTable,
-  ): Record<string, AirtableFieldVo> {
-    const airtableFieldsMap: Record<string, AirtableFieldVo> = {};
-    table.fields.forEach((field) => {
-      airtableFieldsMap[field.id] = getAirtableField(field);
-    });
-    return airtableFieldsMap;
   }
 
   /**
@@ -154,6 +193,18 @@ export class ApiMigrate {
             return [field.id, referencedFieldId];
           },
         ),
+      ];
+    } else if (
+      (field.type === AirtableFieldTypeEnum.Lookup ||
+        field.type === AirtableFieldTypeEnum.MultipleLookupValues) &&
+      field.options.isValid
+    ) {
+      return [
+        [field.id, (field.options as ILookupFieldOptionsVo).recordLinkFieldId!],
+        [
+          field.id,
+          (field.options as ILookupFieldOptionsVo).fieldIdInLinkedTable!,
+        ],
       ];
     }
     return [];

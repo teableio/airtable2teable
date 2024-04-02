@@ -6,17 +6,22 @@ import {
   ICreateRecordsVo,
   IRecordsRo,
   ISdkConfig,
+  IUpdateFieldRo,
   IViewVo,
 } from './index';
-import { ICreateFieldRo, IFieldVo, ITableFullVo, IViewRo } from './schemas';
+import { ICreateFieldRo, IFieldVo, ITableTableVo, IViewRo } from './schemas';
 import { assertResponse } from './util';
 import { View } from './view';
 
 export class Table {
+  info: ITableTableVo;
+
   constructor(
     private config: ISdkConfig,
-    private info: ITableFullVo,
-  ) {}
+    info: ITableTableVo,
+  ) {
+    this.info = info;
+  }
 
   get id(): string {
     return this.info.id;
@@ -95,6 +100,22 @@ export class Table {
   async createField(field: ICreateFieldRo) {
     const response = await axios.post<IFieldVo>(
       `${this.config.host}/api/table/${this.id}/field`,
+      {
+        ...field,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.config.token}`,
+        },
+      },
+    );
+    assertResponse(response);
+    return response.data;
+  }
+
+  async updateField(fieldId: string, field: IUpdateFieldRo) {
+    const response = await axios.patch<IFieldVo>(
+      `${this.config.host}/api/table/${this.id}/field/${fieldId}`,
       {
         ...field,
       },

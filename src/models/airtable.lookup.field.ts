@@ -1,8 +1,9 @@
-import { ICreateFieldRo } from 'teable-sdks';
+import { ICreateFieldRo, ITableTableVo } from 'teable-sdks';
 import { AirtableCellTypeEnum, IAirtableTable, TeableFieldType } from 'types';
 import { z } from 'zod';
 
-import { ILookupFieldOptionsVo } from '../airtable-sdks';
+import { IAirtableFieldVo, ILookupFieldOptionsVo } from '../airtable-sdks';
+import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 import { getAirtableField } from './index';
 
@@ -23,8 +24,11 @@ export class AirtableLookupField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(tables: IAirtableTable[]): ICreateFieldRo {
-    if (this.options.isValid) {
+  transformTeableCreateFieldRo(
+    tables: IAirtableTable[],
+    newTables: ITableTableVo[],
+  ): ICreateFieldRo {
+    if (!this.options.isValid) {
       return {
         type: TeableFieldType.SingleLineText,
         name: this.name,
@@ -33,16 +37,33 @@ export class AirtableLookupField extends AirtableFieldVo {
         options: {},
       };
     }
+    const table = tables.find((table) => table.id === this.tableId)!;
+    const newTable = newTables.find(
+      (newTable) => table.name === newTable.name,
+    )!;
+    const recordLinkField = table.fields.find(
+      (field) => field.id === this.options.recordLinkFieldId,
+    )!;
+    const mappingRecordLinkField = newTable.fields.find(
+      (field) => field.name === recordLinkField.name,
+    )!;
     const lookupFieldId = this.options.fieldIdInLinkedTable;
-    const table = tables.find((table) => {
-      table.fields.find((field) => field.id === lookupFieldId);
-    });
-    if (!table) {
-      throw new Error('Foreign Table No Exist');
-    }
+    let lookupField: IAirtableFieldVo | undefined;
+    const foreignTable = tables.find((table) => {
+      lookupField = table.fields.find((field) => field.id === lookupFieldId);
+      return !!lookupField;
+    })!;
+    const mappingForeignTable = mappingTable(
+      tables,
+      newTables,
+      foreignTable.id,
+    )!;
+    const mappingLookupField = mappingForeignTable.fields.find(
+      (field) => field.name === lookupField!.name,
+    )!;
     const field = getAirtableField(
       this.options.result,
-    ).transformTeableCreateFieldRo(tables);
+    ).transformTeableCreateFieldRo(tables, newTables);
     return {
       name: this.name,
       description: this.description,
@@ -50,9 +71,9 @@ export class AirtableLookupField extends AirtableFieldVo {
       options: field.options,
       isLookup: true,
       lookupOptions: {
-        foreignTableId: table.id,
-        lookupFieldId,
-        linkFieldId: this.options.recordLinkFieldId,
+        foreignTableId: mappingForeignTable.id,
+        lookupFieldId: mappingLookupField.id,
+        linkFieldId: mappingRecordLinkField.id,
       },
     };
   }

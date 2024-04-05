@@ -25,7 +25,7 @@ import {
   TeableFieldType,
   TeableViewTypeEnum,
 } from './types';
-import { mappingTable } from './utils/table.util';
+import { fieldsTopologicalSorting, mappingTable } from './utils';
 
 export class ApiMigrate {
   private teableSdk: TeableSdk;
@@ -120,7 +120,7 @@ export class ApiMigrate {
         const foreignTableId = options.foreignTableId;
         const foreignTable = teableTables.find(
           (table) => table.id === foreignTableId,
-        );
+        )!;
         const mappingField = table.fields.find(
           (field) => field.name === linkField.name,
         );
@@ -128,14 +128,40 @@ export class ApiMigrate {
           .options as ILinkFieldOptionsVo;
         const mappingForeignTable = tables.find(
           (table) => table.id === mappingFieldOptions.linkedTableId,
-        );
+        )!;
         const mappingInverseField = mappingForeignTable!.fields.find(
           (field) => field.id === mappingFieldOptions.inverseLinkFieldId,
-        );
+        )!;
         const symmetricFieldId = options.symmetricFieldId!;
-        await foreignTable!.updateField(symmetricFieldId, {
+        await foreignTable.updateField(symmetricFieldId, {
           name: mappingInverseField!.name,
         });
+        const symmetricField = await foreignTable.getField(symmetricFieldId);
+        foreignTable.info.fields.push(symmetricField);
+      }
+    }
+    const sorting = fieldsTopologicalSorting(fieldDependencies);
+    for (const airtableFieldId of sorting) {
+      const airtableField = fields.find(
+        (field) => field.id === airtableFieldId,
+      );
+      const airtableTable = tables.find(
+        (table) => table.id === airtableField!.tableId,
+      );
+      const teableTable = teableTables.find(
+        (newTable) => newTable.name === airtableTable!.name,
+      )!;
+      const teableField = teableTable.vo.fields.find(
+        (field) => field.name === airtableField!.name,
+      );
+      if (!teableField) {
+        const airtableFieldModel = getAirtableField(airtableField!);
+        const newTeableField = airtableFieldModel.transformTeableCreateFieldRo(
+          tables,
+          newTables,
+        );
+        const field = await teableTable!.createField(newTeableField);
+        teableTable.info.fields.push(field);
       }
     }
   }

@@ -128,4 +128,17 @@ export class Table {
     assertResponse(response);
     return response.data;
   }
+
+  async getField(fieldId: string) {
+    const response = await axios.get<IFieldVo>(
+      `${this.config.host}/api/table/${this.id}/field/${fieldId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.config.token}`,
+        },
+      },
+    );
+    assertResponse(response);
+    return response.data;
+  }
 }

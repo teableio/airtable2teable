@@ -2,7 +2,12 @@ import { AirtableCellTypeEnum, IAirtableTable, TeableFieldType } from 'types';
 import { z } from 'zod';
 
 import { ICountFieldOptionsVo, ILinkFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo, NumberFormattingType } from '../teable-sdks';
+import {
+  ICreateFieldRo,
+  ITableTableVo,
+  NumberFormattingType,
+} from '../teable-sdks';
+import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export const countCellValueSchema = z.number();
@@ -19,8 +24,11 @@ export class AirtableCountField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(tables: IAirtableTable[]): ICreateFieldRo {
-    if (this.options.isValid) {
+  transformTeableCreateFieldRo(
+    tables: IAirtableTable[],
+    newTables: ITableTableVo[],
+  ): ICreateFieldRo {
+    if (!this.options.isValid) {
       return {
         type: TeableFieldType.Number,
         name: this.name,
@@ -35,22 +43,27 @@ export class AirtableCountField extends AirtableFieldVo {
       };
     }
     const linkFieldId = this.options.recordLinkFieldId;
-    if (!linkFieldId) {
-      throw new Error('Link Field No Exist.');
-    }
-    const fields = tables
-      .map((table) => table.fields)
-      .flatMap((field) => field);
-    const linkField = fields.find((field) => field.id === linkFieldId);
-    if (!linkField) {
-      throw new Error('Link Field No Exist.');
-    }
+    const table = tables.find((table) => table.id === this.tableId)!;
+    const linkField = table.fields.find((field) => field.id === linkFieldId)!;
+    const newTable = mappingTable(tables, newTables, this.tableId)!;
+    const mappingLinkField = newTable.fields.find(
+      (field) => linkField.name === field.name,
+    )!;
     const linkFieldOptions: ILinkFieldOptionsVo = linkField.options;
-    const foreignTableId = linkFieldOptions.linkedTableId;
-    const lookupFieldId = linkFieldOptions.inverseLinkFieldId;
-    if (!foreignTableId || !lookupFieldId) {
-      throw new Error('Count Field Build Error.');
-    }
+    const foreignTableId = linkFieldOptions.linkedTableId!;
+    const lookupFieldId = linkFieldOptions.inverseLinkFieldId!;
+    const foreignTable = tables.find((table) => table.id === foreignTableId)!;
+    const lookupField = foreignTable.fields.find(
+      (field) => field.id === lookupFieldId,
+    )!;
+    const mappingForeignTable = mappingTable(
+      tables,
+      newTables,
+      foreignTableId,
+    )!;
+    const mappingLookupField = mappingForeignTable!.fields.find(
+      (field) => field.name === lookupField.name,
+    )!;
     return {
       type: TeableFieldType.Rollup,
       name: this.name,
@@ -64,9 +77,9 @@ export class AirtableCountField extends AirtableFieldVo {
         },
       },
       lookupOptions: {
-        foreignTableId,
-        lookupFieldId,
-        linkFieldId,
+        foreignTableId: mappingForeignTable.id,
+        lookupFieldId: mappingLookupField.id,
+        linkFieldId: mappingLinkField.id,
       },
     };
   }

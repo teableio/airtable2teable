@@ -1,3 +1,26 @@
+export function topologicalSorting(
+  nodes: number,
+  dependencies: number[][],
+): number[] {
+  const sorting: number[] = [];
+  const graph = buildGraph(nodes, dependencies);
+
+  const visited = Array(nodes).fill(false);
+  const path = Array(nodes).fill(false);
+
+  let cycle = false;
+
+  for (let i = 0; i < nodes; i++) {
+    cycle = traverse(graph, visited, path, i, cycle, sorting);
+  }
+
+  if (cycle) {
+    throw new Error('Cycle Dependency.');
+  }
+
+  return sorting.reverse();
+}
+
 export function checkCycleDependency(
   nodes: number,
   dependencies: number[][],
@@ -33,6 +56,7 @@ function traverse(
   path: boolean[],
   node: number,
   cycle: boolean,
+  sorting?: number[],
 ) {
   if (path[node]) {
     return true;
@@ -46,9 +70,12 @@ function traverse(
   path[node] = true;
 
   for (const next of graph[node]) {
-    cycle = traverse(graph, visited, path, next, cycle);
+    cycle = traverse(graph, visited, path, next, cycle, sorting);
   }
 
   path[node] = false;
+
+  sorting?.push(node);
+
   return cycle;
 }

@@ -1,12 +1,9 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableFieldTypeEnum,
-  TeableFieldType,
-} from 'types';
+import { AirtableCellTypeEnum, IAirtableTable, TeableFieldType } from 'types';
 import { z } from 'zod';
 
 import { IFormulaFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo } from '../teable-sdks';
+import { ICreateFieldRo, ITableTableVo } from '../teable-sdks';
+import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export const formulaCellValueSchema = z.union([
@@ -28,7 +25,10 @@ export class AirtableFormulaField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(
+    tables: IAirtableTable[],
+    newTables: ITableTableVo[],
+  ): ICreateFieldRo {
     if (!this.options.isValid) {
       return {
         type: TeableFieldType.SingleLineText,
@@ -38,13 +38,26 @@ export class AirtableFormulaField extends AirtableFieldVo {
         options: {},
       };
     }
+    const referencedFieldIds = this.options.referencedFieldIds || [];
+    let formula = this.options.formula;
+    const table = tables.find((table) => table.id === this.tableId)!;
+    const newTable = mappingTable(tables, newTables, table.id)!;
+    for (const referencedFieldId of referencedFieldIds) {
+      const referencedField = table.fields.find(
+        (field) => field.id === referencedFieldId,
+      )!;
+      const mappingReferencedField = newTable.fields.find(
+        (field) => field.name === referencedField.name,
+      )!;
+      formula = formula.replace(referencedFieldId, mappingReferencedField.id);
+    }
     return {
       type: TeableFieldType.Formula,
       name: this.name,
       description: this.description,
-      isLookup: this.options.result?.type === AirtableFieldTypeEnum.Lookup,
+      isLookup: false,
       options: {
-        expression: this.options.formula,
+        expression: formula,
       },
     };
   }

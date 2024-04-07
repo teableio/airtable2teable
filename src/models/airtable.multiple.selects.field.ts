@@ -1,17 +1,15 @@
-import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { TeableFieldType } from 'types';
 
-import { ISelectFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo } from '../teable-sdks';
+import { ISelectFieldOptionsVo, ITextCellValueVo } from '../airtable-sdks';
+import { ICreateFieldRo, IMultipleSelectCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableMultipleSelectsField extends AirtableFieldVo {
   options: ISelectFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.ARRAY;
-  }
-
-  getApiCellValue(value: string[]): string[] {
+  transformTeableCreateRecordRo(
+    value: ITextCellValueVo[],
+  ): IMultipleSelectCellValue {
     return value;
   }
 

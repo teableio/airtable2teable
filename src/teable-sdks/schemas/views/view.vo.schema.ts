@@ -6,6 +6,7 @@ import {
 } from 'types';
 import { z } from 'zod';
 
+import { dataFieldCellValueSchema } from '../fields';
 import {
   formViewOptionSchema,
   gridViewOptionSchema,
@@ -42,10 +43,6 @@ export const sortSchema = z
     manualSort: z.boolean().optional(),
   })
   .nullable();
-
-export const dataFieldCellValueSchema = z
-  .string()
-  .datetime({ precision: 3, offset: true });
 
 export const timeZoneStringSchema = z.enum(TIME_ZONE_LIST);
 

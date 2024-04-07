@@ -79,7 +79,7 @@ export class Table {
       },
     );
     assertResponse(response);
-    return response.data;
+    return response.data.records;
   }
 
   async deleteRecords(recordIds: string[]) {

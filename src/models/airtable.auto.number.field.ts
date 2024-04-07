@@ -1,21 +1,13 @@
-import { AirtableCellTypeEnum, TeableFieldType } from 'types';
-import { z } from 'zod';
+import { TeableFieldType } from 'types';
 
-import { ICreateFieldRo } from '../teable-sdks';
+import { INumberCellValueVo } from '../airtable-sdks';
+import { ICreateFieldRo, INumberCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
-
-export const autoNumberCellValueSchema = z.number();
-
-export type IAutoNumberCellValueVo = z.infer<typeof autoNumberCellValueSchema>;
 
 export class AirtableAutoNumberField extends AirtableFieldVo {
   options: undefined;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.NUMBER;
-  }
-
-  getApiCellValue(value: IAutoNumberCellValueVo) {
+  transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }
 

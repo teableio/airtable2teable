@@ -1,27 +1,24 @@
-import { AirtableCellTypeEnum, TeableFieldType } from 'types';
-import { z } from 'zod';
+import { TeableFieldType } from 'types';
 
-import { IObjectOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo } from '../teable-sdks';
-import { collaboratorCellValueSchema } from './airtable.collaborator.field';
+import { ICollaboratorCellValueVo, IObjectOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, IUserCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
-
-export const multipleCollaboratorCellValueSchema =
-  collaboratorCellValueSchema.array();
-
-export type IMultipleCollaboratorCellValueVo = z.infer<
-  typeof multipleCollaboratorCellValueSchema
->;
 
 export class AirtableMultipleCollaboratorsField extends AirtableFieldVo {
   options: IObjectOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.ARRAY;
-  }
-
-  getApiCellValue(value: IMultipleCollaboratorCellValueVo) {
-    return value?.map((v) => v.name);
+  transformTeableCreateRecordRo(
+    value: ICollaboratorCellValueVo[],
+  ): IUserCellValue[] {
+    return (
+      value?.map((v) => {
+        return {
+          id: v.id,
+          title: v.name,
+          avatarUrl: v.profilePicUrl,
+        };
+      }) || []
+    );
   }
 
   transformTeableCreateFieldRo(): ICreateFieldRo {

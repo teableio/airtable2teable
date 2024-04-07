@@ -1,17 +1,13 @@
-import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { TeableFieldType } from 'types';
 
-import { IRatingFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo, RatingIcon } from '../teable-sdks';
+import { INumberCellValueVo, IRatingFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, INumberCellValue, RatingIcon } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableRatingField extends AirtableFieldVo {
   options: IRatingFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.NUMBER;
-  }
-
-  getApiCellValue(value: number) {
+  transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }
 

@@ -1,4 +1,4 @@
-import { TeableRelationship } from 'types';
+import { IdPrefix, TeableRelationship } from 'types';
 import { z } from 'zod';
 
 export const linkFieldOptionsSchema = z
@@ -21,3 +21,10 @@ export const linkFieldOptionsRoSchema = linkFieldOptionsSchema.pick({
 });
 
 export type ILinkFieldOptions = z.infer<typeof linkFieldOptionsSchema>;
+
+export const linkCellValueSchema = z.object({
+  id: z.string().startsWith(IdPrefix.Record),
+  title: z.string().optional(),
+});
+
+export type ILinkCellValue = z.infer<typeof linkCellValueSchema>;

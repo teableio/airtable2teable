@@ -5,3 +5,7 @@ export const numberFieldOptionsSchema = z.object({
 });
 
 export type INumberFieldOptionsVo = z.infer<typeof numberFieldOptionsSchema>;
+
+export const numberCellValueSchema = z.number();
+
+export type INumberCellValueVo = z.infer<typeof numberCellValueSchema>;

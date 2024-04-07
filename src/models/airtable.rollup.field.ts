@@ -1,17 +1,19 @@
-import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { TeableFieldType } from 'types';
 
-import { IRollupFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo } from '../teable-sdks';
+import {
+  INumberCellValueVo,
+  IRollupFieldOptionsVo,
+  ITextCellValueVo,
+} from '../airtable-sdks';
+import { ICreateFieldRo, IRollupCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableRollupField extends AirtableFieldVo {
   options: IRollupFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
-  }
-
-  getApiCellValue(value: string | number) {
+  transformTeableCreateRecordRo(
+    value: INumberCellValueVo[] | ITextCellValueVo[],
+  ): IRollupCellValue {
     return value;
   }
 

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { AirtableCellState } from '../../../../types';
+
 export const aiTextFieldOptionsSchema = z.object({
   prompt: z
     .union([
@@ -14,3 +16,12 @@ export const aiTextFieldOptionsSchema = z.object({
 });
 
 export type IAiTextFieldOptionsVo = z.infer<typeof aiTextFieldOptionsSchema>;
+
+export const aiTextCellValueSchema = z.object({
+  state: z.nativeEnum(AirtableCellState),
+  isStale: z.boolean(),
+  errorType: z.string().optional(),
+  value: z.string().nullable(),
+});
+
+export type IAiTextCellValueVo = z.infer<typeof aiTextCellValueSchema>;

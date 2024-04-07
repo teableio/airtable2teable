@@ -1,17 +1,17 @@
-import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { TeableFieldType } from 'types';
 
-import { ICurrencyFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo, NumberFormattingType } from '../teable-sdks';
+import { ICurrencyFieldOptionsVo, INumberCellValueVo } from '../airtable-sdks';
+import {
+  ICreateFieldRo,
+  INumberCellValue,
+  NumberFormattingType,
+} from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableCurrencyField extends AirtableFieldVo {
   options: ICurrencyFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.NUMBER;
-  }
-
-  getApiCellValue(value: number): number {
+  transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }
 

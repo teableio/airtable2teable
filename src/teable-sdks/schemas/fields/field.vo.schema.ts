@@ -7,6 +7,19 @@ import {
 import { z } from 'zod';
 
 import {
+  attachmentCellValueSchema,
+  autoNumberCellValueSchema,
+  booleanCellValueSchema,
+  dataFieldCellValueSchema,
+  formulaFieldCellValueSchema,
+  linkCellValueSchema,
+  longTextCelValueSchema,
+  multipleSelectCelValueSchema,
+  numberCellValueSchema,
+  rollupCelValueSchema,
+  userCellValueSchema,
+} from './derivate';
+import {
   lookupOptionsVoSchema,
   unionFieldOptionsVoSchema,
 } from './field.option.schema';
@@ -53,3 +66,19 @@ export const fieldVoSchema = z.object({
 });
 
 export type IFieldVo = z.infer<typeof fieldVoSchema>;
+
+export const unionFieldCellValueSchema = z.union([
+  attachmentCellValueSchema,
+  autoNumberCellValueSchema,
+  booleanCellValueSchema,
+  dataFieldCellValueSchema,
+  formulaFieldCellValueSchema,
+  linkCellValueSchema,
+  longTextCelValueSchema,
+  numberCellValueSchema,
+  userCellValueSchema,
+  multipleSelectCelValueSchema,
+  rollupCelValueSchema,
+]);
+
+export type IFieldCellValueVo = z.infer<typeof unionFieldCellValueSchema>;

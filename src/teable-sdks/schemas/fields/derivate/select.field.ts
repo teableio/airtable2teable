@@ -18,3 +18,9 @@ export const selectFieldChoiceRoSchema = selectFieldChoiceSchema.partial({
 export const selectFieldOptionsRoSchema = z.object({
   choices: z.array(selectFieldChoiceRoSchema),
 });
+
+export const multipleSelectCelValueSchema = z.array(z.string());
+
+export type IMultipleSelectCellValue = z.infer<
+  typeof multipleSelectCelValueSchema
+>;

@@ -9,3 +9,7 @@ export const linkFieldOptionsSchema = z.object({
 });
 
 export type ILinkFieldOptionsVo = z.infer<typeof linkFieldOptionsSchema>;
+
+export const LinkCellValueSchema = z.string().array();
+
+export type ILinkCellValueVo = z.infer<typeof LinkCellValueSchema>;

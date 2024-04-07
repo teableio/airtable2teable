@@ -24,3 +24,7 @@ export const rollupFieldOptionsSchema = z.object({
   formatting: unionFormattingSchema.optional(),
   showAs: unionShowAsSchema.optional(),
 });
+
+export const rollupCelValueSchema = z.any();
+
+export type IRollupCellValue = z.infer<typeof rollupCelValueSchema>;

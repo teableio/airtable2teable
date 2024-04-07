@@ -1,31 +1,21 @@
-import {
-  AirtableCellTypeEnum,
-  IAirtableTable,
-  TeableFieldType,
-  TeableRelationship,
-} from 'types';
+import { IAirtableTable, TeableFieldType, TeableRelationship } from 'types';
 
-import { ILinkFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo, ITableTableVo } from '../teable-sdks';
-import { mappingTable } from '../utils/table.util';
+import { ILinkCellValueVo, ILinkFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, ILinkCellValue, ITableTableVo } from '../teable-sdks';
+import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableLinkField extends AirtableFieldVo {
   options: ILinkFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.ARRAY;
-  }
-
-  getApiCellValue(value: string[]) {
-    if (!value) {
-      return null;
-    }
-    const linkedTableId = this.options?.linkedTableId;
-    if (!linkedTableId) {
-      throw new Error('linkedTableId is not defined');
-    }
-    throw new Error('relationship is not support');
+  transformTeableCreateRecordRo(value: ILinkCellValueVo): ILinkCellValue[] {
+    return (
+      value?.map((link) => {
+        return {
+          id: link,
+        };
+      }) || []
+    );
   }
 
   transformTeableCreateFieldRo(

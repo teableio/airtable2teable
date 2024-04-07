@@ -16,3 +16,11 @@ export const formulaFieldOptionsSchema = z.object({
 });
 
 export type IFormulaFieldOptionsVo = z.infer<typeof formulaFieldOptionsSchema>;
+
+export const formulaCellValueSchema = z.union([
+  z.string(),
+  z.number(),
+  z.union([z.string(), z.number()]).array(),
+]);
+
+export type IFormulaCellValueVo = z.infer<typeof formulaCellValueSchema>;

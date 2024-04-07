@@ -7,3 +7,7 @@ export const checkboxFieldOptionsSchema = z.object({
 });
 
 export type ICheckFieldOptionsVo = z.infer<typeof checkboxFieldOptionsSchema>;
+
+export const checkboxCellValueSchema = z.boolean().nullable();
+
+export type ICheckboxCellValueVo = z.infer<typeof checkboxCellValueSchema>;

@@ -1,17 +1,17 @@
-import { AirtableCellTypeEnum, TeableFieldType } from 'types';
+import { TeableFieldType } from 'types';
 
-import { INumberFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo, NumberFormattingType } from '../teable-sdks';
+import { INumberCellValueVo, INumberFieldOptionsVo } from '../airtable-sdks';
+import {
+  ICreateFieldRo,
+  INumberCellValue,
+  NumberFormattingType,
+} from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtablePercentField extends AirtableFieldVo {
   options: INumberFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.NUMBER;
-  }
-
-  getApiCellValue(value: number) {
+  transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }
 

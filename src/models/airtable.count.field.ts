@@ -1,26 +1,23 @@
-import { AirtableCellTypeEnum, IAirtableTable, TeableFieldType } from 'types';
-import { z } from 'zod';
+import { IAirtableTable, TeableFieldType } from 'types';
 
-import { ICountFieldOptionsVo, ILinkFieldOptionsVo } from '../airtable-sdks';
+import {
+  ICountFieldOptionsVo,
+  ILinkFieldOptionsVo,
+  INumberCellValueVo,
+} from '../airtable-sdks';
 import {
   ICreateFieldRo,
+  INumberCellValue,
   ITableTableVo,
   NumberFormattingType,
 } from '../teable-sdks';
 import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
-export const countCellValueSchema = z.number();
-
-export type ICountCellValueVo = z.infer<typeof countCellValueSchema>;
 export class AirtableCountField extends AirtableFieldVo {
   options: ICountFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.NUMBER;
-  }
-
-  getApiCellValue(value: ICountCellValueVo) {
+  transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }
 

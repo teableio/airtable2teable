@@ -16,3 +16,9 @@ export const lookupFieldOptionsSchema = z.object({
 });
 
 export type ILookupFieldOptionsVo = z.infer<typeof lookupFieldOptionsSchema>;
+
+export const lookupCellValueSchema = z
+  .union([z.number(), z.string(), z.boolean(), z.any()])
+  .array();
+
+export type ILookupCellValueVo = z.infer<typeof lookupCellValueSchema>;

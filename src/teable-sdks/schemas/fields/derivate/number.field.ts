@@ -12,3 +12,7 @@ export const numberFieldOptionsRoSchema = numberFieldOptionsSchema.partial({
   formatting: true,
   showAs: true,
 });
+
+export const numberCellValueSchema = z.number();
+
+export type INumberCellValue = z.infer<typeof numberCellValueSchema>;

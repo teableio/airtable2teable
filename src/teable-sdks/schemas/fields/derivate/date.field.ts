@@ -10,3 +10,9 @@ export const dateFieldOptionsSchema = z.object({
   formatting: datetimeFormattingSchema,
   defaultValue: z.enum(['now'] as const).optional(),
 });
+
+export const dataFieldCellValueSchema = z
+  .string()
+  .datetime({ precision: 3, offset: true });
+
+export type IDateCellValue = z.infer<typeof dataFieldCellValueSchema>;

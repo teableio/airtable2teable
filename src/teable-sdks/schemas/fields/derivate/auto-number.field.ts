@@ -9,3 +9,7 @@ export const autoNumberFieldOptionsRoSchema = autoNumberFieldOptionsSchema.omit(
     expression: true,
   },
 );
+
+export const autoNumberCellValueSchema = z.number().int();
+
+export type IAutoNumberCellValue = z.infer<typeof autoNumberCellValueSchema>;

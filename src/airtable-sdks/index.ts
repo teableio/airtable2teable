@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { IAirtableRecord, IAirtableTable } from '../types';
-import { IAirtableTableVo } from './schemas';
+import { IAirtableTable } from '../types';
+import { IAirtableRecordVo, IAirtableTableVo } from './schemas';
 
 export * from './schemas';
 
@@ -41,12 +41,12 @@ export class AirtableSdk {
   }
 
   async getRecords(table: IAirtableTable) {
-    const records: IAirtableRecord[] = [];
+    const records: IAirtableRecordVo[] = [];
     let offset: string | undefined = '0';
     do {
       const response = await axios.get<{
         offset?: string;
-        records: IAirtableRecord[];
+        records: IAirtableRecordVo[];
       }>(`https://api.airtable.com/v0/${table.baseId}/${table.id}`, {
         params: {
           offset,

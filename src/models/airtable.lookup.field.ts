@@ -1,26 +1,19 @@
-import { ICreateFieldRo, ITableTableVo } from 'teable-sdks';
-import { AirtableCellTypeEnum, IAirtableTable, TeableFieldType } from 'types';
-import { z } from 'zod';
+import { ICreateFieldRo, IFieldCellValueVo, ITableTableVo } from 'teable-sdks';
+import { IAirtableTable, TeableFieldType } from 'types';
 
-import { IAirtableFieldVo, ILookupFieldOptionsVo } from '../airtable-sdks';
+import {
+  IAirtableFieldVo,
+  ILookupCellValueVo,
+  ILookupFieldOptionsVo,
+} from '../airtable-sdks';
 import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 import { getAirtableField } from './index';
 
-export const lookupCellValueSchema = z
-  .union([z.number(), z.string(), z.boolean(), z.any()])
-  .array();
-
-export type ILookupCellValueVo = z.infer<typeof lookupCellValueSchema>;
-
 export class AirtableLookupField extends AirtableFieldVo {
   options: ILookupFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.ARRAY;
-  }
-
-  getApiCellValue(value: ILookupCellValueVo) {
+  transformTeableCreateRecordRo(value: ILookupCellValueVo): IFieldCellValueVo {
     return value;
   }
 

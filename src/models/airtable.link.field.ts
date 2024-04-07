@@ -8,7 +8,16 @@ import { AirtableFieldVo } from './airtable.field.vo';
 export class AirtableLinkField extends AirtableFieldVo {
   options: ILinkFieldOptionsVo;
 
-  transformTeableCreateRecordRo(value: ILinkCellValueVo): ILinkCellValue[] {
+  transformTeableCreateRecordRo(
+    value: ILinkCellValueVo,
+  ): ILinkCellValue[] | ILinkCellValue {
+    if (this.options.prefersSingleRecordLink) {
+      return value[0]
+        ? {
+            id: value[0]!,
+          }
+        : [];
+    }
     return (
       value?.map((link) => {
         return {

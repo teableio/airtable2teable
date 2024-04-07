@@ -127,16 +127,6 @@ export class ApiMigrate {
         teableTable.vo.records.map((record) => record.id),
       );
       teableTable.vo.records = [];
-      const airtableRecords = await this.airtableSdk.getRecords(table);
-      const teableRecordCreateRos = this.getRecordCreateRos(
-        airtableRecords,
-        appendingAirtableFields,
-        recordIdMapping,
-      );
-      const records = await teableTable.createRecords(teableRecordCreateRos);
-      for (let k = 0; k < airtableRecords.length; k++) {
-        recordIdMapping[airtableRecords[k].id] = records[k].id;
-      }
       const teableTableVo = teableTable.info;
       newTables.push(teableTableVo);
       teableTables.push(teableTable);
@@ -153,6 +143,30 @@ export class ApiMigrate {
       teableTables,
       newTables,
     );
+    for (const table of tables) {
+      const teableTable = teableTables.find(
+        (teableTable) => teableTable.name === table.name,
+      )!;
+      const airtableRecords = await this.airtableSdk.getRecords(table);
+      const nonCalcAirtableFields = table.fields
+        .filter(
+          (field) =>
+            field.type !== AirtableFieldTypeEnum.Count &&
+            field.type !== AirtableFieldTypeEnum.Formula &&
+            field.type !== AirtableFieldTypeEnum.Lookup &&
+            field.type !== AirtableFieldTypeEnum.MultipleLookupValues,
+        )
+        .map((vo) => getAirtableField(vo));
+      const teableRecordCreateRos = this.getRecordCreateRos(
+        airtableRecords,
+        nonCalcAirtableFields,
+        recordIdMapping,
+      );
+      const records = await teableTable.createRecords(teableRecordCreateRos);
+      for (let k = 0; k < airtableRecords.length; k++) {
+        recordIdMapping[airtableRecords[k].id] = records[k].id;
+      }
+    }
   }
 
   private async postTablesCreated(

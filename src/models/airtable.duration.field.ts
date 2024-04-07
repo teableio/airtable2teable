@@ -1,23 +1,32 @@
+import { TeableFieldType } from 'types';
+
+import { IDurationFieldOptionsVo, INumberCellValueVo } from '../airtable-sdks';
 import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableDurationField,
-} from 'types';
+  ICreateFieldRo,
+  INumberCellValue,
+  NumberFormattingType,
+} from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableDurationField extends AirtableField {
-  constructor(field: IAirtableDurationField) {
-    super(field);
-  }
+export class AirtableDurationField extends AirtableFieldVo {
+  options: IDurationFieldOptionsVo;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.NUMBER;
-  }
-
-  getTeableDBCellValue(value: any): number {
+  transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }
 
-  getApiCellValue(value: any): number {
-    return value;
+  transformTeableCreateFieldRo(): ICreateFieldRo {
+    return {
+      type: TeableFieldType.Number,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {
+        formatting: {
+          type: NumberFormattingType.Decimal,
+          precision: 0,
+        },
+      },
+    };
   }
 }

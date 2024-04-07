@@ -1,37 +1,35 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableMultipleCollaboratorsField,
-  TeableFieldType,
-} from 'types';
+import { TeableFieldType } from 'types';
 
-import { IFieldRo } from '../teable-sdks';
+import { ICollaboratorCellValueVo, IObjectOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, IUserCellValue } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableMultipleCollaboratorsField extends AirtableField {
-  constructor(field: IAirtableMultipleCollaboratorsField) {
-    super(field);
+export class AirtableMultipleCollaboratorsField extends AirtableFieldVo {
+  options: IObjectOptionsVo;
+
+  transformTeableCreateRecordRo(
+    value: ICollaboratorCellValueVo[],
+  ): IUserCellValue[] {
+    return (
+      value?.map((v) => {
+        return {
+          id: v.id,
+          title: v.name,
+          avatarUrl: v.profilePicUrl,
+        };
+      }) || []
+    );
   }
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.ARRAY;
-  }
-
-  getTeableDBCellValue(value: unknown): string {
-    return `'${String((value as any[])?.map((v) => v.name))}'`;
-  }
-
-  getApiCellValue(value: unknown): string[] {
-    return (value as any[])?.map((v) => v.name);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.MultipleSelect,
+      type: TeableFieldType.User,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices: [],
+        isMultiple: true,
+        shouldNotify: false,
       },
     };
   }

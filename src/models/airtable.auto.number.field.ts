@@ -1,61 +1,24 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableAutoNumberField,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { TeableFieldType } from 'types';
 
-import { IFieldRo } from '../teable-sdks';
-import { NumberFormattingType, TeableNumberField } from './teable.number.field';
+import { INumberCellValueVo } from '../airtable-sdks';
+import { ICreateFieldRo, INumberCellValue } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableAutoNumberField extends AirtableField {
-  constructor(field: IAirtableAutoNumberField) {
-    super(field);
+export class AirtableAutoNumberField extends AirtableFieldVo {
+  options: undefined;
+
+  transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
+    return value;
   }
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.NUMBER;
-  }
-
-  getTeableDBCellValue(value: unknown): number {
-    return value as number;
-  }
-
-  getApiCellValue(value: unknown): number {
-    return value as number;
-  }
-
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.Number,
-      dbFieldType: TeableDbFieldType.Real,
-      options: {
-        formatting: {
-          type: NumberFormattingType.Decimal,
-          precision: 0,
-        },
-      },
-      cellValueType: TeableCellValueType.Number,
-      isComputed: false,
-    };
-    return plainToInstance(TeableNumberField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
-      type: TeableFieldType.Number,
+      type: TeableFieldType.AutoNumber,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        formatting: { type: NumberFormattingType.Decimal, precision: 0 },
+        expression: 'AUTO_NUMBER()',
       },
     };
   }

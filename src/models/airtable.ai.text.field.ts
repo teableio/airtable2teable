@@ -1,23 +1,25 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableAiTextField,
-} from '../types';
+import { TeableFieldType } from 'types';
 
-export class AirtableAiTextField extends AirtableField {
-  constructor(field: IAirtableAiTextField) {
-    super(field);
+import { IAiTextCellValueVo, IAiTextFieldOptionsVo } from '../airtable-sdks';
+import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
+
+export class AirtableAiTextField extends AirtableFieldVo {
+  options?: IAiTextFieldOptionsVo;
+
+  transformTeableCreateRecordRo(
+    value: IAiTextCellValueVo,
+  ): ISingleLineTextCellValue {
+    return value.value;
   }
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
-  }
-
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.value}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return value?.value;
+  transformTeableCreateFieldRo(): ICreateFieldRo {
+    return {
+      type: TeableFieldType.LongText,
+      name: this.name,
+      isLookup: false,
+      description: this.description,
+      options: {},
+    };
   }
 }

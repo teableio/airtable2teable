@@ -1,23 +1,25 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableSyncSourceField,
-} from 'types';
+import { TeableFieldType } from 'types';
 
-export class AirtableSyncSourceField extends AirtableField {
-  constructor(field: IAirtableSyncSourceField) {
-    super(field);
+import { ITextCellValueVo } from '../airtable-sdks';
+import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
+
+export class AirtableSyncSourceField extends AirtableFieldVo {
+  transformTeableCreateRecordRo(
+    value: ITextCellValueVo,
+  ): ISingleLineTextCellValue {
+    return value;
   }
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
-  }
-
-  getTeableDBCellValue(value: any): string {
-    return `'${value}'`;
-  }
-
-  getApiCellValue(value: unknown): string {
-    return value as string;
+  transformTeableCreateFieldRo(): ICreateFieldRo {
+    return {
+      type: TeableFieldType.SingleSelect,
+      name: this.name,
+      description: this.description,
+      isLookup: false,
+      options: {
+        choices: this.options.choices,
+      },
+    };
   }
 }

@@ -1,70 +1,27 @@
-import { plainToInstance } from 'class-transformer';
 import * as dayjs from 'dayjs';
 import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableDateField,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { TeableFieldType } from 'types';
 
-import { IFieldRo } from '../teable-sdks';
+import { IDateFieldOptionsVo, ITextCellValueVo } from '../airtable-sdks';
 import {
-  DateFormattingPreset,
-  TeableDateField,
-  TimeFormatting,
-} from './teable.date.field';
+  defaultDatetimeFormatting,
+  ICreateFieldRo,
+  IDateCellValue,
+} from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-export class AirtableDateField extends AirtableField {
-  constructor(field: IAirtableDateField) {
-    super(field);
+export class AirtableDateField extends AirtableFieldVo {
+  options: IDateFieldOptionsVo;
+
+  transformTeableCreateRecordRo(value: ITextCellValueVo): IDateCellValue {
+    return value;
   }
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
-  }
-
-  getTeableDBCellValue(value: unknown): string {
-    const formatValue = dayjs.utc(value as string).tz('Etc/GMT');
-    if (!formatValue.isValid()) return null;
-    return `'${formatValue.toISOString()}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    const formatValue = dayjs.utc(value as string).tz('Etc/GMT');
-    if (!formatValue.isValid()) return null;
-    return formatValue.toISOString();
-  }
-
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.Date,
-      dbFieldType: TeableDbFieldType.DateTime,
-      options: {
-        formatting: {
-          date: DateFormattingPreset.ISO,
-          time: TimeFormatting.None,
-          timeZone: 'Etc/GMT',
-        },
-        defaultValue: 'now',
-      },
-      cellValueType: TeableCellValueType.DateTime,
-      isComputed: false,
-    };
-    return plainToInstance(TeableDateField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.Date,
       name: this.name,
@@ -72,11 +29,7 @@ export class AirtableDateField extends AirtableField {
       isLookup: false,
       options: {
         // todo: mark
-        formatting: {
-          date: DateFormattingPreset.ISO,
-          time: TimeFormatting.None,
-          timeZone: 'Etc/GMT',
-        },
+        formatting: defaultDatetimeFormatting,
         defaultValue: 'now',
       },
     };

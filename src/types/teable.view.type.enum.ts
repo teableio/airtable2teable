@@ -6,3 +6,11 @@ export enum TeableViewTypeEnum {
   Gallery = 'gallery',
   Gantt = 'gantt',
 }
+
+export enum RowHeightLevel {
+  Short = 'short',
+  Medium = 'medium',
+  Tall = 'tall',
+  ExtraTall = 'extraTall',
+  AutoFit = 'autoFit',
+}

@@ -19,6 +19,14 @@ export default class BaseMigrate extends Command {
     const airtableToken = await ux.prompt('Airtable Token');
     const teableToken = await ux.prompt('Teable Token');
 
+    if (!flags.from) {
+      throw new Error('Base No Set');
+    }
+
+    if (!flags.to) {
+      throw new Error('Sapce No Set');
+    }
+
     const apiMirgrate = new ApiMigrate({
       from: {
         baseId: flags.from,

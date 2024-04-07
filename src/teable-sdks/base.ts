@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-import { ISdkConfig } from './index';
-import { ICreateTableRo, IGetBaseVo, ITableFullVo } from './schemas';
+import { ICreateBaseVo, ISdkConfig } from './index';
+import { ICreateTableRo, ITableTableVo } from './schemas';
 import { Table } from './table';
 import { assertResponse } from './util';
 
 export class Base {
   constructor(
     private config: ISdkConfig,
-    private info: IGetBaseVo,
+    private info: ICreateBaseVo,
   ) {}
 
   get id() {
@@ -23,16 +23,8 @@ export class Base {
     return this.info.spaceId;
   }
 
-  get order() {
-    return this.info.order;
-  }
-
-  get icon() {
-    return this.info.icon;
-  }
-
   async createTable(table: ICreateTableRo) {
-    const response = await axios.post<ITableFullVo>(
+    const response = await axios.post<ITableTableVo>(
       `${this.config.host}/api/base/${this.id}/table`,
       {
         ...table,

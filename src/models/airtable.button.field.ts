@@ -1,36 +1,33 @@
+import { TeableFieldType } from 'types';
+
+import { IButtonCellValueVo } from '../airtable-sdks';
 import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableButtonField,
-  TeableFieldType,
-} from 'types';
+  ICreateFieldRo,
+  ISingleLineTextCellValue,
+  SingleLineTextDisplayType,
+} from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-import { IFieldRo } from '../teable-sdks';
+export class AirtableButtonField extends AirtableFieldVo {
+  options: undefined;
 
-export class AirtableButtonField extends AirtableField {
-  constructor(field: IAirtableButtonField) {
-    super(field);
+  transformTeableCreateRecordRo(
+    value: IButtonCellValueVo,
+  ): ISingleLineTextCellValue {
+    return value.url;
   }
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
-  }
-
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.label}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return value?.label;
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.SingleLineText,
       name: this.name,
       description: this.description,
       isLookup: false,
-      options: {},
+      options: {
+        showAs: {
+          type: SingleLineTextDisplayType.Url,
+        },
+      },
     };
   }
 }

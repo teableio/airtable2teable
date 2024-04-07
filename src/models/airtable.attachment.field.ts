@@ -1,23 +1,42 @@
+import { TeableFieldType } from 'types';
+
 import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableAttachmentField,
-} from 'types';
+  IAttachmentCellValueVo,
+  IAttachmentFieldOptionsVo,
+} from '../airtable-sdks';
+import { IAttachmentCellValue, ICreateFieldRo } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableAttachmentField extends AirtableField {
-  constructor(field: IAirtableAttachmentField) {
-    super(field);
+export class AirtableAttachmentField extends AirtableFieldVo {
+  options?: IAttachmentFieldOptionsVo;
+
+  transformTeableCreateRecordRo(
+    value: IAttachmentCellValueVo,
+  ): IAttachmentCellValue {
+    return (
+      value?.map((attachmentItem) => {
+        return {
+          id: attachmentItem.id,
+          name: attachmentItem.filename,
+          path: attachmentItem.url,
+          size: attachmentItem.size,
+          mimetype: attachmentItem.type,
+          presignedUrl: attachmentItem.url,
+          width: attachmentItem.width,
+          height: attachmentItem.height,
+          token: '',
+        };
+      }) || []
+    );
   }
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
-  }
-
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.filename}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return value?.map((file) => file.filename).join(',');
+  transformTeableCreateFieldRo(): ICreateFieldRo {
+    return {
+      type: TeableFieldType.Attachment,
+      name: this.name,
+      isLookup: false,
+      description: this.description,
+      options: {},
+    };
   }
 }

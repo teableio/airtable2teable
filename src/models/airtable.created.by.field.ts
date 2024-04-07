@@ -1,37 +1,31 @@
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableCreatedByField,
-  TeableFieldType,
-} from 'types';
+import { TeableFieldType } from 'types';
 
-import { IFieldRo } from '../teable-sdks';
+import { ICollaboratorCellValueVo } from '../airtable-sdks';
+import { ICreateFieldRo, IUserCellValue } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableCreatedByField extends AirtableField {
-  constructor(field: IAirtableCreatedByField) {
-    super(field);
-  }
+export class AirtableCreatedByField extends AirtableFieldVo {
+  options: undefined;
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
-  }
-
-  getTeableDBCellValue(value: any): string {
-    return `'${value?.name}'`;
-  }
-
-  getApiCellValue(value: any): string {
-    return value?.name;
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateRecordRo(
+    value: ICollaboratorCellValueVo,
+  ): IUserCellValue {
     return {
-      type: TeableFieldType.SingleSelect,
+      id: value.id,
+      title: value.name,
+      avatarUrl: value.profilePicUrl,
+    };
+  }
+
+  transformTeableCreateFieldRo(): ICreateFieldRo {
+    return {
+      type: TeableFieldType.User,
       name: this.name,
       description: this.description,
       isLookup: false,
       options: {
-        choices: [],
+        isMultiple: false,
+        shouldNotify: false,
       },
     };
   }

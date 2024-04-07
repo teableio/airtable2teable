@@ -1,49 +1,17 @@
-import { plainToInstance } from 'class-transformer';
-import {
-  AirtableCellTypeEnum,
-  AirtableField,
-  IAirtableSingleLineTextField,
-  TeableCellValueType,
-  TeableDbFieldType,
-  TeableField,
-  TeableFieldType,
-} from 'types';
+import { TeableFieldType } from 'types';
 
-import { IFieldRo } from '../teable-sdks';
-import { TeableSingleLineTextField } from './teable.single.line.text.field';
+import { ITextCellValueVo } from '../airtable-sdks';
+import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
+import { AirtableFieldVo } from './airtable.field.vo';
 
-export class AirtableSingleLineTextField extends AirtableField {
-  constructor(field: IAirtableSingleLineTextField) {
-    super(field);
+export class AirtableSingleLineTextField extends AirtableFieldVo {
+  transformTeableCreateRecordRo(
+    value: ITextCellValueVo,
+  ): ISingleLineTextCellValue {
+    return value;
   }
 
-  get cellType(): AirtableCellTypeEnum {
-    return AirtableCellTypeEnum.STRING;
-  }
-
-  getTeableDBCellValue(value: unknown): string {
-    return `'${value}'`;
-  }
-
-  getApiCellValue(value: unknown): string {
-    return value as string;
-  }
-
-  transformDataModel(): TeableField {
-    const json = {
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      type: TeableFieldType.SingleLineText,
-      dbFieldType: TeableDbFieldType.Text,
-      options: {},
-      cellValueType: TeableCellValueType.String,
-      isComputed: false,
-    };
-    return plainToInstance(TeableSingleLineTextField, json);
-  }
-
-  transformTeableFieldCreateRo(): IFieldRo {
+  transformTeableCreateFieldRo(): ICreateFieldRo {
     return {
       type: TeableFieldType.SingleLineText,
       name: this.name,

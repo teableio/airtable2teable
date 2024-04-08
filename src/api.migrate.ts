@@ -238,10 +238,13 @@ export class ApiMigrate {
         (field) => field.id === mappingFieldOptions.inverseLinkFieldId,
       )!;
       const symmetricFieldId = options.symmetricFieldId!;
-      await foreignTable.updateField(symmetricFieldId, {
-        name: mappingInverseField!.name,
-      });
-      const symmetricField = await foreignTable.getField(symmetricFieldId);
+      const symmetricField = await foreignTable.getField(symmetricFieldId)!;
+      if (symmetricField.name !== mappingInverseField!.name) {
+        await foreignTable.updateField(symmetricFieldId, {
+          name: mappingInverseField!.name,
+        });
+        symmetricField.name = mappingInverseField!.name;
+      }
       foreignTable.info.fields.push(symmetricField);
     }
   }

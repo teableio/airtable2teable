@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as _ from 'lodash';
 
 import {
@@ -49,6 +50,14 @@ export class ApiMigrate {
       token: option.to.teableToken,
     });
     this.airtableSdk = new AirtableSdk(option.from.airtableToken);
+    axios.interceptors.response.use(
+      function (response) {
+        return response;
+      },
+      function (error) {
+        return Promise.resolve(error.response);
+      },
+    );
   }
 
   async execute() {

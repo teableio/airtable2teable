@@ -37,4 +37,8 @@ export const updateFieldRoSchema = z.object({
   dbFieldName: baseFieldRoSchema.shape.dbFieldName,
 });
 
+export const convertFieldRoSchema = baseFieldRoSchema.optional();
+
 export type IUpdateFieldRo = z.infer<typeof updateFieldRoSchema>;
+
+export type IConvertFieldRo = z.infer<typeof convertFieldRoSchema>;

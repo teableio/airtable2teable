@@ -29,9 +29,22 @@ export class AirtableFormulaField extends AirtableFieldVo {
         options: {},
       };
     }
+    const table = tables.find((table) => table.id === this.tableId)!;
+    // condition: primary field
+    const primaryFieldId = table.primaryFieldId;
+    if (primaryFieldId === this.id) {
+      return {
+        type: TeableFieldType.Formula,
+        name: this.name,
+        description: this.description,
+        isLookup: false,
+        options: {
+          expression: 'RECORD_ID()',
+        },
+      };
+    }
     const referencedFieldIds = this.options.referencedFieldIds || [];
     let formula = this.options.formula;
-    const table = tables.find((table) => table.id === this.tableId)!;
     const newTable = mappingTable(tables, newTables, table.id)!;
     for (const referencedFieldId of referencedFieldIds) {
       const referencedField = table.fields.find(

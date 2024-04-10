@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { TeableFieldKeyType } from '../types';
 import {
+  IConvertFieldRo,
   ICreateRecordsRo,
   ICreateRecordsVo,
   IRecordsRo,
@@ -116,6 +117,22 @@ export class Table {
   async updateField(fieldId: string, field: IUpdateFieldRo) {
     const response = await axios.patch<IFieldVo>(
       `${this.config.host}/api/table/${this.id}/field/${fieldId}`,
+      {
+        ...field,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.config.token}`,
+        },
+      },
+    );
+    assertResponse(response);
+    return response.data;
+  }
+
+  async convertField(fieldId: string, field: IConvertFieldRo) {
+    const response = await axios.patch<IFieldVo>(
+      `${this.config.host}/api/table/${this.id}/field/${fieldId}/convert`,
       {
         ...field,
       },

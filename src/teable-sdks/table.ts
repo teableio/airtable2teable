@@ -131,7 +131,7 @@ export class Table {
   }
 
   async convertField(fieldId: string, field: IConvertFieldRo) {
-    const response = await axios.patch<IFieldVo>(
+    const response = await axios.put<IFieldVo>(
       `${this.config.host}/api/table/${this.id}/field/${fieldId}/convert`,
       {
         ...field,

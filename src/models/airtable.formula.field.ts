@@ -24,6 +24,7 @@ export class AirtableFormulaField extends AirtableFieldVo {
       return {
         type: TeableFieldType.SingleLineText,
         name: this.name,
+        dbFieldName: this.id,
         description: this.description,
         isLookup: false,
         options: {},
@@ -36,6 +37,7 @@ export class AirtableFormulaField extends AirtableFieldVo {
       return {
         type: TeableFieldType.Formula,
         name: this.name,
+        dbFieldName: this.id,
         description: this.description,
         isLookup: false,
         options: {
@@ -58,6 +60,7 @@ export class AirtableFormulaField extends AirtableFieldVo {
     return {
       type: TeableFieldType.Formula,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

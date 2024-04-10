@@ -28,6 +28,7 @@ export class AirtableLastModifiedTimeField extends AirtableFieldVo {
     return {
       type: TeableFieldType.LastModifiedTime,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

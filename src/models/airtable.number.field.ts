@@ -19,6 +19,7 @@ export class AirtableNumberField extends AirtableFieldVo {
     return {
       type: TeableFieldType.Number,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

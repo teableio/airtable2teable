@@ -17,6 +17,7 @@ export class AirtableLongTextField extends AirtableFieldVo {
     return {
       type: TeableFieldType.LongText,
       name: this.name,
+      dbFieldName: this.id,
       isLookup: false,
       description: this.description,
       options: {},

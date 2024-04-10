@@ -29,6 +29,7 @@ export class AirtableCountField extends AirtableFieldVo {
       return {
         type: TeableFieldType.Number,
         name: this.name,
+        dbFieldName: this.id,
         description: this.description,
         isLookup: false,
         options: {
@@ -64,6 +65,7 @@ export class AirtableCountField extends AirtableFieldVo {
     return {
       type: TeableFieldType.Rollup,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

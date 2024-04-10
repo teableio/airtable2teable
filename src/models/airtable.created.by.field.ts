@@ -21,6 +21,7 @@ export class AirtableCreatedByField extends AirtableFieldVo {
     return {
       type: TeableFieldType.User,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

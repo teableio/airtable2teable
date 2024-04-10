@@ -15,6 +15,7 @@ export class AirtableSingleLineTextField extends AirtableFieldVo {
     return {
       type: TeableFieldType.SingleLineText,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {},

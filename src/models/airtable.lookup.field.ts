@@ -25,6 +25,7 @@ export class AirtableLookupField extends AirtableFieldVo {
       return {
         type: TeableFieldType.SingleLineText,
         name: this.name,
+        dbFieldName: this.id,
         description: this.description,
         isLookup: false,
         options: {},
@@ -59,6 +60,7 @@ export class AirtableLookupField extends AirtableFieldVo {
     ).transformTeableCreateFieldRo(tables, newTables);
     return {
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       type: field.type,
       options: field.options,

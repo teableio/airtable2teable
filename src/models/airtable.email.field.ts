@@ -19,6 +19,7 @@ export class AirtableEmailField extends AirtableFieldVo {
     return {
       type: TeableFieldType.SingleLineText,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

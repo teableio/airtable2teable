@@ -25,6 +25,7 @@ export class AirtableDateField extends AirtableFieldVo {
     return {
       type: TeableFieldType.Date,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

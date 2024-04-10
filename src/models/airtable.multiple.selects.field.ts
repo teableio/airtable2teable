@@ -17,6 +17,7 @@ export class AirtableMultipleSelectsField extends AirtableFieldVo {
     return {
       type: TeableFieldType.MultipleSelect,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

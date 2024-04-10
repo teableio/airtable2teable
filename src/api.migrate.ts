@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as _ from 'lodash';
 
 import {
@@ -49,6 +50,14 @@ export class ApiMigrate {
       token: option.to.teableToken,
     });
     this.airtableSdk = new AirtableSdk(option.from.airtableToken);
+    axios.interceptors.response.use(
+      function (response) {
+        return response;
+      },
+      function (error) {
+        return Promise.resolve(error.response);
+      },
+    );
   }
 
   async execute() {
@@ -86,10 +95,16 @@ export class ApiMigrate {
     const recordIdMapping: Record<string, string> = {};
     let i = 1;
     for (const table of tables) {
+      // condition: primary field
+      const primaryFieldId = table.primaryFieldId;
       const airtableFields = table.fields.map((field) =>
         getAirtableField(field),
       );
       const appendingAirtableFields = airtableFields.filter((field) => {
+        // condition: primary field
+        if (field.id === primaryFieldId) {
+          return true;
+        }
         if (lazy.find((e) => e === field.id)) {
           return false;
         }
@@ -103,6 +118,16 @@ export class ApiMigrate {
         }
         return true;
       });
+      // condition: primary field
+      for (let j = 0; j < appendingAirtableFields.length; j++) {
+        const appendingAirtableField = appendingAirtableFields[j];
+        if (appendingAirtableField.id === primaryFieldId) {
+          const temp = appendingAirtableFields[0];
+          appendingAirtableFields[0] = appendingAirtableField;
+          appendingAirtableFields[j] = temp;
+          break;
+        }
+      }
       const teableFieldCreateRos: ICreateFieldRo[] =
         appendingAirtableFields.map((field) =>
           field.transformTeableCreateFieldRo(tables, newTables),
@@ -127,16 +152,6 @@ export class ApiMigrate {
         teableTable.vo.records.map((record) => record.id),
       );
       teableTable.vo.records = [];
-      const airtableRecords = await this.airtableSdk.getRecords(table);
-      const teableRecordCreateRos = this.getRecordCreateRos(
-        airtableRecords,
-        appendingAirtableFields,
-        recordIdMapping,
-      );
-      const records = await teableTable.createRecords(teableRecordCreateRos);
-      for (let k = 0; k < airtableRecords.length; k++) {
-        recordIdMapping[airtableRecords[k].id] = records[k].id;
-      }
       const teableTableVo = teableTable.info;
       newTables.push(teableTableVo);
       teableTables.push(teableTable);
@@ -153,6 +168,30 @@ export class ApiMigrate {
       teableTables,
       newTables,
     );
+    for (const table of tables) {
+      const teableTable = teableTables.find(
+        (teableTable) => teableTable.name === table.name,
+      )!;
+      const airtableRecords = await this.airtableSdk.getRecords(table);
+      const nonCalcAirtableFields = table.fields
+        .filter(
+          (field) =>
+            field.type !== AirtableFieldTypeEnum.Count &&
+            field.type !== AirtableFieldTypeEnum.Formula &&
+            field.type !== AirtableFieldTypeEnum.Lookup &&
+            field.type !== AirtableFieldTypeEnum.MultipleLookupValues,
+        )
+        .map((vo) => getAirtableField(vo));
+      const teableRecordCreateRos = this.getRecordCreateRos(
+        airtableRecords,
+        nonCalcAirtableFields,
+        recordIdMapping,
+      );
+      const records = await teableTable.createRecords(teableRecordCreateRos);
+      for (let k = 0; k < airtableRecords.length; k++) {
+        recordIdMapping[airtableRecords[k].id] = records[k].id;
+      }
+    }
   }
 
   private async postTablesCreated(
@@ -166,24 +205,57 @@ export class ApiMigrate {
     for (const airtableFieldId of sorting) {
       const airtableField = fields.find(
         (field) => field.id === airtableFieldId,
-      );
+      )!;
       const airtableTable = tables.find(
-        (table) => table.id === airtableField!.tableId,
-      );
+        (table) => table.id === airtableField.tableId,
+      )!;
       const teableTable = teableTables.find(
-        (newTable) => newTable.name === airtableTable!.name,
+        (newTable) => newTable.name === airtableTable.name,
       )!;
       const teableField = teableTable.vo.fields.find(
-        (field) => field.name === airtableField!.name,
+        (field) => field.name === airtableField.name,
       );
       if (!teableField) {
-        const airtableFieldModel = getAirtableField(airtableField!);
+        const airtableFieldModel = getAirtableField(airtableField);
         const newTeableField = airtableFieldModel.transformTeableCreateFieldRo(
           tables,
           newTables,
         );
         const field = await teableTable!.createField(newTeableField);
         teableTable.info.fields.push(field);
+      }
+      // condition: primary field
+      const table = tables.find(
+        (table) => table.id === airtableField?.tableId,
+      )!;
+      const primaryFieldId = table.primaryFieldId;
+      if (
+        primaryFieldId === airtableField.id &&
+        airtableField.type === AirtableFieldTypeEnum.Formula
+      ) {
+        const newTable = mappingTable(tables, newTables, table.id)!;
+        const referencedFieldIds =
+          airtableField.options.referencedFieldIds || [];
+        let formula = airtableField.options.formula;
+        for (const referencedFieldId of referencedFieldIds) {
+          const referencedField = table.fields.find(
+            (field) => field.id === referencedFieldId,
+          )!;
+          const mappingReferencedField = newTable.fields.find(
+            (field) => field.name === referencedField.name,
+          )!;
+          formula = formula.replace(
+            referencedFieldId,
+            mappingReferencedField.id,
+          );
+        }
+        const covertField = await teableTable.convertField(teableField!.id, {
+          type: TeableFieldType.Formula,
+          options: {
+            expression: formula,
+          },
+        });
+        teableField!.options = covertField!.options;
       }
     }
   }
@@ -215,10 +287,13 @@ export class ApiMigrate {
         (field) => field.id === mappingFieldOptions.inverseLinkFieldId,
       )!;
       const symmetricFieldId = options.symmetricFieldId!;
-      await foreignTable.updateField(symmetricFieldId, {
-        name: mappingInverseField!.name,
-      });
-      const symmetricField = await foreignTable.getField(symmetricFieldId);
+      const symmetricField = await foreignTable.getField(symmetricFieldId)!;
+      if (symmetricField.name !== mappingInverseField!.name) {
+        await foreignTable.updateField(symmetricFieldId, {
+          name: mappingInverseField!.name,
+        });
+        symmetricField.name = mappingInverseField!.name;
+      }
       foreignTable.info.fields.push(symmetricField);
     }
   }

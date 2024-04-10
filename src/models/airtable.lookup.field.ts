@@ -8,7 +8,6 @@ import {
 } from '../airtable-sdks';
 import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
-import { getAirtableField } from './index';
 
 export class AirtableLookupField extends AirtableFieldVo {
   options: ILookupFieldOptionsVo;
@@ -25,6 +24,7 @@ export class AirtableLookupField extends AirtableFieldVo {
       return {
         type: TeableFieldType.SingleLineText,
         name: this.name,
+        dbFieldName: this.id,
         description: this.description,
         isLookup: false,
         options: {},
@@ -54,14 +54,12 @@ export class AirtableLookupField extends AirtableFieldVo {
     const mappingLookupField = mappingForeignTable.fields.find(
       (field) => field.name === lookupField!.name,
     )!;
-    const field = getAirtableField(
-      this.options.result,
-    ).transformTeableCreateFieldRo(tables, newTables);
     return {
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
-      type: field.type,
-      options: field.options,
+      type: mappingLookupField.type,
+      options: mappingLookupField.options,
       isLookup: true,
       lookupOptions: {
         foreignTableId: mappingForeignTable.id,

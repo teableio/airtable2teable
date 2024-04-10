@@ -15,6 +15,7 @@ export class AirtableRatingField extends AirtableFieldVo {
     return {
       type: TeableFieldType.Rating,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

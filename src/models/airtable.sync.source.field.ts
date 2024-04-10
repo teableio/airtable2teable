@@ -15,6 +15,7 @@ export class AirtableSyncSourceField extends AirtableFieldVo {
     return {
       type: TeableFieldType.SingleSelect,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

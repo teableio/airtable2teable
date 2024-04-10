@@ -15,6 +15,7 @@ export class AirtableAutoNumberField extends AirtableFieldVo {
     return {
       type: TeableFieldType.AutoNumber,
       name: this.name,
+      dbFieldName: this.id,
       description: this.description,
       isLookup: false,
       options: {

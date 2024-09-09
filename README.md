@@ -22,7 +22,7 @@ Scope: `data.records:read`, `schema.bases:read`.
 ## Quick Start
 
 ```shell
-teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID>
+teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
 Airatable Token: <AIRTABLE_TOKEN>
 Teable Token: <TEABLE_TOKEN>
 ```
@@ -32,7 +32,7 @@ Teable Token: <TEABLE_TOKEN>
 pnpm build
 
 # windows
-.\bin\run.cmd base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID>
+.\bin\run.cmd base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
 Airatable Token: <AIRTABLE_TOKEN>
 Teable Token: <TEABLE_TOKEN>
 ```

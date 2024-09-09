@@ -50,7 +50,7 @@ export class Table {
 
   async createView(view: IViewRo) {
     const response = await axios.post<IViewVo>(
-      `${this.config.host}/api/table/${this.id}/view`,
+      `${this.config.baseUrl}/api/table/${this.id}/view`,
       {
         ...view,
       },
@@ -71,7 +71,7 @@ export class Table {
       records: records,
     };
     const response = await axios.post<ICreateRecordsVo>(
-      `${this.config.host}/api/table/${this.id}/record`,
+      `${this.config.baseUrl}/api/table/${this.id}/record`,
       ro,
       {
         headers: {
@@ -85,7 +85,7 @@ export class Table {
 
   async deleteRecords(recordIds: string[]) {
     const response = await axios.delete<ICreateRecordsVo[]>(
-      `${this.config.host}/api/table/${this.id}/record`,
+      `${this.config.baseUrl}/api/table/${this.id}/record`,
       {
         params: {
           recordIds,
@@ -100,7 +100,7 @@ export class Table {
 
   async createField(field: ICreateFieldRo) {
     const response = await axios.post<IFieldVo>(
-      `${this.config.host}/api/table/${this.id}/field`,
+      `${this.config.baseUrl}/api/table/${this.id}/field`,
       {
         ...field,
       },
@@ -116,7 +116,7 @@ export class Table {
 
   async updateField(fieldId: string, field: IUpdateFieldRo) {
     const response = await axios.patch<IFieldVo>(
-      `${this.config.host}/api/table/${this.id}/field/${fieldId}`,
+      `${this.config.baseUrl}/api/table/${this.id}/field/${fieldId}`,
       {
         ...field,
       },
@@ -132,7 +132,7 @@ export class Table {
 
   async convertField(fieldId: string, field: IConvertFieldRo) {
     const response = await axios.put<IFieldVo>(
-      `${this.config.host}/api/table/${this.id}/field/${fieldId}/convert`,
+      `${this.config.baseUrl}/api/table/${this.id}/field/${fieldId}/convert`,
       {
         ...field,
       },
@@ -148,7 +148,7 @@ export class Table {
 
   async getField(fieldId: string) {
     const response = await axios.get<IFieldVo>(
-      `${this.config.host}/api/table/${this.id}/field/${fieldId}`,
+      `${this.config.baseUrl}/api/table/${this.id}/field/${fieldId}`,
       {
         headers: {
           Authorization: `Bearer ${this.config.token}`,

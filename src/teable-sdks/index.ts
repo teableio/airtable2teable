@@ -12,18 +12,18 @@ export * from './table';
 
 export interface ISdkConfig {
   token: string;
-  host?: string;
+  baseUrl?: string;
 }
 
 export class TeableSdk {
   constructor(private config: ISdkConfig) {
-    this.config.host =
-      config.host || process.env.TEABLE_HOST || 'https://app.teable.io';
+    this.config.baseUrl =
+      config.baseUrl || process.env.TEABLE_BASE_URL || 'https://app.teable.io';
   }
 
   async getSpaces(): Promise<Space[]> {
     const response = await axios.get<IGetSpaceVo[]>(
-      `${this.config.host}/api/space`,
+      `${this.config.baseUrl}/api/space`,
       {
         headers: {
           Authorization: `Bearer ${this.config.token}`,
@@ -42,7 +42,7 @@ export class TeableSdk {
 
   async getSpace(spaceId: string): Promise<Space> {
     const response = await axios.get<IGetSpaceVo>(
-      `${this.config.host}/api/space/${spaceId}`,
+      `${this.config.baseUrl}/api/space/${spaceId}`,
       {
         headers: {
           Authorization: `Bearer ${this.config.token}`,

@@ -21,7 +21,7 @@ export class Space {
 
   async createBase(base: ICreateBaseRo) {
     const response = await axios.post<ICreateBaseVo>(
-      `${this.config.host}/api/base`,
+      `${this.config.baseUrl}/api/base`,
       {
         ...base,
       },

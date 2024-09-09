@@ -4,6 +4,9 @@ import { ApiMigrate } from '../../api.migrate';
 
 export default class BaseMigrate extends Command {
   static flags = {
+    baseUrl: Flags.string({
+      description: 'api base url',
+    }),
     from: Flags.string({
       description: 'airtable base id',
     }),
@@ -36,10 +39,11 @@ export default class BaseMigrate extends Command {
         spaceId: flags.to,
         teableToken: teableToken,
       },
+      baseUrl: flags.baseUrl,
     });
 
     await apiMirgrate.execute();
 
-    this.log(`base:migrate --from ${flags.from} --to ${flags.to}!`);
+    this.log(`base:migrate --from ${flags.from} --to ${flags.to}`);
   }
 }

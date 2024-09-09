@@ -35,4 +35,9 @@ pnpm build
 .\bin\run.cmd base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
 Airatable Token: <AIRTABLE_TOKEN>
 Teable Token: <TEABLE_TOKEN>
+
+# linux
+.\bin\run.js base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
+Airatable Token: <AIRTABLE_TOKEN>
+Teable Token: <TEABLE_TOKEN>
 ```

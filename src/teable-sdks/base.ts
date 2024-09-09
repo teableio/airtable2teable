@@ -25,7 +25,7 @@ export class Base {
 
   async createTable(table: ICreateTableRo) {
     const response = await axios.post<ITableTableVo>(
-      `${this.config.host}/api/base/${this.id}/table`,
+      `${this.config.baseUrl}/api/base/${this.id}/table`,
       {
         ...table,
       },

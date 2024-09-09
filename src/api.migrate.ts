@@ -44,9 +44,11 @@ export class ApiMigrate {
         teableToken: string;
         spaceId: string;
       };
+      baseUrl?: string;
     },
   ) {
     this.teableSdk = new TeableSdk({
+      baseUrl: option.baseUrl,
       token: option.to.teableToken,
     });
     this.airtableSdk = new AirtableSdk(option.from.airtableToken);

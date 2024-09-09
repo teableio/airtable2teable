@@ -22,7 +22,7 @@ Scope: `data.records:read`, `schema.bases:read`.
 ## Quick Start
 
 ```shell
-teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID>
+teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
 Airatable Token: <AIRTABLE_TOKEN>
 Teable Token: <TEABLE_TOKEN>
 ```
@@ -32,7 +32,16 @@ Teable Token: <TEABLE_TOKEN>
 pnpm build
 
 # windows
-.\bin\run.cmd base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID>
+.\bin\run.cmd base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
+Airatable Token: <AIRTABLE_TOKEN>
+Teable Token: <TEABLE_TOKEN>
+
+# linux
+./bin/run.js base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
 Airatable Token: <AIRTABLE_TOKEN>
 Teable Token: <TEABLE_TOKEN>
 ```
+
+## Reporting Issues
+
+If you encounter any problems while using this tool, please open an issue in our GitHub repository. When reporting an issue, it's helpful to provide a minimal, reproducible example. This allows us to better understand and address the problem. Your detailed feedback helps improve the tool for everyone.

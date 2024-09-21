@@ -1,0 +1,65 @@
+{
+  "name": "@teatool/core",
+  "version": "1.0.0",
+  "description": "The data pipeline from airtable database to teable database.",
+  "homepage": "https://github.com/teableio/airtable2teable",
+  "author": "teable",
+  "main": "./build/index.js",
+  "exports": {
+    ".": {
+      "import": "./build/index.js",
+      "require": "./build/index.js",
+      "types": "./build/index.d.ts"
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.test.ts\"",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "jest"
+  },
+  "dependencies": {
+    "axios": "1.6.7",
+    "class-transformer": "^0.5.1",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.3.1",
+    "lodash": "^4.17.21",
+    "rxjs": "^7.8.1",
+    "signale": "^1.4.0",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.3",
+    "@types/lodash": "^4.17.7",
+    "@types/signale": "^1.4.7",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "jest": "^29.6.2",
+    "nock": "^13.3.4",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.1",
+    "ts-jest": "^29.1.1"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "modulePaths": [
+      "<rootDir>/src"
+    ],
+    "setupFiles": [
+      "dotenv/config"
+    ]
+  },
+  "files": [
+    "./build",
+    "package.json",
+    "README.md"
+  ]
+}

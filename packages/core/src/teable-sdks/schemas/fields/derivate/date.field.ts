@@ -1,9 +1,9 @@
-import * as dayjs from 'dayjs';
-import * as timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
 import { z } from 'zod';
 
 import { datetimeFormattingSchema } from '../formatting.shcema';
-// @ts-expect-error: right type
+
 dayjs.extend(timezone);
 
 export const dateFieldOptionsSchema = z.object({

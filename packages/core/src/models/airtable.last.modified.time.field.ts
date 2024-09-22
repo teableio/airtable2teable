@@ -1,6 +1,6 @@
-import * as dayjs from 'dayjs';
-import * as timezone from 'dayjs/plugin/timezone';
-import * as utc from 'dayjs/plugin/utc';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 import { TeableFieldType } from '@/types';
 
@@ -11,9 +11,8 @@ import {
   IDateCellValue,
 } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
-// @ts-expect-error: right type
+
 dayjs.extend(timezone);
-// @ts-expect-error: right type
 dayjs.extend(utc);
 
 export class AirtableLastModifiedTimeField extends AirtableFieldVo {

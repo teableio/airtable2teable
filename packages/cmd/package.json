@@ -1,13 +1,19 @@
 {
-  "name": "@teatool/core",
+  "name": "@teatool/cmd",
   "version": "1.0.0",
   "description": "The data pipeline from airtable database to teable database.",
   "homepage": "https://github.com/teableio/airtable2teable",
   "author": "teable",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p tsconfig.build.json"
   },
-  "license": "ISC",
+  "exports": {
+    ".": {
+      "import": "./build/index.js",
+      "require": "./build/index.js",
+      "types": "./build/index.d.ts"
+    }
+  },
   "dependencies": {
     "@inquirer/prompts": "^6.0.1",
     "@oclif/core": "^4.0.22",
@@ -18,11 +24,17 @@
     "dirname": "teatool",
     "commands": {
       "strategy": "explicit",
-      "target": "./dist/commands/index.js",
+      "target": "./build/index.js",
       "identifier": "COMMANDS"
     }
   },
   "bin": {
     "teatool": "./bin/run.js"
-  }
+  },
+  "files": [
+    "/bin",
+    "/build",
+    "package.json",
+    "README.md"
+  ]
 }

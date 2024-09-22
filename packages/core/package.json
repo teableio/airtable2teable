@@ -15,7 +15,7 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" --fix",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json & tsc-alias -p tsconfig.build.json",
     "test": "jest"
   },
   "dependencies": {

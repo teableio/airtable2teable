@@ -1,5 +1,6 @@
-import { IdPrefix, TeableFieldKeyType } from '@/types';
 import { z } from 'zod';
+
+import { IdPrefix, TeableFieldKeyType } from '@/types';
 
 export const fieldKeyTypeRoSchema = z
   .nativeEnum(TeableFieldKeyType, {

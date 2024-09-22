@@ -1,5 +1,6 @@
-import { IdPrefix } from '@/types';
 import { z } from 'zod';
+
+import { IdPrefix } from '@/types';
 
 export const userFieldOptionsSchema = z.object({
   isMultiple: z.boolean(),

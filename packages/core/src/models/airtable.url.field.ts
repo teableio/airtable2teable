@@ -9,7 +9,6 @@ import {
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableUrlField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: ITextCellValueVo,
   ): ISingleLineTextCellValue {

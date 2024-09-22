@@ -3,7 +3,7 @@ import * as timezone from 'dayjs/plugin/timezone';
 import { z } from 'zod';
 
 import { datetimeFormattingSchema } from '../formatting';
-// @ts-ignore
+// @ts-expect-error: right type
 dayjs.extend(timezone);
 
 export const lastModifiedTimeFieldOptionsSchema = z.object({

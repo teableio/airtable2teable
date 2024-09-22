@@ -1,5 +1,6 @@
-import { IdPrefix, TeableRelationship } from '@/types';
 import { z } from 'zod';
+
+import { IdPrefix, TeableRelationship } from '@/types';
 
 export const linkFieldOptionsSchema = z
   .object({

@@ -1,11 +1,10 @@
 import { TeableFieldType } from '@/types';
 
-import { ICheckboxCellValueVo, ICheckFieldOptionsVo } from '../airtable-sdks';
+import { ICheckboxCellValueVo } from '../airtable-sdks';
 import { ICheckboxCellValue, ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableCheckboxField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: ICheckboxCellValueVo,
   ): ICheckboxCellValue {

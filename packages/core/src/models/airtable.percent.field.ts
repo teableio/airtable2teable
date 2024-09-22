@@ -1,6 +1,6 @@
 import { TeableFieldType } from '@/types';
 
-import { INumberCellValueVo, INumberFieldOptionsVo } from '../airtable-sdks';
+import { INumberCellValueVo } from '../airtable-sdks';
 import {
   ICreateFieldRo,
   INumberCellValue,
@@ -9,7 +9,6 @@ import {
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtablePercentField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }

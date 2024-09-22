@@ -1,6 +1,6 @@
 import { TeableFieldType } from '@/types';
 
-import { IDurationFieldOptionsVo, INumberCellValueVo } from '../airtable-sdks';
+import { INumberCellValueVo } from '../airtable-sdks';
 import {
   ICreateFieldRo,
   INumberCellValue,
@@ -9,7 +9,6 @@ import {
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableDurationField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }

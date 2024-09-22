@@ -1,5 +1,6 @@
-import { AirtableIcon, R_COLOR_LIST } from '@/types';
 import { z } from 'zod';
+
+import { AirtableIcon, R_COLOR_LIST } from '@/types';
 
 export const ratingFieldOptionsSchema = z.object({
   color: z.enum(R_COLOR_LIST),

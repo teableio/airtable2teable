@@ -1,5 +1,6 @@
-import { Colors } from '@/types';
 import { z } from 'zod';
+
+import { Colors } from '@/types';
 
 export const selectFieldChoiceSchema = z.object({
   id: z.string(),

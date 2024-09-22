@@ -1,14 +1,10 @@
 import { TeableFieldType } from '@/types';
 
-import {
-  IAttachmentCellValueVo,
-  IAttachmentFieldOptionsVo,
-} from '../airtable-sdks';
+import { IAttachmentCellValueVo } from '../airtable-sdks';
 import { IAttachmentCellValue, ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableAttachmentField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: IAttachmentCellValueVo,
   ): IAttachmentCellValue {

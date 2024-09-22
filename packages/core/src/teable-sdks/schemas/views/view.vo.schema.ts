@@ -1,10 +1,11 @@
+import { z } from 'zod';
+
 import {
   IdPrefix,
   StatisticsFunc,
   TeableViewTypeEnum,
   TIME_ZONE_LIST,
 } from '@/types';
-import { z } from 'zod';
 
 import { dataFieldCellValueSchema } from '../fields';
 import {
@@ -89,8 +90,8 @@ export const baseFilterSetSchema = z.object({
 });
 
 export const nestedFilterItemSchema = baseFilterSetSchema.extend({
-  filterSet: z.lazy(
-    () => z.array(z.union([filterItemSchema, nestedFilterItemSchema]))
+  filterSet: z.lazy(() =>
+    z.array(z.union([filterItemSchema, nestedFilterItemSchema])),
   ),
 });
 

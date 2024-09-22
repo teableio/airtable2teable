@@ -13,8 +13,7 @@
     }
   },
   "scripts": {
-    "clean": "rimraf dist",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.test.ts\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "build": "tsc -p tsconfig.build.json",
     "test": "jest"

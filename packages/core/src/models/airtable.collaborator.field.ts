@@ -1,11 +1,10 @@
 import { TeableFieldType } from '@/types';
 
-import { ICollaboratorCellValueVo, IObjectOptionsVo } from '../airtable-sdks';
+import { ICollaboratorCellValueVo } from '../airtable-sdks';
 import { ICreateFieldRo, IUserCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableCollaboratorField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: ICollaboratorCellValueVo,
   ): IUserCellValue {

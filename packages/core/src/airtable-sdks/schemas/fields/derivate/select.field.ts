@@ -1,5 +1,6 @@
-import { A_COLOR_LIST } from '@/types';
 import { z } from 'zod';
+
+import { A_COLOR_LIST } from '@/types';
 
 export const selectFieldOptionsSchema = z.object({
   choices: z

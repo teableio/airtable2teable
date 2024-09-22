@@ -1,5 +1,6 @@
-import { AirtableFieldTypeEnum } from '@/types';
 import { z } from 'zod';
+
+import { AirtableFieldTypeEnum } from '@/types';
 
 import { unionFieldOptionsVoSchema } from './derivate';
 

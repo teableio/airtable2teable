@@ -1,11 +1,10 @@
 import { TeableFieldType } from '@/types';
 
-import { INumberCellValueVo, IRatingFieldOptionsVo } from '../airtable-sdks';
+import { INumberCellValueVo } from '../airtable-sdks';
 import { ICreateFieldRo, INumberCellValue, RatingIcon } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableRatingField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }

@@ -5,7 +5,6 @@ import { ICreateFieldRo, INumberCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableAutoNumberField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }

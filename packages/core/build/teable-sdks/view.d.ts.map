@@ -1,1 +1,0 @@
-{"version":3,"file":"view.d.ts","sourceRoot":"","sources":["../../src/teable-sdks/view.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,SAAS,CAAC;AACrC,OAAO,EAAE,OAAO,EAAE,MAAM,WAAW,CAAC;AAEpC,qBAAa,IAAI;IAEb,OAAO,CAAC,MAAM;IACd,OAAO,CAAC,IAAI;gBADJ,MAAM,EAAE,UAAU,EAClB,IAAI,EAAE,OAAO;CAExB"}

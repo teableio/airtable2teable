@@ -9,7 +9,6 @@ import {
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableButtonField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: IButtonCellValueVo,
   ): ISingleLineTextCellValue {

@@ -1,5 +1,6 @@
-import { RowHeightLevel } from '@/types';
 import { z } from 'zod';
+
+import { RowHeightLevel } from '@/types';
 
 export type IGridViewOptions = z.infer<typeof gridViewOptionSchema>;
 

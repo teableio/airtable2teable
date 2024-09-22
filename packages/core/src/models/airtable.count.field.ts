@@ -1,10 +1,6 @@
 import { IAirtableTable, TeableFieldType } from '@/types';
 
-import {
-  ICountFieldOptionsVo,
-  ILinkFieldOptionsVo,
-  INumberCellValueVo,
-} from '../airtable-sdks';
+import { ILinkFieldOptionsVo, INumberCellValueVo } from '../airtable-sdks';
 import {
   ICreateFieldRo,
   INumberCellValue,
@@ -15,7 +11,6 @@ import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableCountField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(value: INumberCellValueVo): INumberCellValue {
     return value;
   }

@@ -1,5 +1,6 @@
-import { AirtableIcon } from '@/types';
 import { z } from 'zod';
+
+import { AirtableIcon } from '@/types';
 
 export const checkboxFieldOptionsSchema = z.object({
   color: z.string(),

@@ -5,7 +5,6 @@ import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableRichTextField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: ITextCellValueVo,
   ): ISingleLineTextCellValue {

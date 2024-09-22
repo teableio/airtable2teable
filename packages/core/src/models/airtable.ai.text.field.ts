@@ -1,11 +1,10 @@
 import { TeableFieldType } from '@/types';
 
-import { IAiTextCellValueVo, IAiTextFieldOptionsVo } from '../airtable-sdks';
+import { IAiTextCellValueVo } from '../airtable-sdks';
 import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableAiTextField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: IAiTextCellValueVo,
   ): ISingleLineTextCellValue {

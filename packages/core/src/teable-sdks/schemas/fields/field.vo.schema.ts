@@ -1,10 +1,11 @@
+import { z } from 'zod';
+
 import {
   IdPrefix,
   TeableCellValueType,
   TeableDbFieldType,
   TeableFieldType,
 } from '@/types';
-import { z } from 'zod';
 
 import {
   attachmentCellValueSchema,

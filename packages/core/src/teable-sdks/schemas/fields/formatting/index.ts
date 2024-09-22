@@ -1,5 +1,6 @@
-import { TeableCellValueType } from '@/types';
 import { z } from 'zod';
+
+import { TeableCellValueType } from '@/types';
 
 import {
   datetimeFormattingSchema,
@@ -14,7 +15,7 @@ export const unionFormattingSchema = z.union([
   numberFormattingSchema,
 ]);
 
-export const getDefaultFormatting = (cellValueType: TeableCellValueType)  => {
+export const getDefaultFormatting = (cellValueType: TeableCellValueType) => {
   switch (cellValueType) {
     case TeableCellValueType.Number:
       return defaultNumberFormatting;

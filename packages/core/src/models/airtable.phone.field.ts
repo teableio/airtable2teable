@@ -9,7 +9,6 @@ import {
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtablePhoneField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: ITextCellValueVo,
   ): ISingleLineTextCellValue {

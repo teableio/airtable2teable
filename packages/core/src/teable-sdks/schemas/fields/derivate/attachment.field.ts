@@ -1,5 +1,6 @@
-import { IdPrefix } from '@/types';
 import { z } from 'zod';
+
+import { IdPrefix } from '@/types';
 
 export const attachmentFieldOptionsSchema = z.object({}).strict();
 

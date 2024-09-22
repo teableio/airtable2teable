@@ -1,11 +1,10 @@
 import { TeableFieldType } from '@/types';
 
-import { ISelectFieldOptionsVo, ITextCellValueVo } from '../airtable-sdks';
+import { ITextCellValueVo } from '../airtable-sdks';
 import { ICreateFieldRo, IMultipleSelectCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableMultipleSelectsField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: ITextCellValueVo[],
   ): IMultipleSelectCellValue {

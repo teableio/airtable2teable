@@ -1,6 +1,6 @@
 import { IAirtableTable, TeableFieldType } from '@/types';
 
-import { IFormulaCellValueVo, IFormulaFieldOptionsVo } from '../airtable-sdks';
+import { IFormulaCellValueVo } from '../airtable-sdks';
 import {
   ICreateFieldRo,
   IFormulaCellValue,
@@ -10,7 +10,6 @@ import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableFormulaField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(value: IFormulaCellValueVo): IFormulaCellValue {
     return value;
   }

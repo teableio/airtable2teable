@@ -6,7 +6,6 @@ import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableLinkField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: ILinkCellValueVo,
   ): ILinkCellValue[] | ILinkCellValue {

@@ -5,7 +5,6 @@ import { ICreateFieldRo, IUserCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableCreatedByField extends AirtableFieldVo {
-
   transformTeableCreateRecordRo(
     value: ICollaboratorCellValueVo,
   ): IUserCellValue {

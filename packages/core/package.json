@@ -5,6 +5,7 @@
   "homepage": "https://github.com/teableio/airtable2teable",
   "author": "teable",
   "main": "./build/index.js",
+  "private": false,
   "exports": {
     ".": {
       "import": "./build/index.js",

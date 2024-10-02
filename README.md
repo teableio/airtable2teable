@@ -26,6 +26,7 @@ teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl
 Airatable Token: <AIRTABLE_TOKEN>
 Teable Token: <TEABLE_TOKEN>
 ```
+
 ## Dev
 
 ```shell

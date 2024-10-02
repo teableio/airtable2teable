@@ -35,8 +35,8 @@ Teable Token: <TEABLE_TOKEN>
 
 <table>
   <tr>
-    <td><image src="./asset/success.png"></td>
-    <td><image src="./asset/error.png"></td>
+    <td><image src="./assets/success.png"></td>
+    <td><image src="./assets/error.png"></td>
   </tr>
 </table>
 

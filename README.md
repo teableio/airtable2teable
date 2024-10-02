@@ -22,7 +22,9 @@ Scope: `data.records:read`, `schema.bases:read`.
 ## Quick Start
 
 ```shell
-teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
+npm install -g @teatool/cmd
+
+npx teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--baseUrl <BASE_URL>]
 Airatable Token: <AIRTABLE_TOKEN>
 Teable Token: <TEABLE_TOKEN>
 ```

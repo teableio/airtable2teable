@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "@teatool/core",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "build",
+    "noImplicitAny": false,
+    "module": "CommonJS",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+    }, 
+  },
+  "exclude": ["**/node_modules", "./build"],
+  "include": ["src"]
+}

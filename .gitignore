@@ -1,4 +1,6 @@
-node_modules
-dist
-.idea
-.env
+**/dist
+**/node_modules
+**/.idea
+**/.env
+**/build
+**/.turbo

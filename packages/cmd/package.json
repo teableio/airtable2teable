@@ -1,6 +1,6 @@
 {
   "name": "@teatool/cmd",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The data pipeline from airtable database to teable database.",
   "homepage": "https://github.com/teableio/airtable2teable",
   "author": "teable",

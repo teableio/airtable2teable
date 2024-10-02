@@ -1,6 +1,6 @@
 {
   "name": "@teatool/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The data pipeline from airtable database to teable database.",
   "homepage": "https://github.com/teableio/airtable2teable",
   "author": "teable",
@@ -26,13 +26,11 @@
     "dotenv": "^16.3.1",
     "lodash": "^4.17.21",
     "rxjs": "^7.8.1",
-    "signale": "^1.4.0",
     "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.3",
     "@types/lodash": "^4.17.7",
-    "@types/signale": "^1.4.7",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "eslint": "^8.45.0",

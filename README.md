@@ -21,6 +21,8 @@ Scope: `data.records:read`, `schema.bases:read`.
 
 ## Quick Start
 
+### Command
+
 ```shell
 npm install -g @teatool/cmd
 
@@ -28,6 +30,15 @@ npx teatool base:migrate --from <AIRTABLE_BASE_ID> --to <TEABLE_SPACE_ID> [--bas
 Airatable Token: <AIRTABLE_TOKEN>
 Teable Token: <TEABLE_TOKEN>
 ```
+
+### GUI
+
+<table>
+  <tr>
+    <td><image src="./asset/success.png"></td>
+    <td><image src="./asset/error.png"></td>
+  </tr>
+</table>
 
 ## Dev
 

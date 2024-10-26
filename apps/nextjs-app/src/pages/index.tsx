@@ -102,7 +102,7 @@ export default function Home() {
             <Loader2  className={`${status === 'submitting' ? 'animate-spin' : ''} mr-2 h-4 w-4`} />
             Start
           </Button>
-          {status === 'success' && <Label htmlFor="terms">✅ Let's go check the teable space now! </Label> }
+          {status === 'success' && <Label htmlFor="terms">✅ Let&apos;s go check the teable space now! </Label> }
           {status === 'error' && <Label htmlFor="terms">❌ Oh! Something went wrong! </Label> }
         </CardFooter>
       </Card>

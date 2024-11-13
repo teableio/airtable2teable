@@ -8,8 +8,14 @@ export default class BaseMigrate extends Command {
     baseUrl: Flags.string({
       description: 'api base url',
     }),
+    fromRps: Flags.integer({
+      description: 'airtable request per second',
+    }),
     from: Flags.string({
       description: 'airtable base id',
+    }),
+    toRps: Flags.integer({
+      description: 'teable request per second',
     }),
     to: Flags.string({
       description: 'teable space id',
@@ -28,23 +34,25 @@ export default class BaseMigrate extends Command {
     }
 
     if (!flags.to) {
-      throw new Error('Sapce No Set');
+      throw new Error('Space No Set');
     }
 
-    const apiMirgrate = new ApiMigrate({
+    const apiMigrate = new ApiMigrate({
       from: {
         baseId: flags.from,
         airtableToken: airtableToken,
+        rps: flags.fromRps,
       },
       to: {
         spaceId: flags.to,
         teableToken: teableToken,
+        rps: flags.toRps,
       },
       baseUrl: flags.baseUrl,
     });
 
-    await apiMirgrate.execute();
+    await apiMigrate.execute();
 
-    this.log(`base:migrate --from ${flags.from} --to ${flags.to}`);
+    this.log(`base:migrate --from ${flags.from} --to ${flags.to} --baseUrl ${flags.baseUrl} --fromRps ${flags.fromRps} --toRps ${flags.toRps}`);
   }
 }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { AxiosInstance } from 'axios';
 
 import { TeableFieldKeyType } from '../types';
 import {
@@ -6,7 +6,6 @@ import {
   ICreateRecordsRo,
   ICreateRecordsVo,
   IRecordsRo,
-  ISdkConfig,
   IUpdateFieldRo,
   IViewVo,
 } from './index';
@@ -18,7 +17,7 @@ export class Table {
   info: ITableTableVo;
 
   constructor(
-    private config: ISdkConfig,
+    private client: AxiosInstance,
     info: ITableTableVo,
   ) {
     this.info = info;
@@ -49,19 +48,14 @@ export class Table {
   }
 
   async createView(view: IViewRo) {
-    const response = await axios.post<IViewVo>(
-      `${this.config.baseUrl}/api/table/${this.id}/view`,
+    const response = await this.client.post<IViewVo>(
+      `/api/table/${this.id}/view`,
       {
         ...view,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
-        },
-      },
     );
     assertResponse(response);
-    return new View(this.config, { ...response.data });
+    return new View(this.client, { ...response.data });
   }
 
   async createRecords(records: IRecordsRo) {
@@ -70,28 +64,20 @@ export class Table {
       typecast: true,
       records: records,
     };
-    const response = await axios.post<ICreateRecordsVo>(
-      `${this.config.baseUrl}/api/table/${this.id}/record`,
+    const response = await this.client.post<ICreateRecordsVo>(
+      `/api/table/${this.id}/record`,
       ro,
-      {
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
-        },
-      },
     );
     assertResponse(response);
     return response.data.records;
   }
 
   async deleteRecords(recordIds: string[]) {
-    const response = await axios.delete<ICreateRecordsVo[]>(
-      `${this.config.baseUrl}/api/table/${this.id}/record`,
+    const response = await this.client.delete<ICreateRecordsVo[]>(
+      `/api/table/${this.id}/record`,
       {
         params: {
           recordIds,
-        },
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
         },
       },
     );
@@ -99,15 +85,10 @@ export class Table {
   }
 
   async createField(field: ICreateFieldRo) {
-    const response = await axios.post<IFieldVo>(
-      `${this.config.baseUrl}/api/table/${this.id}/field`,
+    const response = await this.client.post<IFieldVo>(
+      `/api/table/${this.id}/field`,
       {
         ...field,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
-        },
       },
     );
     assertResponse(response);
@@ -115,15 +96,10 @@ export class Table {
   }
 
   async updateField(fieldId: string, field: IUpdateFieldRo) {
-    const response = await axios.patch<IFieldVo>(
-      `${this.config.baseUrl}/api/table/${this.id}/field/${fieldId}`,
+    const response = await this.client.patch<IFieldVo>(
+      `/api/table/${this.id}/field/${fieldId}`,
       {
         ...field,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
-        },
       },
     );
     assertResponse(response);
@@ -131,15 +107,10 @@ export class Table {
   }
 
   async convertField(fieldId: string, field: IConvertFieldRo) {
-    const response = await axios.put<IFieldVo>(
-      `${this.config.baseUrl}/api/table/${this.id}/field/${fieldId}/convert`,
+    const response = await this.client.put<IFieldVo>(
+      `/api/table/${this.id}/field/${fieldId}/convert`,
       {
         ...field,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
-        },
       },
     );
     assertResponse(response);
@@ -147,13 +118,8 @@ export class Table {
   }
 
   async getField(fieldId: string) {
-    const response = await axios.get<IFieldVo>(
-      `${this.config.baseUrl}/api/table/${this.id}/field/${fieldId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
-        },
-      },
+    const response = await this.client.get<IFieldVo>(
+      `/api/table/${this.id}/field/${fieldId}`,
     );
     assertResponse(response);
     return response.data;

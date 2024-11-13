@@ -39,10 +39,12 @@ export class ApiMigrate {
       from: {
         airtableToken: string;
         baseId: string;
+        rps?: number;
       };
       to: {
         teableToken: string;
         spaceId: string;
+        rps?: number;
       };
       baseUrl?: string;
     },
@@ -50,8 +52,12 @@ export class ApiMigrate {
     this.teableSdk = new TeableSdk({
       baseUrl: option.baseUrl,
       token: option.to.teableToken,
+      rps: option.to.rps,
     });
-    this.airtableSdk = new AirtableSdk(option.from.airtableToken);
+    this.airtableSdk = new AirtableSdk({
+      airtableToken: option.from.airtableToken,
+      rps: option.from.rps,
+    });
     axios.interceptors.response.use(
       function (response) {
         return response;

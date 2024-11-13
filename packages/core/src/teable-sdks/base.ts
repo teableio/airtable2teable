@@ -1,13 +1,13 @@
-import axios from 'axios';
+import { AxiosInstance } from 'axios';
 
-import { ICreateBaseVo, ISdkConfig } from './index';
+import { ICreateBaseVo } from './index';
 import { ICreateTableRo, ITableTableVo } from './schemas';
 import { Table } from './table';
 import { assertResponse } from './util';
 
 export class Base {
   constructor(
-    private config: ISdkConfig,
+    private client: AxiosInstance,
     private info: ICreateBaseVo,
   ) {}
 
@@ -24,18 +24,13 @@ export class Base {
   }
 
   async createTable(table: ICreateTableRo) {
-    const response = await axios.post<ITableTableVo>(
-      `${this.config.baseUrl}/api/base/${this.id}/table`,
+    const response = await this.client.post<ITableTableVo>(
+      `/api/base/${this.id}/table`,
       {
         ...table,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
-        },
-      },
     );
     assertResponse(response);
-    return new Table(this.config, { ...response.data });
+    return new Table(this.client, { ...response.data });
   }
 }

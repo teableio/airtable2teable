@@ -1,9 +1,10 @@
-import { ISdkConfig } from './index';
+import { AxiosInstance } from 'axios';
+
 import { IViewVo } from './schemas';
 
 export class View {
   constructor(
-    private config: ISdkConfig,
+    private client: AxiosInstance,
     private info: IViewVo,
   ) {}
 }

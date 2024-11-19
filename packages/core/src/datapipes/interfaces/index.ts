@@ -1,6 +1,8 @@
-export * from './output-and-status'
-export * from './standard-sync-input'
-export * from './standard-sync-output'
-export * from './worker'
-export * from './sync-worker'
-
+export * from './destination';
+export * from './discover-catalog-worker';
+export * from './integration-launcher';
+export * from './message-tracker';
+export * from './output-and-status';
+export * from './source';
+export * from './sync-worker';
+export * from './worker';

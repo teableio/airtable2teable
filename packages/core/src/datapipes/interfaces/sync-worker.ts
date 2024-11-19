@@ -1,6 +1,5 @@
-import { OutputAndStatus } from "./output-and-status";
-import { StandardSyncInput } from "./standard-sync-input";
-import { StandardSyncOutput } from "./standard-sync-output";
-import { Worker } from './worker'
+import { StandardSyncInput, StandardSyncOutput } from '../models';
+import { IWorker } from './worker';
 
-export interface SyncWorker extends Worker<StandardSyncInput, StandardSyncOutput> { }
+export interface ISyncWorker
+  extends IWorker<StandardSyncInput, StandardSyncOutput> {}

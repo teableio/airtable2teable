@@ -1,6 +1,6 @@
-import { JobStatus } from "../domians";
+import { JobStatus } from '../protocols';
 
 export interface OutputAndStatus<OutputType> {
-  output: OutputType;
+  output: OutputType | null;
   status: JobStatus;
 }

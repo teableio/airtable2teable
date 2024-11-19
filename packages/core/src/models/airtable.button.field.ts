@@ -1,23 +1,23 @@
-import { TeableFieldType } from '@/types';
-
-import { IButtonCellValueVo } from '../airtable-sdks';
 import {
-  ICreateFieldRo,
+  FieldType,
+  IFieldRo,
   ISingleLineTextCellValue,
   SingleLineTextDisplayType,
-} from '../teable-sdks';
+} from '@teable/core';
+
+import { IButtonCellValueVo } from '../airtable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableButtonField extends AirtableFieldVo {
   transformTeableCreateRecordRo(
     value: IButtonCellValueVo,
   ): ISingleLineTextCellValue {
-    return value.url;
+    return value.url ?? '';
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.SingleLineText,
+      type: FieldType.SingleLineText,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

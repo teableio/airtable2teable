@@ -1,24 +1,28 @@
-import { AxiosInstance } from 'axios';
-
-import { TeableFieldKeyType } from '../types';
 import {
+  FieldKeyType,
   IConvertFieldRo,
+  IFieldRo,
+  IFieldVo,
+  IUpdateFieldRo,
+  IViewRo,
+  IViewVo,
+} from '@teable/core';
+import {
   ICreateRecordsRo,
   ICreateRecordsVo,
-  IRecordsRo,
-  IUpdateFieldRo,
-  IViewVo,
-} from './index';
-import { ICreateFieldRo, IFieldVo, ITableTableVo, IViewRo } from './schemas';
+  ITableFullVo,
+} from '@teable/openapi';
+import { AxiosInstance } from 'axios';
+
 import { assertResponse } from './util';
 import { View } from './view';
 
 export class Table {
-  info: ITableTableVo;
+  info: ITableFullVo;
 
   constructor(
     private client: AxiosInstance,
-    info: ITableTableVo,
+    info: ITableFullVo,
   ) {
     this.info = info;
   }
@@ -58,9 +62,13 @@ export class Table {
     return new View(this.client, { ...response.data });
   }
 
-  async createRecords(records: IRecordsRo) {
+  async createRecords(
+    records: {
+      fields: Record<string, unknown>;
+    }[],
+  ) {
     const ro: ICreateRecordsRo = {
-      fieldKeyType: TeableFieldKeyType.Name,
+      fieldKeyType: FieldKeyType.Name,
       typecast: true,
       records: records,
     };
@@ -84,7 +92,7 @@ export class Table {
     assertResponse(response);
   }
 
-  async createField(field: ICreateFieldRo) {
+  async createField(field: IFieldRo) {
     const response = await this.client.post<IFieldVo>(
       `/api/table/${this.id}/field`,
       {

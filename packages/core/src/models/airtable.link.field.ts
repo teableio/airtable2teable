@@ -1,7 +1,14 @@
-import { IAirtableTable, TeableFieldType, TeableRelationship } from '@/types';
+import {
+  FieldType,
+  IFieldRo,
+  ILinkCellValue,
+  Relationship,
+} from '@teable/core';
+import { ITableFullVo } from '@teable/openapi';
+
+import { IAirtableTable } from '@/types';
 
 import { ILinkCellValueVo, ILinkFieldOptionsVo } from '../airtable-sdks';
-import { ICreateFieldRo, ILinkCellValue, ITableTableVo } from '../teable-sdks';
 import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
@@ -27,8 +34,8 @@ export class AirtableLinkField extends AirtableFieldVo {
 
   transformTeableCreateFieldRo(
     tables: IAirtableTable[],
-    newTables: ITableTableVo[],
-  ): ICreateFieldRo {
+    newTables: ITableFullVo[],
+  ): IFieldRo {
     const fields = tables
       .map((table) => table.fields)
       .flatMap((field) => field);
@@ -41,21 +48,21 @@ export class AirtableLinkField extends AirtableFieldVo {
     }
     const inverseLinkFieldOptions: ILinkFieldOptionsVo =
       inverseLinkField.options;
-    let relationship: TeableRelationship;
+    let relationship: Relationship;
     if (
       inverseLinkFieldOptions.prefersSingleRecordLink &&
       this.options.prefersSingleRecordLink
     ) {
-      relationship = TeableRelationship.OneOne;
+      relationship = Relationship.OneOne;
     } else if (
       !inverseLinkFieldOptions.prefersSingleRecordLink &&
       !this.options.prefersSingleRecordLink
     ) {
-      relationship = TeableRelationship.ManyMany;
+      relationship = Relationship.ManyMany;
     } else if (this.options.prefersSingleRecordLink) {
-      relationship = TeableRelationship.ManyOne;
+      relationship = Relationship.ManyOne;
     } else {
-      relationship = TeableRelationship.OneMany;
+      relationship = Relationship.OneMany;
     }
     const newTable = mappingTable(
       tables,
@@ -63,7 +70,7 @@ export class AirtableLinkField extends AirtableFieldVo {
       this.options.linkedTableId,
     );
     return {
-      type: TeableFieldType.Link,
+      type: FieldType.Link,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

@@ -1,3 +1,5 @@
+import { IFieldRo } from '@teable/core';
+
 import { AirtableFieldTypeEnum } from '@/types';
 
 import {
@@ -5,7 +7,6 @@ import {
   IFieldCellVo,
   IFieldOptionsVo,
 } from '../airtable-sdks';
-import { ICreateFieldRo, IFieldCellValueVo } from '../teable-sdks';
 
 export abstract class AirtableFieldVo implements IAirtableFieldVo {
   tableId!: string;
@@ -32,7 +33,7 @@ export abstract class AirtableFieldVo implements IAirtableFieldVo {
   abstract transformTeableCreateRecordRo(
     value: IFieldCellVo,
     ...args: unknown[]
-  ): IFieldCellValueVo;
+  ): unknown;
 
-  abstract transformTeableCreateFieldRo(...args: unknown[]): ICreateFieldRo;
+  abstract transformTeableCreateFieldRo(...args: unknown[]): IFieldRo;
 }

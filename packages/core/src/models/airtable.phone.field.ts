@@ -1,11 +1,11 @@
-import { TeableFieldType } from '@/types';
-
-import { ITextCellValueVo } from '../airtable-sdks';
 import {
-  ICreateFieldRo,
+  FieldType,
+  IFieldRo,
   ISingleLineTextCellValue,
   SingleLineTextDisplayType,
-} from '../teable-sdks';
+} from '@teable/core';
+
+import { ITextCellValueVo } from '../airtable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtablePhoneField extends AirtableFieldVo {
@@ -15,9 +15,9 @@ export class AirtablePhoneField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.SingleLineText,
+      type: FieldType.SingleLineText,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

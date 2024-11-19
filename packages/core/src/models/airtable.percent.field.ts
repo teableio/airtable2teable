@@ -1,11 +1,11 @@
-import { TeableFieldType } from '@/types';
-
-import { INumberCellValueVo } from '../airtable-sdks';
 import {
-  ICreateFieldRo,
+  FieldType,
+  IFieldRo,
   INumberCellValue,
   NumberFormattingType,
-} from '../teable-sdks';
+} from '@teable/core';
+
+import { INumberCellValueVo } from '../airtable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtablePercentField extends AirtableFieldVo {
@@ -13,9 +13,9 @@ export class AirtablePercentField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.Number,
+      type: FieldType.Number,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

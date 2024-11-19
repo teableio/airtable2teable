@@ -1,11 +1,9 @@
-import { IAirtableTable, TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, IFormulaCellValue } from '@teable/core';
+import { ITableFullVo } from '@teable/openapi';
+
+import { IAirtableTable } from '@/types';
 
 import { IFormulaCellValueVo } from '../airtable-sdks';
-import {
-  ICreateFieldRo,
-  IFormulaCellValue,
-  ITableTableVo,
-} from '../teable-sdks';
 import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
@@ -16,11 +14,11 @@ export class AirtableFormulaField extends AirtableFieldVo {
 
   transformTeableCreateFieldRo(
     tables: IAirtableTable[],
-    newTables: ITableTableVo[],
-  ): ICreateFieldRo {
+    newTables: ITableFullVo[],
+  ): IFieldRo {
     if (!this.options.isValid) {
       return {
-        type: TeableFieldType.SingleLineText,
+        type: FieldType.SingleLineText,
         name: this.name,
         dbFieldName: this.id,
         description: this.description,
@@ -33,7 +31,7 @@ export class AirtableFormulaField extends AirtableFieldVo {
     const primaryFieldId = table.primaryFieldId;
     if (primaryFieldId === this.id) {
       return {
-        type: TeableFieldType.Formula,
+        type: FieldType.Formula,
         name: this.name,
         dbFieldName: this.id,
         description: this.description,
@@ -56,7 +54,7 @@ export class AirtableFormulaField extends AirtableFieldVo {
       formula = formula.replace(referencedFieldId, mappingReferencedField.id);
     }
     return {
-      type: TeableFieldType.Formula,
+      type: FieldType.Formula,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

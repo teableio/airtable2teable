@@ -1,7 +1,7 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, IRollupCellValue } from '@teable/core';
 
-import { INumberCellValueVo, ITextCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, IRollupCellValue } from '../teable-sdks';
+import { INumberCellValueVo, ITextCellValueVo } from '@/airtable-sdks';
+
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableRollupField extends AirtableFieldVo {
@@ -11,9 +11,9 @@ export class AirtableRollupField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.SingleLineText,
+      type: FieldType.Rollup,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

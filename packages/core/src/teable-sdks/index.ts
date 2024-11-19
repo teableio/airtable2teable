@@ -1,12 +1,11 @@
+import { IGetSpaceVo } from '@teable/openapi';
 import axios, { AxiosInstance } from 'axios';
 import rateLimit from 'axios-rate-limit';
 
-import { IGetSpaceVo } from './schemas';
 import { Space } from './space';
 import { assertResponse } from './util';
 
 export * from './base';
-export * from './schemas';
 export * from './space';
 export * from './table';
 
@@ -45,7 +44,8 @@ export class TeableSdk {
     assertResponse(response);
     const spaceVos = response.data;
     return spaceVos.map(
-      (vo) => new Space(this.client, { id: vo.id, name: vo.name }),
+      (vo) =>
+        new Space(this.client, { id: vo.id, name: vo.name, role: vo.role }),
     );
   }
 
@@ -55,6 +55,6 @@ export class TeableSdk {
     );
     assertResponse(response);
     const vo = response.data;
-    return new Space(this.client, { id: vo.id, name: vo.name });
+    return new Space(this.client, { id: vo.id, name: vo.name, role: vo.role });
   }
 }

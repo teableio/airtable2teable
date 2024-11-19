@@ -1,19 +1,18 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, ISingleLineTextCellValue } from '@teable/core';
 
 import { IAiTextCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableAiTextField extends AirtableFieldVo {
   transformTeableCreateRecordRo(
     value: IAiTextCellValueVo,
   ): ISingleLineTextCellValue {
-    return value.value;
+    return value.value ?? '';
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.LongText,
+      type: FieldType.LongText,
       name: this.name,
       dbFieldName: this.id,
       isLookup: false,

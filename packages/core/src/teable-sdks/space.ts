@@ -1,7 +1,7 @@
+import { ICreateBaseRo, ICreateBaseVo, IGetSpaceVo } from '@teable/openapi';
 import { AxiosInstance } from 'axios';
 
 import { Base } from './base';
-import { ICreateBaseRo, ICreateBaseVo, IGetSpaceVo } from './schemas';
 import { assertResponse } from './util';
 
 export class Space {

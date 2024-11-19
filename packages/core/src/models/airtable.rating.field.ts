@@ -1,7 +1,11 @@
-import { TeableFieldType } from '@/types';
+import {
+  FieldType,
+  IFieldRo,
+  INumberCellValue,
+  RatingIcon,
+} from '@teable/core';
 
 import { INumberCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, INumberCellValue, RatingIcon } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableRatingField extends AirtableFieldVo {
@@ -9,9 +13,9 @@ export class AirtableRatingField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.Rating,
+      type: FieldType.Rating,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

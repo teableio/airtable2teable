@@ -1,7 +1,6 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, ICheckboxCellValue, IFieldRo } from '@teable/core';
 
 import { ICheckboxCellValueVo } from '../airtable-sdks';
-import { ICheckboxCellValue, ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableCheckboxField extends AirtableFieldVo {
@@ -11,9 +10,9 @@ export class AirtableCheckboxField extends AirtableFieldVo {
     return !!value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.Checkbox,
+      type: FieldType.Checkbox,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

@@ -1,7 +1,6 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, INumberCellValue } from '@teable/core';
 
 import { INumberCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, INumberCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableAutoNumberField extends AirtableFieldVo {
@@ -9,9 +8,9 @@ export class AirtableAutoNumberField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.AutoNumber,
+      type: FieldType.AutoNumber,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

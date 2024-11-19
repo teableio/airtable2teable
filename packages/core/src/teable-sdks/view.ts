@@ -1,6 +1,5 @@
+import { IViewVo } from '@teable/core';
 import { AxiosInstance } from 'axios';
-
-import { IViewVo } from './schemas';
 
 export class View {
   constructor(

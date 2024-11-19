@@ -1,7 +1,6 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IAttachmentCellValue, IFieldRo } from '@teable/core';
 
 import { IAttachmentCellValueVo } from '../airtable-sdks';
-import { IAttachmentCellValue, ICreateFieldRo } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableAttachmentField extends AirtableFieldVo {
@@ -25,9 +24,9 @@ export class AirtableAttachmentField extends AirtableFieldVo {
     );
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.Attachment,
+      type: FieldType.Attachment,
       name: this.name,
       dbFieldName: this.id,
       isLookup: false,

@@ -1,7 +1,6 @@
+import { ICreateBaseVo, ICreateTableRo, ITableFullVo } from '@teable/openapi';
 import { AxiosInstance } from 'axios';
 
-import { ICreateBaseVo } from './index';
-import { ICreateTableRo, ITableTableVo } from './schemas';
 import { Table } from './table';
 import { assertResponse } from './util';
 
@@ -24,7 +23,7 @@ export class Base {
   }
 
   async createTable(table: ICreateTableRo) {
-    const response = await this.client.post<ITableTableVo>(
+    const response = await this.client.post<ITableFullVo>(
       `/api/base/${this.id}/table`,
       {
         ...table,

@@ -1,12 +1,12 @@
+import { ITableFullVo } from '@teable/openapi';
 import * as _ from 'lodash';
 
 import { IAirtableTableVo } from '../airtable-sdks';
-import { ITableTableVo } from '../teable-sdks';
 import { topologicalSorting } from './graph.util';
 
 export function mappingTable(
   airtableTables: IAirtableTableVo[],
-  teableTables: ITableTableVo[],
+  teableTables: ITableFullVo[],
   airtableTableId: string,
 ) {
   const table = airtableTables.find((table) => table.id === airtableTableId);

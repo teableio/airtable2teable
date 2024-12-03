@@ -1,7 +1,6 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, ISingleLineTextCellValue } from '@teable/core';
 
 import { ITextCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableRichTextField extends AirtableFieldVo {
@@ -11,9 +10,9 @@ export class AirtableRichTextField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.LongText,
+      type: FieldType.LongText,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

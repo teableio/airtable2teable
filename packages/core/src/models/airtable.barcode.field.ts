@@ -1,18 +1,18 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, ISingleLineTextCellValue } from '@teable/core';
 
 import { IBarcodeCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableBarcodeField extends AirtableFieldVo {
   transformTeableCreateRecordRo(
     value: IBarcodeCellValueVo,
   ): ISingleLineTextCellValue {
-    return value.text;
+    return value.text ?? '';
   }
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.SingleLineText,
+      type: FieldType.SingleLineText,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

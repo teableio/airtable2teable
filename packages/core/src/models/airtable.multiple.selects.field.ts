@@ -1,7 +1,6 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, IMultipleSelectCellValue } from '@teable/core';
 
 import { ITextCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, IMultipleSelectCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableMultipleSelectsField extends AirtableFieldVo {
@@ -11,9 +10,9 @@ export class AirtableMultipleSelectsField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.MultipleSelect,
+      type: FieldType.MultipleSelect,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

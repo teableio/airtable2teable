@@ -1,3 +1,11 @@
+import {
+  FieldKeyType,
+  FieldType,
+  IFieldRo,
+  ILinkFieldOptions,
+  ViewType,
+} from '@teable/core';
+import { ITableFullVo } from '@teable/openapi';
 import axios from 'axios';
 import * as _ from 'lodash';
 
@@ -13,21 +21,8 @@ import {
   IRollupFieldOptionsVo,
 } from './airtable-sdks';
 import { AirtableFieldVo, getAirtableField } from './models';
-import {
-  ICreateFieldRo,
-  ILinkFieldOptions,
-  IRecordsRo,
-  ITableTableVo,
-  Table,
-  TeableSdk,
-} from './teable-sdks';
-import {
-  AirtableFieldTypeEnum,
-  IAirtableTable,
-  TeableFieldKeyType,
-  TeableFieldType,
-  TeableViewTypeEnum,
-} from './types';
+import { Table, TeableSdk } from './teable-sdks';
+import { AirtableFieldTypeEnum, IAirtableTable } from './types';
 import { fieldsTopologicalSorting, mappingTable } from './utils';
 
 export class ApiMigrate {
@@ -39,10 +34,12 @@ export class ApiMigrate {
       from: {
         airtableToken: string;
         baseId: string;
+        rps?: number;
       };
       to: {
         teableToken: string;
         spaceId: string;
+        rps?: number;
       };
       baseUrl?: string;
     },
@@ -50,8 +47,12 @@ export class ApiMigrate {
     this.teableSdk = new TeableSdk({
       baseUrl: option.baseUrl,
       token: option.to.teableToken,
+      rps: option.to.rps,
     });
-    this.airtableSdk = new AirtableSdk(option.from.airtableToken);
+    this.airtableSdk = new AirtableSdk({
+      airtableToken: option.from.airtableToken,
+      rps: option.from.rps,
+    });
     axios.interceptors.response.use(
       function (response) {
         return response;
@@ -92,7 +93,7 @@ export class ApiMigrate {
     const lazy = _.uniq(
       fieldDependencies.map((fieldDependency) => fieldDependency[0]),
     );
-    const newTables: ITableTableVo[] = [];
+    const newTables: ITableFullVo[] = [];
     const teableTables: Table[] = [];
     const recordIdMapping: Record<string, string> = {};
     let i = 1;
@@ -130,10 +131,9 @@ export class ApiMigrate {
           break;
         }
       }
-      const teableFieldCreateRos: ICreateFieldRo[] =
-        appendingAirtableFields.map((field) =>
-          field.transformTeableCreateFieldRo(tables, newTables),
-        );
+      const teableFieldCreateRos: IFieldRo[] = appendingAirtableFields.map(
+        (field) => field.transformTeableCreateFieldRo(tables, newTables),
+      );
       let j = 1;
       const teableTable = await base.createTable({
         name: table.name,
@@ -142,12 +142,12 @@ export class ApiMigrate {
         views: table.views.map((view) => {
           return {
             name: view.name,
-            type: TeableViewTypeEnum.Grid,
+            type: ViewType.Grid,
             order: j++,
             columnMeta: {},
           };
         }),
-        fieldKeyType: TeableFieldKeyType.Name,
+        fieldKeyType: FieldKeyType.Name,
         fields: teableFieldCreateRos,
       });
       await teableTable.deleteRecords(
@@ -200,7 +200,7 @@ export class ApiMigrate {
     fieldDependencies: [string, string][],
     tables: IAirtableTable[],
     teableTables: Table[],
-    newTables: ITableTableVo[],
+    newTables: ITableFullVo[],
   ) {
     const fields = tables.flatMap((table) => table.fields);
     const sorting = fieldsTopologicalSorting(fieldDependencies);
@@ -252,7 +252,7 @@ export class ApiMigrate {
           );
         }
         const covertField = await teableTable.convertField(teableField!.id, {
-          type: TeableFieldType.Formula,
+          type: FieldType.Formula,
           options: {
             expression: formula,
           },
@@ -270,7 +270,7 @@ export class ApiMigrate {
   ) {
     const teableTableVo = teableTable.info;
     const linkFields = teableTableVo.fields
-      .filter((field) => field.type === TeableFieldType.Link)
+      .filter((field) => field.type === FieldType.Link)
       .map((field) => field);
     for (const linkField of linkFields) {
       const options = linkField.options as ILinkFieldOptions;
@@ -304,7 +304,9 @@ export class ApiMigrate {
     airtableRecords: IAirtableRecordVo[],
     airtableFields: AirtableFieldVo[],
     recordIdMapping: Record<string, string>,
-  ): IRecordsRo {
+  ): {
+    fields: Record<string, unknown>;
+  }[] {
     return airtableRecords.map((record) => {
       const newRecord: Record<string, any> = {};
       for (const fieldName in record.fields) {

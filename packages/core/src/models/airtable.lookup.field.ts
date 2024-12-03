@@ -1,26 +1,24 @@
-import {
-  ICreateFieldRo,
-  IFieldCellValueVo,
-  ITableTableVo,
-} from '@/teable-sdks';
-import { IAirtableTable, TeableFieldType } from '@/types';
+import { FieldType, IFieldRo } from '@teable/core';
+import { ITableFullVo } from '@teable/openapi';
+
+import { IAirtableTable } from '@/types';
 
 import { IAirtableFieldVo, ILookupCellValueVo } from '../airtable-sdks';
 import { mappingTable } from '../utils';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableLookupField extends AirtableFieldVo {
-  transformTeableCreateRecordRo(value: ILookupCellValueVo): IFieldCellValueVo {
+  transformTeableCreateRecordRo(value: ILookupCellValueVo): unknown {
     return value;
   }
 
   transformTeableCreateFieldRo(
     tables: IAirtableTable[],
-    newTables: ITableTableVo[],
-  ): ICreateFieldRo {
+    newTables: ITableFullVo[],
+  ): IFieldRo {
     if (!this.options.isValid) {
       return {
-        type: TeableFieldType.SingleLineText,
+        type: FieldType.SingleLineText,
         name: this.name,
         dbFieldName: this.id,
         description: this.description,

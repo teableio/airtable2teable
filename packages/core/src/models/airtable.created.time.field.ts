@@ -1,15 +1,14 @@
+import {
+  defaultDatetimeFormatting,
+  FieldType,
+  IDateCellValue,
+  IFieldRo,
+} from '@teable/core';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import { TeableFieldType } from '@/types';
-
 import { ITextCellValueVo } from '../airtable-sdks';
-import {
-  defaultDatetimeFormatting,
-  ICreateFieldRo,
-  IDateCellValue,
-} from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 dayjs.extend(timezone);
@@ -20,9 +19,9 @@ export class AirtableCreatedTimeField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.CreatedTime,
+      type: FieldType.CreatedTime,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

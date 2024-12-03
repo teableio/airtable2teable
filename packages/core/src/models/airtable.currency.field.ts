@@ -1,11 +1,11 @@
-import { TeableFieldType } from '@/types';
-
-import { INumberCellValueVo } from '../airtable-sdks';
 import {
-  ICreateFieldRo,
+  FieldType,
+  IFieldRo,
   INumberCellValue,
   NumberFormattingType,
-} from '../teable-sdks';
+} from '@teable/core';
+
+import { INumberCellValueVo } from '../airtable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableCurrencyField extends AirtableFieldVo {
@@ -13,13 +13,13 @@ export class AirtableCurrencyField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     let precision = 0;
     if (this.options.precision) {
       precision = this.options.precision > 5 ? 5 : this.options.precision;
     }
     return {
-      type: TeableFieldType.Number,
+      type: FieldType.Number,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

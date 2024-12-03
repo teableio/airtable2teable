@@ -1,7 +1,6 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, ISingleLineTextCellValue } from '@teable/core';
 
 import { ITextCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, ISingleLineTextCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableSingleLineTextField extends AirtableFieldVo {
@@ -11,9 +10,9 @@ export class AirtableSingleLineTextField extends AirtableFieldVo {
     return value;
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.SingleLineText,
+      type: FieldType.SingleLineText,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

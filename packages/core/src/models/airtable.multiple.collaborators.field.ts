@@ -1,7 +1,6 @@
-import { TeableFieldType } from '@/types';
+import { FieldType, IFieldRo, IUserCellValue } from '@teable/core';
 
 import { ICollaboratorCellValueVo } from '../airtable-sdks';
-import { ICreateFieldRo, IUserCellValue } from '../teable-sdks';
 import { AirtableFieldVo } from './airtable.field.vo';
 
 export class AirtableMultipleCollaboratorsField extends AirtableFieldVo {
@@ -12,16 +11,16 @@ export class AirtableMultipleCollaboratorsField extends AirtableFieldVo {
       value?.map((v) => {
         return {
           id: v.id,
-          title: v.name,
+          title: v.name ?? '',
           avatarUrl: v.profilePicUrl,
         };
       }) || []
     );
   }
 
-  transformTeableCreateFieldRo(): ICreateFieldRo {
+  transformTeableCreateFieldRo(): IFieldRo {
     return {
-      type: TeableFieldType.User,
+      type: FieldType.User,
       name: this.name,
       dbFieldName: this.id,
       description: this.description,

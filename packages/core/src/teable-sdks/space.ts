@@ -1,13 +1,12 @@
-import axios from 'axios';
+import { ICreateBaseRo, ICreateBaseVo, IGetSpaceVo } from '@teable/openapi';
+import { AxiosInstance } from 'axios';
 
 import { Base } from './base';
-import { ISdkConfig } from './index';
-import { ICreateBaseRo, ICreateBaseVo, IGetSpaceVo } from './schemas';
 import { assertResponse } from './util';
 
 export class Space {
   constructor(
-    private config: ISdkConfig,
+    private client: AxiosInstance,
     private info: IGetSpaceVo,
   ) {}
 
@@ -20,18 +19,10 @@ export class Space {
   }
 
   async createBase(base: ICreateBaseRo) {
-    const response = await axios.post<ICreateBaseVo>(
-      `${this.config.baseUrl}/api/base`,
-      {
-        ...base,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.config.token}`,
-        },
-      },
-    );
+    const response = await this.client.post<ICreateBaseVo>(`/api/base`, {
+      ...base,
+    });
     assertResponse(response);
-    return new Base(this.config, { ...response.data });
+    return new Base(this.client, { ...response.data });
   }
 }

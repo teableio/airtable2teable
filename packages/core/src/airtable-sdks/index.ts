@@ -1,25 +1,34 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
+import rateLimit from 'axios-rate-limit';
 
 import { IAirtableTable } from '../types';
 import { IAirtableRecordVo, IAirtableTableVo } from './schemas';
 
 export * from './schemas';
 
-export class AirtableSdk {
-  private airtableToken: string;
+export interface ISdkConfig {
+  airtableToken: string;
+  rps?: number;
+}
 
-  constructor(airtableToken: string) {
-    this.airtableToken = airtableToken;
+export class AirtableSdk {
+  private client: AxiosInstance;
+
+  constructor(config: ISdkConfig) {
+    this.client = rateLimit(
+      axios.create({
+        baseURL: 'https://api.airtable.com',
+        headers: {
+          Authorization: `Bearer ${config.airtableToken}`,
+        },
+      }),
+      config.rps ? { maxRPS: config.rps } : {},
+    );
   }
 
   async getTables(baseId: string): Promise<IAirtableTable[]> {
-    const response = await axios.get<{ tables: IAirtableTableVo[] }>(
-      `https://api.airtable.com/v0/meta/bases/${baseId}/tables`,
-      {
-        headers: {
-          Authorization: `Bearer ${this.airtableToken}`,
-        },
-      },
+    const response = await this.client.get<{ tables: IAirtableTableVo[] }>(
+      `/v0/meta/bases/${baseId}/tables`,
     );
     if (response.status !== 200) {
       throw new Error(
@@ -44,16 +53,13 @@ export class AirtableSdk {
     const records: IAirtableRecordVo[] = [];
     let offset: string | undefined = '0';
     do {
-      const response = await axios.get<{
+      const response = await this.client.get<{
         offset?: string;
         records: IAirtableRecordVo[];
-      }>(`https://api.airtable.com/v0/${table.baseId}/${table.id}`, {
+      }>(`/v0/${table.baseId}/${table.id}`, {
         params: {
           offset,
           maxRecords: 1000,
-        },
-        headers: {
-          Authorization: `Bearer ${this.airtableToken}`,
         },
       });
       if (response.status !== 200) {
